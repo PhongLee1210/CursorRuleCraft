@@ -44,8 +44,8 @@ msgid "Cursor Rules Templates"
 msgstr "Cursor Rules Templates"
 
 #: src/pages/home/sections/Features.tsx:93
-msgid "CursorRuleCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
-msgstr "CursorRuleCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
+msgid "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
+msgstr "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
 
 #: src/pages/home/sections/Features.tsx:54
 msgid "Customizable Templates"

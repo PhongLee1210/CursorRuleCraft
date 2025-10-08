@@ -16,7 +16,7 @@ export const HomePage = () => {
         <html lang={i18n.locale} />
 
         <title>
-          {`CursorRuleCraft`} - {`A free and open-source cursor rules project builder`}
+          {`CursorRulesCraft`} - {`A free and open-source cursor rules project builder`}
         </title>
 
         <meta

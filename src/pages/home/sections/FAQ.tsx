@@ -8,7 +8,7 @@ import {
 const Question1 = () => (
   <AccordionItem value="1">
     <AccordionTrigger className="text-left leading-relaxed">
-      Who are you, and why did you build CursorRuleCraft?
+      Who are you, and why did you build CursorRulesCraft?
     </AccordionTrigger>
     <AccordionContent className="prose max-w-none dark:prose-invert">
       <p>
@@ -24,7 +24,7 @@ const Question1 = () => (
       </p>
 
       <p>
-        I decided to build CursorRuleCraft to solve this problem. Instead of manually writing rules
+        I decided to build CursorRulesCraft to solve this problem. Instead of manually writing rules
         from scratch or copying and pasting from various sources, developers can now use this tool
         to generate, customize, and manage their Cursor rules efficiently.
       </p>
@@ -32,28 +32,28 @@ const Question1 = () => (
       <p>
         The goal is to help developers get the most out of Cursor AI by providing them with
         well-structured, context-aware rules that enhance their coding experience. Whether you're
-        working on React, Python, or any other tech stack, CursorRuleCraft helps you create rules
+        working on React, Python, or any other tech stack, CursorRulesCraft helps you create rules
         that align with your specific needs and coding style.
       </p>
 
       <p>
         My dream is to build tools that empower developers to work smarter, not harder. If
-        CursorRuleCraft helps even a handful of developers improve their workflow, I'll consider it
+        CursorRulesCraft helps even a handful of developers improve their workflow, I'll consider it
         a success.
       </p>
     </AccordionContent>
   </AccordionItem>
 );
 
-// Is CursorRuleCraft free to use?
+// Is CursorRulesCraft free to use?
 const Question2 = () => (
   <AccordionItem value="2">
     <AccordionTrigger className="text-left leading-relaxed">
-      Is CursorRuleCraft free to use?
+      Is CursorRulesCraft free to use?
     </AccordionTrigger>
     <AccordionContent className="prose max-w-none dark:prose-invert">
       <p>
-        Yes! CursorRuleCraft is completely free and open-source. My goal is to help developers
+        Yes! CursorRulesCraft is completely free and open-source. My goal is to help developers
         enhance their productivity with Cursor AI, and putting it behind a paywall would defeat that
         purpose.
       </p>
@@ -71,7 +71,7 @@ const Question2 = () => (
       </p>
 
       <p>
-        Your feedback is the most valuable thing you can give. If CursorRuleCraft has improved your
+        Your feedback is the most valuable thing you can give. If CursorRulesCraft has improved your
         development workflow, let me know! It motivates me to keep building and improving the tool.
       </p>
     </AccordionContent>
@@ -93,14 +93,14 @@ const Question3 = () => (
 
       <p>
         <strong>If you have a great rule template</strong>, share it with the community! The more
-        diverse our rule templates are, the more helpful CursorRuleCraft becomes for developers
+        diverse our rule templates are, the more helpful CursorRulesCraft becomes for developers
         across different tech stacks and use cases. You can submit your templates via GitHub issues
         or pull requests.
       </p>
 
       <p>
         <strong>If you're active in developer communities</strong>, spread the word! Share
-        CursorRuleCraft with your team, post about it on social media, or mention it in your blog.
+        CursorRulesCraft with your team, post about it on social media, or mention it in your blog.
         The more developers who know about it, the more we can help the community improve their AI
         coding workflows.
       </p>
@@ -114,15 +114,15 @@ const Question3 = () => (
   </AccordionItem>
 );
 
-// What types of rules can I generate with CursorRuleCraft?
+// What types of rules can I generate with CursorRulesCraft?
 const Question4 = () => (
   <AccordionItem value="4">
     <AccordionTrigger className="text-left leading-relaxed">
-      What types of rules can I generate with CursorRuleCraft?
+      What types of rules can I generate with CursorRulesCraft?
     </AccordionTrigger>
     <AccordionContent className="prose max-w-none dark:prose-invert">
       <p>
-        CursorRuleCraft supports a wide variety of rule templates for different frameworks,
+        CursorRulesCraft supports a wide variety of rule templates for different frameworks,
         languages, and coding practices. Here are some of the categories available:
       </p>
 
@@ -183,7 +183,7 @@ const Question5 = () => (
       <p>
         <strong>Keep rules organized and documented.</strong> Use clear section headers and comments
         in your .cursorrules file. This makes it easier to maintain and update as your project
-        evolves. CursorRuleCraft helps with this by providing structured templates.
+        evolves. CursorRulesCraft helps with this by providing structured templates.
       </p>
 
       <p>
@@ -212,7 +212,7 @@ export const FAQSection = () => (
         <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
 
         <p className="text-base leading-loose">
-          Here are some common questions about CursorRuleCraft and how to make the most of your
+          Here are some common questions about CursorRulesCraft and how to make the most of your
           Cursor AI rules.
         </p>
 

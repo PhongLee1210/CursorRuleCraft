@@ -13,7 +13,7 @@ export const Footer = () => (
       <div className="flex flex-col gap-y-2">
         <Logo size={96} className="-ml-2" />
 
-        <h2 className="text-xl font-medium">{`CursorRuleCraft`}</h2>
+        <h2 className="text-xl font-medium">{`CursorRulesCraft`}</h2>
 
         <p className="prose prose-sm prose-zinc leading-relaxed opacity-60 dark:prose-invert">
           {`A free and open-source Cursor rules builder that helps you craft, customize, and optimize your project cursor rules configuration for better AI-assisted coding.`}

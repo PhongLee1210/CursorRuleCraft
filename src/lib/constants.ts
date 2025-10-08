@@ -2,7 +2,7 @@
  * Application-wide constants
  */
 
-export const APP_NAME = 'CursorRuleCraft';
+export const APP_NAME = 'CursorRulesCraft';
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.example.com';
 

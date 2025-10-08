@@ -27,7 +27,7 @@ export const Logo = ({ size = 32, className }: Props) => {
       src={src}
       width={size}
       height={size}
-      alt="CursorRuleCraft"
+      alt="CursorRulesCraft"
       className={cn('rounded-sm', className)}
     />
   );

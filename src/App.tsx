@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from '@/components/Button';
 import {
   Dialog,
@@ -9,19 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/Dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
 import { InstrumentsList } from '@/components/InstrumentsList';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
 import { useExample } from '@/hooks/useExample';
+import { useState } from 'react';
 
 function App() {
   const [count, setCount] = useState(0);
   const { data, isLoading, error } = useExample();
 
   return (
-    <div className="bg-background min-h-screen p-8">
+    <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">CursorRuleCraft</h1>
+          <h1 className="text-4xl font-bold tracking-tight">CursorRulesCraft</h1>
           <p className="text-muted-foreground">
             React + TypeScript + Vite + TailwindCSS + Radix UI + Tanstack Query + Supabase
           </p>

@@ -131,7 +131,7 @@ export const HeroSection = () => (
         </div>
 
         <p className="prose prose-base prose-zinc mt-6 text-lg leading-8 dark:prose-invert">
-          {t`CursorRuleCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects.`}
+          {t`CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects.`}
         </p>
 
         <div className="mt-10 flex items-center gap-x-8">
@@ -159,7 +159,7 @@ export const HeroSection = () => (
                 width={3600}
                 height={2078}
                 src="/screenshots/builder.jpg"
-                alt="CursorRuleCraft - Screenshot - Rules Builder Screen"
+                alt="CursorRulesCraft - Screenshot - Rules Builder Screen"
                 className="w-[76rem] rounded-lg bg-background/5 shadow-2xl ring-1 ring-foreground/10"
               />
             </Tilt>

@@ -90,7 +90,7 @@ export const FeaturesSection = () => {
         <div className="space-y-6 leading-loose">
           <h2 className="text-4xl font-bold">{t`Powerful Cursor Rules Generation, Made Simple.`}</h2>
           <p className="max-w-4xl text-base leading-relaxed">
-            {t`CursorRuleCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity.`}
+            {t`CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity.`}
           </p>
 
           <IconContext.Provider value={{ size: 14, weight: 'bold' }}>

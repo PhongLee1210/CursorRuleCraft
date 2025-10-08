@@ -17,7 +17,7 @@ export const Copyright = ({ className }: Props) => (
     <span className="italic">Software Engineer on the way to becoming AI Engineering</span>
 
     <span className="mt-4">
-      {`CursorRuleCraft`} {'v' + appVersion}
+      {`CursorRulesCraft`} {'v' + appVersion}
     </span>
   </div>
 );

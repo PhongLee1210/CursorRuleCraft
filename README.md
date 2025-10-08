@@ -1,4 +1,4 @@
-# CursorRuleCraft
+# CursorRulesCraft
 
 A modern React application built with TypeScript, Vite, TailwindCSS, Radix UI, and Tanstack Query.
 
@@ -65,7 +65,7 @@ A modern React application built with TypeScript, Vite, TailwindCSS, Radix UI, a
 ## 📁 Project Structure
 
 ```
-CursorRuleCraft/
+CursorRulesCraft/
 ├── src/
 │   ├── components/      # Reusable UI components
 │   │   ├── Button.tsx
@@ -257,14 +257,10 @@ export function useInstruments() {
 
 export function useCreateInstrument() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (name: string) => {
-      const { data, error } = await supabase
-        .from('instruments')
-        .insert({ name })
-        .select()
-        .single();
+      const { data, error } = await supabase.from('instruments').insert({ name }).select().single();
       if (error) throw error;
       return data;
     },
