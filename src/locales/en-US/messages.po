@@ -1,0 +1,164 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-10-08 22:13+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en-US\n"
+
+#: src/pages/home/sections/Hero.tsx:125
+msgid "A free and open-source resume builder"
+msgstr "A free and open-source resume builder"
+
+#: src/pages/home/sections/Hero.tsx:130
+msgid "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+msgstr "A free and open-source resume builder that simplifies the process of creating, updating, and sharing your resume."
+
+#: src/pages/home/sections/Features.tsx:55
+msgid "Add Documentation Notes"
+msgstr "Add Documentation Notes"
+
+#: src/pages/home/sections/Features.tsx:45
+msgid "AI-Powered Rule Generation"
+msgstr "AI-Powered Rule Generation"
+
+#: src/pages/home/sections/Features.tsx:120
+msgid "and many more..."
+msgstr "and many more..."
+
+#: src/pages/home/sections/Template.tsx:100
+msgid "Browse our collection of ready-to-use cursor rules templates. Copy and paste them into your project to get started quickly with best practices."
+msgstr "Browse our collection of ready-to-use cursor rules templates. Copy and paste them into your project to get started quickly with best practices."
+
+#: src/pages/home/sections/Features.tsx:57
+msgid "Cloud Sync"
+msgstr "Cloud Sync"
+
+#: src/pages/home/sections/Features.tsx:47
+msgid "Create Custom Rules"
+msgstr "Create Custom Rules"
+
+#: src/pages/home/sections/Template.tsx:98
+msgid "Cursor Rules Templates"
+msgstr "Cursor Rules Templates"
+
+#: src/pages/home/sections/Features.tsx:93
+msgid "CursorRuleCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
+msgstr "CursorRuleCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
+
+#: src/pages/home/sections/Features.tsx:54
+msgid "Customizable Templates"
+msgstr "Customizable Templates"
+
+#: src/pages/home/sections/Features.tsx:49
+msgid "Export & Import Rules"
+msgstr "Export & Import Rules"
+
+#: src/pages/home/sections/Hero.tsx:123
+msgid "Finally,"
+msgstr "Finally,"
+
+#: src/pages/home/sections/Features.tsx:41
+msgid "Free, forever"
+msgstr "Free, forever"
+
+#: src/pages/home/sections/Hero.tsx:37
+msgid "Get Started"
+msgstr "Get Started"
+
+#: src/pages/home/sections/Statistics.tsx:47
+msgid "GitHub Stars"
+msgstr "GitHub Stars"
+
+#: src/pages/home/sections/Hero.tsx:23
+msgid "Go to Dashboard"
+msgstr "Go to Dashboard"
+
+#: src/pages/home/sections/Hero.tsx:43
+msgid "Learn more"
+msgstr "Learn more"
+
+#: src/pages/home/sections/Features.tsx:61
+msgid "Light or dark theme"
+msgstr "Light or dark theme"
+
+#: src/pages/home/sections/Hero.tsx:28
+msgid "Logout"
+msgstr "Logout"
+
+#: src/pages/home/sections/Features.tsx:43
+msgid "MIT License"
+msgstr "MIT License"
+
+#: src/pages/home/sections/Features.tsx:53
+msgid "Multiple Rule Formats"
+msgstr "Multiple Rule Formats"
+
+#: src/pages/home/sections/Features.tsx:44
+msgid "No user tracking or advertising"
+msgstr "No user tracking or advertising"
+
+#: src/pages/home/sections/Features.tsx:42
+msgid "Open Source"
+msgstr "Open Source"
+
+#: src/pages/home/sections/Features.tsx:48
+msgid "Organize Rules by Categories"
+msgstr "Organize Rules by Categories"
+
+#: src/pages/home/sections/Features.tsx:82
+msgid "Powered by"
+msgstr "Powered by"
+
+#: src/pages/home/sections/Features.tsx:91
+msgid "Powerful Cursor Rules Generation, Made Simple."
+msgstr "Powerful Cursor Rules Generation, Made Simple."
+
+#: src/pages/home/sections/Features.tsx:46
+msgid "Pre-built Rule Templates"
+msgstr "Pre-built Rule Templates"
+
+#: src/pages/home/sections/Features.tsx:52
+msgid "Real-time Preview"
+msgstr "Real-time Preview"
+
+#: src/pages/home/sections/Statistics.tsx:49
+msgid "Rules Generated"
+msgstr "Rules Generated"
+
+#: src/pages/home/sections/Features.tsx:56
+msgid "Secure Authentication"
+msgstr "Secure Authentication"
+
+#: src/pages/home/sections/Features.tsx:60
+msgid "Share Rules Publicly"
+msgstr "Share Rules Publicly"
+
+#: src/pages/home/sections/Features.tsx:59
+msgid "Sign in with Email"
+msgstr "Sign in with Email"
+
+#: src/pages/home/sections/Features.tsx:58
+msgid "Sign in with Google"
+msgstr "Sign in with Google"
+
+#: src/pages/home/sections/Features.tsx:51
+msgid "Syntax Highlighting"
+msgstr "Syntax Highlighting"
+
+#: src/pages/home/sections/Statistics.tsx:48
+msgid "Users Signed Up"
+msgstr "Users Signed Up"
+
+#: src/pages/home/sections/Hero.tsx:111
+msgid "Version 4"
+msgstr "Version 4"
+
+#: src/pages/home/sections/Features.tsx:50
+msgid "Version Control Ready"
+msgstr "Version Control Ready"
+
+#: src/pages/home/sections/Hero.tsx:117
+msgid "What's new in the latest version"
+msgstr "What's new in the latest version"
