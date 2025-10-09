@@ -1,5 +1,6 @@
+import { type Database } from '@/types/database';
 import { useAuth } from '@clerk/clerk-react';
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { useMemo } from 'react';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
@@ -35,11 +36,11 @@ if (!supabaseUrl || !supabasePublishableKey) {
  *
  * @see https://clerk.com/docs/guides/development/integrations/databases/supabase
  */
-export function useSupabaseClient(): SupabaseClient {
+export function useSupabaseClient() {
   const { getToken } = useAuth();
 
   return useMemo(() => {
-    return createClient(supabaseUrl, supabasePublishableKey, {
+    return createClient<Database>(supabaseUrl, supabasePublishableKey, {
       global: {
         // Inject Clerk session token into all Supabase requests
         // @ts-ignore - Supabase fetch type doesn't match exactly but works correctly

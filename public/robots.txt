@@ -1,0 +1,15 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow authentication pages from being indexed
+Disallow: /auth/
+Disallow: /dashboard/
+
+# Allow all static assets
+Allow: /logo/
+Allow: /screenshots/
+
+# Sitemap
+Sitemap: https://cursorrulescraft.com/sitemap.xml
+

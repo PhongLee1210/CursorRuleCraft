@@ -1,0 +1,55 @@
+---
+description: "Defines the project's file structure and naming conventions for components, pages, and other modules."
+---
+
+# File Structure and Naming Conventions
+
+This document outlines the file structure and naming conventions to be followed in this project.
+
+## Directory Structure
+
+The `src` directory is organized as follows:
+
+- `src/components/`: Shared, reusable UI components.
+- `src/pages/`: Application pages and views.
+- `src/hooks/`: Custom React hooks.
+- `src/lib/`: Utility functions, constants, and external library configurations.
+- `src/providers/`: Global context providers.
+- `src/layouts/`: Main layout components for different parts of the application.
+- `src/router/`: Routing configuration using React Router.
+- `src/services/`: API service layers for communicating with backend services.
+- `src/stores/`: Global state management stores (e.g., Zustand).
+- `src/styles/`: Global styles, fonts, and theme definitions.
+- `src/types/`: TypeScript type definitions.
+- `src/guards/`: Route protection components.
+
+## Naming Conventions
+
+### Components
+
+- Component files should be named using **PascalCase**.
+- Place them inside `src/components/`.
+- **Example**: `src/components/Button.tsx`, `src/components/ThemeSwitch.tsx`
+
+### Pages
+
+The `src/pages/` directory follows a convention similar to Next.js App Router for file-based routing.
+
+**Route Groups**: For a specific route segment (e.g., `/home`, `/auth/login`), create a directory. Inside this directory: - Use `page.tsx` for the main component rendered for that route. - Use `layout.tsx` to define a layout that wraps the page and its children. - **Example**: `src/pages/home/page.tsx` and `src/pages/home/layout.tsx`.
+
+### Hooks
+
+- Custom hooks should be prefixed with `use`.
+- Name files using **camelCase**.
+- Place them inside `src/hooks/`.
+- **Example**: `src/hooks/useTheme.ts`
+
+### Services
+
+- Services should be organized into **lowercase** modules within the `src/services/` directory.
+- Filenames inside a service module should use **kebab-case**.
+- **Example**: `src/services/user/update-user.ts`, `src/services/auth/session.ts`.
+
+### Other Files
+
+- **Libs, Stores**: Use **camelCase** for file names (e.g., `utils.ts`, `auth.ts`).

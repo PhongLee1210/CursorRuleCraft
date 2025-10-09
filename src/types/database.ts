@@ -6,22 +6,46 @@
  * npx supabase gen types typescript --project-id your-project-ref > src/types/database.ts
  */
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
-      instruments: {
+      users: {
         Row: {
-          id: number;
+          id: string;
           name: string;
-          created_at?: string;
+          picture: string | null;
+          username: string;
+          email: string;
+          locale: string;
+          email_verified: boolean;
+          two_factor_enabled: boolean;
+          provider: 'email' | 'github' | 'google' | 'openid';
+          created_at: string;
+          updated_at: string;
         };
         Insert: {
+          id: string;
           name: string;
+          picture?: string | null;
+          username: string;
+          email: string;
+          locale?: string;
+          email_verified?: boolean;
+          two_factor_enabled?: boolean;
+          provider?: 'email' | 'github' | 'google' | 'openid';
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           name?: string;
-          created_at?: string;
+          picture?: string | null;
+          username?: string;
+          email?: string;
+          locale?: string;
+          email_verified?: boolean;
+          two_factor_enabled?: boolean;
+          provider?: 'email' | 'github' | 'google' | 'openid';
+          updated_at?: string;
         };
       };
       // Add more tables here as you create them
@@ -33,10 +57,11 @@ export interface Database {
       // Add database functions here
     };
     Enums: {
+      auth_provider: 'email' | 'github' | 'google' | 'openid';
       // Add database enums here
     };
   };
-}
+};
 
 // Helper types for easier access
 export type Tables<T extends keyof Database['public']['Tables']> =
@@ -45,8 +70,9 @@ export type Inserts<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Insert'];
 export type Updates<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Update'];
+export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T];
 
 // Specific table types
-export type Instrument = Tables<'instruments'>;
-export type InstrumentInsert = Inserts<'instruments'>;
-export type InstrumentUpdate = Updates<'instruments'>;
+export type User = Tables<'users'>;
+export type UserInsert = Inserts<'users'>;
+export type UserUpdate = Updates<'users'>;

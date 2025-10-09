@@ -3,6 +3,9 @@
 @import url('./_theme.css');
 @import url('./_fonts.css');
 
+@tailwind components;
+@tailwind utilities;
+
 * {
   @apply border-border/50;
 }

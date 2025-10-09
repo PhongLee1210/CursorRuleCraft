@@ -104,7 +104,7 @@ export const HeroSection = () => (
     <Decoration.Grid />
     <Decoration.Gradient />
 
-    <div className="mx-auto max-w-7xl px-6 lg:flex lg:h-screen lg:items-center lg:px-12">
+    <div className="mx-auto max-w-7xl px-6 md:pt-[72px] lg:flex lg:h-screen lg:items-center lg:px-12">
       <motion.div
         className="mx-auto mt-32 max-w-3xl shrink-0 lg:mx-0 lg:mt-0 lg:max-w-xl lg:pt-8"
         viewport={{ once: true }}
@@ -130,7 +130,7 @@ export const HeroSection = () => (
           </h1>
         </div>
 
-        <p className="prose prose-base prose-zinc mt-6 text-lg leading-8 dark:prose-invert">
+        <p className="prose prose-base mt-6 text-lg leading-8 dark:prose-invert">
           {t`CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects.`}
         </p>
 

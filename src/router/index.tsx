@@ -3,13 +3,14 @@ import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from '
 import { AuthGuard } from '@/guards/AuthGuard';
 import { GuestGuard } from '@/guards/GuestGuard';
 import { AuthLayout } from '@/layouts/AuthLayout';
-import { authLoader } from '@/loaders/authLoader';
+import { MainLayout } from '@/layouts/MainLayout';
+import { LoginPage } from '@/pages/auth/login/page';
+import { RegisterPage } from '@/pages/auth/register/page';
+import { SSOCallbackPage } from '@/pages/auth/sso/page';
+import { VerifyEmailPage } from '@/pages/auth/verify-email/page';
 import { CursorRuleDetailPage } from '@/pages/CursorRuleDetailPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ErrorPage } from '@/pages/ErrorPage';
-import { LoginPage } from '@/pages/auth/LoginPage';
-import { RegisterPage } from '@/pages/auth/RegisterPage';
-import { VerifyEmailPage } from '@/pages/auth/VerifyEmailPage';
 import { HomeLayout } from '@/pages/home/layout';
 import { HomePage } from '@/pages/home/page';
 import { Providers } from '@/providers';
@@ -35,7 +36,7 @@ export const routes = createRoutesFromElements(
           </Route>
 
           {/* OAuth Callback */}
-          <Route path="callback" loader={authLoader} element={<div />} />
+          <Route path="callback" element={<SSOCallbackPage />} />
         </Route>
 
         <Route index element={<Navigate replace to="/auth/login" />} />
@@ -43,7 +44,9 @@ export const routes = createRoutesFromElements(
 
       <Route path="dashboard">
         <Route element={<AuthGuard />}>
-          <Route index element={<DashboardPage />} />
+          <Route element={<MainLayout />}>
+            <Route index element={<DashboardPage />} />
+          </Route>
         </Route>
       </Route>
     </Route>

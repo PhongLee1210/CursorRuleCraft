@@ -1,6 +1,8 @@
 import { useLingui } from '@lingui/react';
 import { Helmet } from 'react-helmet-async';
 
+import { SEO } from '@/components/SEO';
+
 import { FAQSection } from './sections/FAQ';
 import { FeaturesSection } from './sections/Features';
 import { HeroSection } from './sections/Hero';
@@ -14,16 +16,12 @@ export const HomePage = () => {
     <main className="relative isolate bg-background">
       <Helmet prioritizeSeoTags>
         <html lang={i18n.locale} />
-
-        <title>
-          {`CursorRulesCraft`} - {`A free and open-source cursor rules project builder`}
-        </title>
-
-        <meta
-          name="description"
-          content="A free and open-source cursor rules project builder that simplifies the process of creating, updating, and sharing your cursor rules."
-        />
       </Helmet>
+
+      <SEO
+        description="A free and open-source cursor rules project builder that simplifies the process of creating, updating, and sharing your cursor rules."
+        url="https://cursorrulescraft.com"
+      />
 
       <HeroSection />
       <StatisticsSection />

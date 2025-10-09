@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/Dialog';
-import { InstrumentsList } from '@/components/InstrumentsList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
 import { useExample } from '@/hooks/useExample';
 import { useState } from 'react';
@@ -25,12 +24,6 @@ function App() {
           <p className="text-muted-foreground">
             React + TypeScript + Vite + TailwindCSS + Radix UI + Tanstack Query + Supabase
           </p>
-        </div>
-
-        {/* Example: Supabase Integration */}
-        <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-          <h2 className="mb-4 text-2xl font-semibold">Supabase Integration</h2>
-          <InstrumentsList />
         </div>
 
         {/* Example: Counter with Buttons */}
