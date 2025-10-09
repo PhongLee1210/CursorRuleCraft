@@ -4,5 +4,5 @@
 @import url('./_fonts.css');
 
 * {
-  @apply border-border/50 text-foreground;
+  @apply border-border/50;
 }

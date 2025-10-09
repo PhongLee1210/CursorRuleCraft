@@ -1,0 +1,184 @@
+---
+alwaysApply: true
+description: Package versions and API compatibility guide
+---
+
+# Package Versions & API Compatibility
+
+This project uses specific versions of libraries. **Always reference these versions** to avoid suggesting deprecated functions or outdated APIs.
+
+## Current Package Versions
+
+All versions are defined in [package.json](mdc:package.json).
+
+### Core Framework
+
+- **React**: `^19.2.0` (React 19)
+- **React DOM**: `^19.2.0`
+- **TypeScript**: `^5.9.3`
+- **Vite**: `^7.1.9` (Vite 7)
+
+### Styling & UI
+
+- **Tailwind CSS**: `3.4.0`
+- **Autoprefixer**: `10.4.21`
+- **PostCSS**: `^8.5.6`
+- **Framer Motion**: `^12.23.22`
+- **tailwind-merge**: `^3.3.1`
+- **tailwindcss-animate**: `^1.0.7`
+- **class-variance-authority**: `^0.7.1`
+
+### Icons & Graphics
+
+- **@phosphor-icons/react**: `^2.1.10` (Phosphor Icons v2)
+
+### UI Components (Radix UI)
+
+- **@radix-ui/react-accordion**: `^1.2.12`
+- **@radix-ui/react-dialog**: `^1.1.15`
+- **@radix-ui/react-dropdown-menu**: `^2.1.16`
+- **@radix-ui/react-scroll-area**: `^1.2.10`
+- **@radix-ui/react-select**: `^2.2.6`
+- **@radix-ui/react-separator**: `^1.1.7`
+- **@radix-ui/react-slot**: `^1.2.3`
+- **@radix-ui/react-tabs**: `^1.1.13`
+- **@radix-ui/react-toast**: `^1.2.15`
+- **@radix-ui/react-tooltip**: `^1.2.8`
+
+### State & Data Management
+
+- **@tanstack/react-query**: `^5.90.2` (TanStack Query v5)
+- **zustand**: `^5.0.8`
+
+### Routing & Authentication
+
+- **react-router**: `^7.9.3` (React Router v7)
+- **@clerk/clerk-react**: `^5.51.0`
+
+### Backend & Database
+
+- **@supabase/supabase-js**: `^2.74.0`
+
+### Internationalization
+
+- **@lingui/macro**: `^5.5.0`
+- **@lingui/react**: `^5.5.0`
+- **@lingui/detect-locale**: `^5.5.0`
+
+### Utilities
+
+- **usehooks-ts**: `^3.1.1`
+- **react-helmet-async**: `^2.0.5`
+- **react-parallax-tilt**: `^1.7.310`
+- **clsx**: `^2.1.1`
+
+## Important API Guidelines
+
+### React 19 Specific
+
+- ✅ **Use**: React 19 supports automatic batching everywhere
+- ✅ **Use**: `use()` hook for promises and context
+- ✅ **Use**: New Server Components APIs (if applicable)
+- ❌ **Avoid**: Legacy string refs (removed in React 19)
+- ❌ **Avoid**: Deprecated lifecycle methods
+
+### Vite 7 Specific
+
+- ✅ **Use**: Native ESM-first approach
+- ✅ **Use**: `vite.config.ts` for configuration
+- ❌ **Avoid**: CommonJS-style imports/exports in config
+- ❌ **Avoid**: Deprecated Vite 6 or earlier APIs
+
+### Tailwind CSS 3.4
+
+- ✅ **Use**: Modern arbitrary values syntax `[value]`
+- ✅ **Use**: Container queries via `@tailwindcss/container-queries`
+- ✅ **Use**: Typography plugin via `@tailwindcss/typography`
+- ❌ **Avoid**: Deprecated purge configuration (use content instead)
+- ❌ **Avoid**: JIT mode flag (now default)
+
+### Phosphor Icons v2
+
+- ✅ **Use**: Import from `@phosphor-icons/react`
+- ✅ **Use**: Props: `size`, `weight`, `color`, `mirrored`
+- ✅ **Example**: `<CaretDown size={20} weight="bold" />`
+- ❌ **Avoid**: Old v1 import paths
+- ❌ **Avoid**: Deprecated icon names from v1
+
+### TanStack Query v5
+
+- ✅ **Use**: `useQuery()`, `useMutation()`, `useQueryClient()`
+- ✅ **Use**: New query key format (arrays)
+- ❌ **Avoid**: React Query v3/v4 deprecated options
+- ❌ **Avoid**: `refetchOnMount` legacy boolean (use "always" string)
+
+### React Router v7
+
+- ✅ **Use**: Data Router APIs (`createBrowserRouter`, `RouterProvider`)
+- ✅ **Use**: Loaders and Actions for data fetching
+- ✅ **Use**: `useLoaderData()`, `useNavigate()`, `useParams()`
+- ❌ **Avoid**: Legacy `<BrowserRouter>` pattern (prefer data routers)
+- ❌ **Avoid**: `Switch` component (removed, use `Routes`)
+
+### Radix UI Latest
+
+- ✅ **Use**: Composition pattern with `asChild` prop
+- ✅ **Use**: Controlled or uncontrolled components
+- ✅ **Use**: Proper accessibility attributes
+- ❌ **Avoid**: Direct DOM manipulation
+- ❌ **Avoid**: Overriding ARIA attributes without reason
+
+### Framer Motion v12
+
+- ✅ **Use**: `motion.*` components with animate props
+- ✅ **Use**: Layout animations with `layout` prop
+- ✅ **Use**: Variants for complex animations
+- ❌ **Avoid**: Deprecated `AnimatePresence` props
+- ❌ **Avoid**: Legacy animation syntax from v10 or earlier
+
+### Clerk v5
+
+- ✅ **Use**: `<ClerkProvider>`, `useUser()`, `useAuth()`
+- ✅ **Use**: Modern sign-in/sign-up components
+- ❌ **Avoid**: Deprecated v4 API methods
+- ❌ **Avoid**: Legacy redirect patterns
+
+## Project-Specific Patterns
+
+### Component Structure
+
+- Use functional components with TypeScript
+- Follow the component organization in [src/components](mdc:src/components)
+- Utility functions should go in [src/lib/utils.ts](mdc:src/lib/utils.ts)
+
+### Styling Approach
+
+- Use Tailwind CSS utility classes
+- Use `cn()` utility from [src/lib/utils.ts](mdc:src/lib/utils.ts) for conditional classes
+- Follow the theme system in [src/styles](mdc:src/styles)
+
+### State Management
+
+- Use Zustand for global state (see [src/stores](mdc:src/stores))
+- Use TanStack Query for server state
+- Use React hooks for local state
+
+### Type Safety
+
+- All types should be defined in [src/types](mdc:src/types)
+- Use TypeScript strict mode
+- Avoid `any` types unless absolutely necessary
+
+## Migration Notes
+
+If suggesting code changes:
+
+1. ✅ Always check the current package version first
+2. ✅ Use APIs compatible with the versions listed above
+3. ✅ Prefer modern, non-deprecated patterns
+4. ❌ Never suggest APIs from older major versions
+5. ❌ Never use deprecated functions or props
+
+## Reference
+
+For version updates or API changes, always consult [package.json](mdc:package.json) as the source of truth.

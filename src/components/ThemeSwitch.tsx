@@ -24,7 +24,7 @@ export const ThemeSwitch = ({ size = 20, className }: Props) => {
   return (
     <Button size="icon" variant="ghost" className={className} onClick={toggleTheme}>
       <div className="cursor-pointer overflow-hidden" style={{ width: size, height: size }}>
-        <motion.div animate={theme} variants={variants} className="flex">
+        <motion.div animate={theme} variants={variants} className="flex gap-1">
           <SunIcon size={size} className="shrink-0" aria-label={`Switch to Light Mode`} />
           <CloudSunIcon size={size} className="shrink-0" aria-label={`Use System Theme`} />
           <MoonIcon size={size} className="shrink-0" aria-label={`Switch to Dark Mode`} />

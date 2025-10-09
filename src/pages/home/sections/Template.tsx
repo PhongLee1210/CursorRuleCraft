@@ -1,9 +1,14 @@
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
+import { IconButton } from '@/components/IconButton';
+import { Input } from '@/components/Input';
+
 import { cursorRuleTemplates } from '@/lib/utils';
 import { t } from '@lingui/macro';
+import { Check, Copy, Download } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 
 const TemplateCard = ({
   template,
@@ -13,7 +18,6 @@ const TemplateCard = ({
   index: number;
 }) => {
   const [copied, setCopied] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(template.content);
@@ -21,8 +25,17 @@ const TemplateCard = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const truncatedContent =
-    template.content.length > 200 ? template.content.slice(0, 200) + '...' : template.content;
+  const handleDownload = () => {
+    const blob = new Blob([template.content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${template.id}.cursorrules`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <motion.div
@@ -30,82 +43,142 @@ const TemplateCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="bg-card group relative rounded-lg border p-6 shadow-sm transition-all hover:shadow-md"
+      className="bg-card text-card-foreground rounded-lg border shadow-sm"
     >
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <h3 className="text-xl font-semibold">{template.name}</h3>
-          <p className="text-muted-foreground mt-1 text-sm">{template.description}</p>
+      <div className="flex flex-col space-y-1.5 p-6">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">{template.name}</h3>
+        <div className="text-muted-foreground text-sm">
+          {template.tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="mr-1 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
+            >
+              {tag}
+            </Badge>
+          ))}
         </div>
-        <Badge variant="secondary" className="shrink-0">
-          {template.category}
-        </Badge>
       </div>
-
-      <div className="mb-4">
-        <pre className="bg-muted max-h-[200px] overflow-hidden rounded-md p-4 text-xs leading-relaxed">
-          <code className="text-foreground/80">
-            {expanded ? template.content : truncatedContent}
-          </code>
-        </pre>
-        {template.content.length > 200 && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="mt-2 text-xs text-primary hover:underline"
-          >
-            {expanded ? 'Show less' : 'Show more'}
-          </button>
-        )}
+      <div className="p-6 pt-0">
+        <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
+          {template.content.trim()}
+        </p>
       </div>
-
-      <div className="flex gap-2">
-        <Button onClick={handleCopy} variant="default" className="w-full">
-          {copied ? (
-            <>
-              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              Copied!
-            </>
-          ) : (
-            <>
-              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-                />
-              </svg>
-              Copy Rule
-            </>
-          )}
-        </Button>
+      <div className="flex items-center justify-between gap-2 p-6 pt-0">
+        <div className="flex items-center gap-2">
+          <IconButton
+            onClick={handleCopy}
+            icon={copied ? <Check size={16} /> : <Copy size={16} />}
+            label={copied ? 'Copied' : 'Copy'}
+          />
+          <IconButton onClick={handleDownload} icon={<Download size={16} />} label="Download" />
+        </div>
+        <Link to={`/cursor/rules/${template.id}`}>
+          <Button variant="default" size="sm">
+            View Details
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );
 };
 
-export const TemplatesSection = () => (
-  <section id="templates" className="relative py-24 sm:py-32">
-    <div className="container">
-      <div className="mb-12 space-y-4 text-center">
-        <h2 className="text-4xl font-bold">{t`Cursor Rules Templates`}</h2>
-        <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
-          {t`Browse our collection of ready-to-use cursor rules templates. Copy and paste them into your project to get started quickly with best practices.`}
+export const TemplatesSection = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Get all unique tags
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    cursorRuleTemplates.forEach((template) => {
+      template.tags.forEach((tag) => tags.add(tag));
+    });
+    return Array.from(tags).sort();
+  }, []);
+
+  // Filter templates based on search and tags
+  const filteredTemplates = useMemo(() => {
+    return cursorRuleTemplates.filter((template) => {
+      // Search filter
+      const matchesSearch =
+        searchQuery === '' ||
+        template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        template.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      // Tag filter
+      const matchesTags =
+        selectedTags.length === 0 || selectedTags.some((tag) => template.tags.includes(tag));
+
+      return matchesSearch && matchesTags;
+    });
+  }, [searchQuery, selectedTags]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  return (
+    <section id="templates" className="relative w-full py-24 sm:py-32">
+      <div className="container">
+        <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">
+          {t`Inspiring Cursor Rules Examples`}
+        </h2>
+        <p className="text-muted-foreground mb-8 text-center">
+          {t`Explore these Cursor Rules examples to inspire your own custom AI rules. Remember, the most effective Cursor Rules are tailored to your specific project needs and coding requirements.`}
+        </p>
+
+        <div className="mb-6">
+          <Input
+            className="mb-4"
+            placeholder="Search examples..."
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="flex flex-wrap gap-2">
+            {allTags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className={`cursor-pointer transition-colors ${
+                  selectedTags.includes(tag)
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-foreground hover:bg-secondary/80'
+                }`}
+                onClick={() => toggleTag(tag)}
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredTemplates.map((template, index) => (
+            <TemplateCard key={template.id} template={template} index={index} />
+          ))}
+        </div>
+
+        {filteredTemplates.length === 0 && (
+          <div className="text-muted-foreground mt-8 text-center">
+            {t`No templates found matching your search criteria.`}
+          </div>
+        )}
+
+        <p className="text-muted-foreground mt-8 text-center">
+          {t`For more Cursor Rules examples and inspiration, visit the`}
+          <a
+            className="ml-1 text-primary hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://cursor.directory"
+          >
+            {t`Cursor Rules Directory`}
+          </a>
         </p>
       </div>
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {cursorRuleTemplates.map((template, index) => (
-          <TemplateCard key={template.id} template={template} index={index} />
-        ))}
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

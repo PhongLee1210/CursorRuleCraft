@@ -71,4 +71,10 @@
     --success-accent: var(--emerald-800);
     --success-foreground: var(--emerald-50);
   }
+
+  /* Apply default colors to body and html */
+  html,
+  body {
+    @apply bg-background text-foreground;
+  }
 }

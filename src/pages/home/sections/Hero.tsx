@@ -43,7 +43,7 @@ export const HeroCTA = () => {
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
-          <BookIcon className="mr-3" />
+          <BookIcon className="mr-1" />
           {t`Learn more`}
         </a>
       </Button>
@@ -156,9 +156,10 @@ export const HeroSection = () => (
               glareColor="#fafafa"
             >
               <img
-                width={3600}
-                height={2078}
-                src="/screenshots/builder.jpg"
+                width={1024}
+                height={734}
+                loading="lazy"
+                src="/screenshots/cursor-project-rules.png"
                 alt="CursorRulesCraft - Screenshot - Rules Builder Screen"
                 className="w-[76rem] rounded-lg bg-background/5 shadow-2xl ring-1 ring-foreground/10"
               />

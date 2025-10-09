@@ -4,6 +4,7 @@ import { AuthGuard } from '@/guards/AuthGuard';
 import { GuestGuard } from '@/guards/GuestGuard';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { authLoader } from '@/loaders/authLoader';
+import { CursorRuleDetailPage } from '@/pages/CursorRuleDetailPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ErrorPage } from '@/pages/ErrorPage';
 import { LoginPage } from '@/pages/auth/LoginPage';
@@ -18,6 +19,7 @@ export const routes = createRoutesFromElements(
     <Route errorElement={<ErrorPage />}>
       <Route element={<HomeLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="cursor/rules/:id" element={<CursorRuleDetailPage />} />
       </Route>
 
       <Route path="auth">
