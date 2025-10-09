@@ -64,36 +64,18 @@ A modern React application built with TypeScript, Vite, TailwindCSS, Radix UI, a
 
 ## 📁 Project Structure
 
+This is an **Nx monorepo** with the following structure:
+
 ```
 CursorRulesCraft/
-├── src/
-│   ├── components/      # Reusable UI components
-│   │   ├── Button.tsx
-│   │   ├── Dialog.tsx
-│   │   └── Tabs.tsx
-│   ├── hooks/           # Custom React hooks
-│   │   └── useExample.ts
-│   ├── lib/             # Utility functions
-│   │   ├── utils.ts     # cn() helper
-│   │   └── constants.ts
-│   ├── providers/       # Context providers
-│   │   └── QueryProvider.tsx
-│   ├── styles/          # Global styles
-│   │   └── index.css
-│   ├── types/           # TypeScript types
-│   │   └── index.ts
-│   ├── App.tsx          # Main application
-│   ├── main.tsx         # Application entry
-│   └── vite-env.d.ts    # Vite types
-├── .vscode/             # VS Code settings
-├── index.html           # HTML entry
-├── vite.config.ts       # Vite configuration
-├── tailwind.config.js   # Tailwind configuration
-├── postcss.config.js    # PostCSS configuration
-├── tsconfig.json        # TypeScript configuration
-├── .eslintrc.cjs        # ESLint configuration
-├── .prettierrc          # Prettier configuration
-└── package.json         # Dependencies and scripts
+├── apps/
+│   ├── frontend/        # Main React application
+│   └── backend/         # NestJS API server with Clerk auth & Supabase
+├── packages/
+│   └── shared-types/    # Shared TypeScript types
+├── supabase/            # Supabase configuration
+├── nx.json              # Nx workspace configuration
+└── package.json         # Root workspace scripts
 ```
 
 ---
@@ -120,6 +102,46 @@ bun install
 2. Copy `.env.local.example` to `.env.local`
 3. Add your Supabase credentials to `.env.local`
 4. Follow the detailed setup guide in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
+
+### Backend API Setup
+
+The backend is a **NestJS** server with **Clerk authentication** and **Supabase integration** (using Service Role Key).
+
+1. Create a `.env` file in the monorepo root with:
+
+   ```bash
+   PORT=4000
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # NOT anon key!
+   CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
+   ```
+
+2. Start the backend server:
+
+   ```bash
+   cd apps/backend
+   bun run dev
+   ```
+
+3. The API will be available at `http://localhost:4000/api`
+
+**📖 Backend Documentation:**
+
+- [Backend README](./apps/backend/README.md) - Complete documentation
+- [Quick Start Guide](./apps/backend/QUICKSTART.md) - 5-minute setup
+- [Environment Variables](./apps/backend/ENV.md) - Configuration guide
+- [Setup Complete](./apps/backend/SETUP_COMPLETE.md) - Architecture overview
+- **[Frontend-Backend Integration](./FRONTEND_BACKEND_INTEGRATION.md) - How frontend calls the backend API** ⭐
+
+**Key Features:**
+
+- ✅ Global JWT authentication via Clerk
+- ✅ Supabase Service Role Key (bypasses RLS)
+- ✅ Protected & public endpoints
+- ✅ Type-safe with TypeScript
+- ✅ Hot reload in development
+- ✅ Frontend integrates with backend API (no direct Supabase access)
 
 ### Development
 
