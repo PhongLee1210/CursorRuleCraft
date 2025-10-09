@@ -1,498 +1,497 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-10-09 15:44+0700\n"
+"POT-Creation-Date: 2025-10-09 15:43+0700\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: en-US\n"
 
 #: src/pages/cursor/rules/page.tsx:111
 msgid ".cursorrules"
-msgstr ".cursorrules"
+msgstr ""
 
 #. placeholder {0}: template.name
 #: src/pages/cursor/rules/page.tsx:78
 msgid "A comprehensive cursor rule template for {0}. This rule helps you maintain consistency and best practices in your project."
-msgstr "A comprehensive cursor rule template for {0}. This rule helps you maintain consistency and best practices in your project."
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:129
 msgid "A free and open-source cursor rules project builder"
-msgstr "A free and open-source cursor rules project builder"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:55
 msgid "Add Documentation Notes"
-msgstr "Add Documentation Notes"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:180
 msgid "Add project-specific guidelines and conventions"
-msgstr "Add project-specific guidelines and conventions"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:94
 msgid "Add to Cursor"
-msgstr "Add to Cursor"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:45
 msgid "AI-Powered Rule Generation"
-msgstr "AI-Powered Rule Generation"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:231
 msgid "Already have an account?"
-msgstr "Already have an account?"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:120
 msgid "and many more..."
-msgstr "and many more..."
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:171
 msgid "Automatic Application"
-msgstr "Automatic Application"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:60
 msgid "Back to Templates"
-msgstr "Back to Templates"
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:115
 msgid "Beta Version"
-msgstr "Beta Version"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:191
 msgid "Changes to .cursorrules take effect immediately"
-msgstr "Changes to .cursorrules take effect immediately"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:144
 msgid "Click the \"Add to Cursor\" button above"
-msgstr "Click the \"Add to Cursor\" button above"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:57
 msgid "Cloud Sync"
-msgstr "Cloud Sync"
+msgstr ""
 
 #: src/components/SocialAuth.tsx:59
 #: src/components/SocialAuth.tsx:78
 msgid "Connecting..."
-msgstr "Connecting..."
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:100
 msgid "Copied!"
-msgstr "Copied!"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:105
 msgid "Copy Rule"
-msgstr "Copy Rule"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:152
 msgid "Copy the rule content or download the .cursorrules file"
-msgstr "Copy the rule content or download the .cursorrules file"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:155
 msgid "Create a new file named"
-msgstr "Create a new file named"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:224
 msgid "Create account"
-msgstr "Create account"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:47
 msgid "Create Custom Rules"
-msgstr "Create Custom Rules"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:152
 msgid "Create one now"
-msgstr "Create one now"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:75
 msgid "Create your account"
-msgstr "Create your account"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:224
 msgid "Creating account..."
-msgstr "Creating account..."
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:134
 msgid "Cursor Rules are instructions that help AI understand your project's context, coding standards, and preferences. They ensure consistent and high-quality code generation."
-msgstr "Cursor Rules are instructions that help AI understand your project's context, coding standards, and preferences. They ensure consistent and high-quality code generation."
+msgstr ""
 
 #: src/pages/home/sections/Template.tsx:178
 msgid "Cursor Rules Directory"
-msgstr "Cursor Rules Directory"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:145
 msgid "Cursor will open with the rule content ready to use"
-msgstr "Cursor will open with the rule content ready to use"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:93
 msgid "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
-msgstr "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:134
 msgid "CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects."
-msgstr "CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects."
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:54
 msgid "Customizable Templates"
-msgstr "Customizable Templates"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:177
 msgid "Customization"
-msgstr "Customization"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:149
 msgid "Don't have an account?"
-msgstr "Don't have an account?"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:160
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:169
 msgid "Email is required"
-msgstr "Email is required"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:82
 msgid "Email or Username"
-msgstr "Email or Username"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:91
 msgid "Email or username is required"
-msgstr "Email or username is required"
+msgstr ""
 
 #: src/pages/home/sections/Template.tsx:129
 msgid "Explore these Cursor Rules examples to inspire your own custom AI rules. Remember, the most effective Cursor Rules are tailored to your specific project needs and coding requirements."
-msgstr "Explore these Cursor Rules examples to inspire your own custom AI rules. Remember, the most effective Cursor Rules are tailored to your specific project needs and coding requirements."
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:49
 msgid "Export & Import Rules"
-msgstr "Export & Import Rules"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:58
 msgid "Failed to create account. Please try again or use a different email address."
-msgstr "Failed to create account. Please try again or use a different email address."
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:42
 msgid "Failed to send verification email. Please try again."
-msgstr "Failed to send verification email. Please try again."
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:179
 msgid "Feel free to modify the rules to match your specific needs"
-msgstr "Feel free to modify the rules to match your specific needs"
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:127
 msgid "Finally,"
-msgstr "Finally,"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:95
 msgid "First Name"
-msgstr "First Name"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:104
 msgid "First name is required"
-msgstr "First name is required"
+msgstr ""
 
 #: src/pages/home/sections/Template.tsx:171
 msgid "For more Cursor Rules examples and inspiration, visit the"
-msgstr "For more Cursor Rules examples and inspiration, visit the"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:41
 msgid "Free, forever"
-msgstr "Free, forever"
+msgstr ""
 
 #: src/pages/home/components/Header.tsx:21
 #: src/pages/home/sections/Hero.tsx:37
 msgid "Get Started"
-msgstr "Get Started"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:77
 msgid "Get started with CursorRulesCraft today"
-msgstr "Get started with CursorRulesCraft today"
+msgstr ""
 
 #: src/components/SocialAuth.tsx:78
 msgid "GitHub"
-msgstr "GitHub"
+msgstr ""
 
 #: src/pages/home/sections/Statistics.tsx:47
 msgid "GitHub Stars"
-msgstr "GitHub Stars"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:98
 #: src/pages/home/sections/Hero.tsx:23
 msgid "Go to Dashboard"
-msgstr "Go to Dashboard"
+msgstr ""
 
 #: src/components/SocialAuth.tsx:59
 msgid "Google"
-msgstr "Google"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:104
 msgid "Having trouble? Contact us at <0>support@cursorrulescraft.com</0>"
-msgstr "Having trouble? Contact us at <0>support@cursorrulescraft.com</0>"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:134
 msgid "Hold <0>Ctrl</0> to display your password temporarily"
-msgstr "Hold <0>Ctrl</0> to display your password temporarily"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:129
 msgid "How to Use Cursor Rules"
-msgstr "How to Use Cursor Rules"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:187
 msgid "Important Notes"
-msgstr "Important Notes"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:159
 msgid "in your project root"
-msgstr "in your project root"
+msgstr ""
 
 #: src/pages/home/sections/Template.tsx:126
 msgid "Inspiring Cursor Rules Examples"
-msgstr "Inspiring Cursor Rules Examples"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:139
 msgid "Installation Methods"
-msgstr "Installation Methods"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:46
 msgid "Invalid email or password. Please check your credentials and try again."
-msgstr "Invalid email or password. Please check your credentials and try again."
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:113
 msgid "Last Name"
-msgstr "Last Name"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:122
 msgid "Last name is required"
-msgstr "Last name is required"
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:47
 msgid "Learn more"
-msgstr "Learn more"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:61
 msgid "Light or dark theme"
-msgstr "Light or dark theme"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:28
 msgid "Loading..."
-msgstr "Loading..."
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:28
 msgid "Logout"
-msgstr "Logout"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:150
 msgid "Manual Installation"
-msgstr "Manual Installation"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:43
 msgid "MIT License"
-msgstr "MIT License"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:53
 msgid "Multiple Rule Formats"
-msgstr "Multiple Rule Formats"
+msgstr ""
 
 #: src/pages/home/sections/Template.tsx:166
 msgid "No templates found matching your search criteria."
-msgstr "No templates found matching your search criteria."
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:44
 msgid "No user tracking or advertising"
-msgstr "No user tracking or advertising"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:173
 msgid "Once saved, Cursor automatically applies these rules to all AI interactions in your project"
-msgstr "Once saved, Cursor automatically applies these rules to all AI interactions in your project"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:42
 msgid "Open Source"
-msgstr "Open Source"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:153
 msgid "Open your project in Cursor IDE"
-msgstr "Open your project in Cursor IDE"
+msgstr ""
 
 #: src/pages/auth/layout.tsx:44
 msgctxt "The user can either login with email/password, or continue with GitHub or Google."
 msgid "or continue with"
-msgstr "or continue with"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:48
 msgid "Organize Rules by Categories"
-msgstr "Organize Rules by Categories"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:101
 #: src/pages/auth/register/page.tsx:185
 msgid "Password"
-msgstr "Password"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:111
 #: src/pages/auth/register/page.tsx:195
 msgid "Password is required"
-msgstr "Password is required"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:114
 #: src/pages/auth/register/page.tsx:198
 msgid "Password must be at least 8 characters"
-msgstr "Password must be at least 8 characters"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:161
 msgid "Paste the rule content and save"
-msgstr "Paste the rule content and save"
+msgstr ""
 
 #: src/pages/auth/layout.tsx:73
 msgid "Photograph by Nahrizul Kadri"
-msgstr "Photograph by Nahrizul Kadri"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:77
 msgid "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
-msgstr "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:172
 msgid "Please enter a valid email address"
-msgstr "Please enter a valid email address"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:82
 msgid "Powered by"
-msgstr "Powered by"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:91
 msgid "Powerful Cursor Rules Generation, Made Simple."
-msgstr "Powerful Cursor Rules Generation, Made Simple."
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:46
 msgid "Pre-built Rule Templates"
-msgstr "Pre-built Rule Templates"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:142
 msgid "Quick Install (Recommended)"
-msgstr "Quick Install (Recommended)"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:52
 msgid "Real-time Preview"
-msgstr "Real-time Preview"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:204
 msgid "Related Templates"
-msgstr "Related Templates"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:95
 msgid "Resend Verification Email"
-msgstr "Resend Verification Email"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:118
 msgid "Rule Content"
-msgstr "Rule Content"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:189
 msgid "Rules apply to the entire project directory where the .cursorrules file is located"
-msgstr "Rules apply to the entire project directory where the .cursorrules file is located"
+msgstr ""
 
 #: src/pages/home/sections/Statistics.tsx:49
 msgid "Rules Generated"
-msgstr "Rules Generated"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:146
 msgid "Save it as a .cursorrules file in your project"
-msgstr "Save it as a .cursorrules file in your project"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:56
 msgid "Secure Authentication"
-msgstr "Secure Authentication"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:60
 msgid "Share Rules Publicly"
-msgstr "Share Rules Publicly"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:142
 msgid "Sign in"
-msgstr "Sign in"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:234
 msgid "Sign in now"
-msgstr "Sign in now"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:65
 msgid "Sign in to your account to continue"
-msgstr "Sign in to your account to continue"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:59
 msgid "Sign in with Email"
-msgstr "Sign in with Email"
+msgstr ""
 
 #: src/components/SocialAuth.tsx:70
 msgid "Sign in with GitHub"
-msgstr "Sign in with GitHub"
+msgstr ""
 
 #: src/components/SocialAuth.tsx:51
 #: src/pages/home/sections/Features.tsx:58
 msgid "Sign in with Google"
-msgstr "Sign in with Google"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:142
 msgid "Signing in..."
-msgstr "Signing in..."
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:51
 msgid "Syntax Highlighting"
-msgstr "Syntax Highlighting"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:218
 msgid "Use at least 8 characters with a mix of letters, numbers, and symbols"
-msgstr "Use at least 8 characters with a mix of letters, numbers, and symbols"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:133
 msgid "Username"
-msgstr "Username"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:149
 msgid "Username can only contain letters, numbers, dots, hyphens, and underscores"
-msgstr "Username can only contain letters, numbers, dots, hyphens, and underscores"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:142
 msgid "Username is required"
-msgstr "Username is required"
+msgstr ""
 
 #: src/pages/auth/register/page.tsx:145
 msgid "Username must be at least 3 characters"
-msgstr "Username must be at least 3 characters"
+msgstr ""
 
 #: src/pages/home/sections/Statistics.tsx:48
 msgid "Users Signed Up"
-msgstr "Users Signed Up"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:168
 msgid "Using the Rules"
-msgstr "Using the Rules"
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:88
 msgid "Verification email sent! Please check your inbox."
-msgstr "Verification email sent! Please check your inbox."
+msgstr ""
 
 #: src/pages/auth/verify-email/page.tsx:65
 msgid "Verify Your Email"
-msgstr "Verify Your Email"
+msgstr ""
 
 #: src/pages/home/sections/Features.tsx:50
 msgid "Version Control Ready"
-msgstr "Version Control Ready"
+msgstr ""
 
 #. placeholder {0}: user?.primaryEmailAddress?.emailAddress
 #: src/pages/auth/verify-email/page.tsx:67
 msgid "We've sent a verification email to <0>{0}</0>"
-msgstr "We've sent a verification email to <0>{0}</0>"
+msgstr ""
 
 #: src/pages/auth/login/page.tsx:63
 msgid "Welcome back"
-msgstr "Welcome back"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:132
 msgid "What are Cursor Rules?"
-msgstr "What are Cursor Rules?"
+msgstr ""
 
 #: src/pages/home/sections/Hero.tsx:121
 msgid "What's new in the latest version"
-msgstr "What's new in the latest version"
+msgstr ""
 
 #: src/pages/cursor/rules/page.tsx:190
 msgid "You can have multiple .cursorrules files in different directories for fine-grained control"
-msgstr "You can have multiple .cursorrules files in different directories for fine-grained control"
+msgstr ""

@@ -19,6 +19,11 @@ export default {
           accent: 'hsl(var(--primary-accent) / <alpha-value>)',
           foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',
         },
+        muted: {
+          DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
+          accent: 'hsl(var(--muted-accent) / <alpha-value>)',
+          foreground: 'hsl(var(--muted-foreground) / <alpha-value>)',
+        },
         secondary: {
           DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
           accent: 'hsl(var(--secondary-accent) / <alpha-value>)',

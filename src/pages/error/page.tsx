@@ -43,7 +43,7 @@ export const ErrorPage = () => {
           {error.statusText && <span className="text-base font-normal">{error.statusText}</span>}
         </h4>
 
-        <p className="text-sm break-words text-gray-500">
+        <p className="break-words text-sm text-gray-500">
           {error.data || error.message || getErrorMessage(statusCode)}
         </p>
 

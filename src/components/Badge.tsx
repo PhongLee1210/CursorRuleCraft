@@ -19,7 +19,7 @@ export const badgeVariants = cva(
     },
     compoundVariants: [
       { outline: true, variant: 'primary', className: 'text-primary' },
-      { outline: true, variant: 'secondary', className: 'text-secondary' },
+      { outline: true, variant: 'secondary', className: 'text-secondary-foreground' },
       { outline: true, variant: 'error', className: 'text-error' },
       { outline: true, variant: 'warning', className: 'text-warning' },
       { outline: true, variant: 'info', className: 'text-info' },

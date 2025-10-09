@@ -33,7 +33,7 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "ignore": ["dist"]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", "public", "**/*.spec.ts", "**/*.test.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

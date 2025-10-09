@@ -14,7 +14,7 @@ export const Footer = () => (
         <Logo size={24} className="-ml-2" />
 
         <p className="prose prose-sm leading-relaxed opacity-60 dark:prose-invert">
-          {`A free and open-source Cursor rules builder that helps you craft, customize, and optimize your project cursor rules configuration for better AI-assisted coding.`}
+          {`A free and open-source cursor rules builder that helps you craft, customize, and optimize your project cursor rules configuration for better AI-assisted coding.`}
         </p>
 
         <Copyright className="mt-6" />

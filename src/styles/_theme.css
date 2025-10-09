@@ -10,6 +10,11 @@
     --primary-accent: var(--zinc-800);
     --primary-foreground: var(--zinc-50);
 
+    /* Muted */
+    --muted: var(--zinc-100);
+    --muted-accent: var(--zinc-200);
+    --muted-foreground: var(--zinc-950);
+
     /* Secondary */
     --secondary: var(--zinc-200);
     --secondary-accent: var(--zinc-100);
@@ -46,6 +51,11 @@
     --primary-accent: var(--zinc-200);
     --primary-foreground: var(--zinc-950);
 
+    /* Muted */
+    --muted: var(--zinc-900);
+    --muted-accent: var(--zinc-800);
+    --muted-foreground: var(--zinc-50);
+
     /* Secondary */
     --secondary: var(--zinc-800);
     --secondary-accent: var(--zinc-900);
@@ -76,5 +86,26 @@
   html,
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Override @tailwindcss/forms default blue ring colors */
+  [type='text']:focus,
+  input:where(:not([type])):focus,
+  [type='email']:focus,
+  [type='url']:focus,
+  [type='password']:focus,
+  [type='number']:focus,
+  [type='date']:focus,
+  [type='datetime-local']:focus,
+  [type='month']:focus,
+  [type='search']:focus,
+  [type='tel']:focus,
+  [type='time']:focus,
+  [type='week']:focus,
+  [multiple]:focus,
+  textarea:focus,
+  select:focus {
+    --tw-ring-color: transparent;
+    border-color: hsl(var(--foreground));
   }
 }

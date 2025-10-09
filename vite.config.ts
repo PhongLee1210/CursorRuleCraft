@@ -7,6 +7,10 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig({
   cacheDir: './node_modules/.vite',
+  build: {
+    sourcemap: true,
+    emptyOutDir: true,
+  },
   plugins: [
     react({
       babel: {
