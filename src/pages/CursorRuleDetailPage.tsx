@@ -56,7 +56,6 @@ export const CursorRuleDetailPage = () => {
             <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
               <div className="flex-1">
                 <h1 className="mb-2 text-3xl font-bold sm:text-4xl">{template.name}</h1>
-                <p className="text-muted-foreground text-lg">{template.description}</p>
               </div>
               <Badge variant="secondary" className="shrink-0 px-4 py-1 text-sm">
                 {template.category}
@@ -147,9 +146,7 @@ export const CursorRuleDetailPage = () => {
                   >
                     <div className="bg-card rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md">
                       <h3 className="mb-2 font-semibold">{relatedTemplate.name}</h3>
-                      <p className="text-muted-foreground line-clamp-2 text-sm">
-                        {relatedTemplate.description}
-                      </p>
+
                       <div className="mt-3 flex flex-wrap gap-1">
                         {relatedTemplate.tags.slice(0, 3).map((tag) => (
                           <Badge
