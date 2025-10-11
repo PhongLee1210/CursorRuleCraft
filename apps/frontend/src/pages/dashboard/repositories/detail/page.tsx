@@ -1,66 +1,56 @@
-import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { IconButton } from '@/components/IconButton';
 import { useRepositoryService } from '@/hooks/useRepositoryService';
 import { cn } from '@/lib/utils';
 import type { Repository } from '@/types/repository';
+import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
 import {
-  ArrowLeftIcon,
-  ArrowsClockwiseIcon,
   ChatCircleDotsIcon,
   FileCodeIcon,
+  FolderIcon,
   FolderOpenIcon,
-  GithubLogoIcon,
-  GitlabLogoIcon,
-  LinkSimpleIcon,
   SpinnerGapIcon,
 } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { AIChatPanel } from './components/AIChatPanel';
+import { AIChatPanel, type AIChatPanelRef } from './components/AIChatPanel';
 import { FileTreePanel } from './components/FileTreePanel';
+import { RepositoryHeader } from './components/RepositoryHeader';
 
 dayjs.extend(relativeTime);
 
-const getProviderIcon = (provider: string) => {
-  switch (provider) {
-    case 'GITHUB':
-      return <GithubLogoIcon size={24} />;
-    case 'GITLAB':
-      return <GitlabLogoIcon size={24} />;
-    default:
-      return <LinkSimpleIcon size={24} />;
-  }
-};
-
-const getProviderColor = (provider: string) => {
-  switch (provider) {
-    case 'GITHUB':
-      return 'text-[#181717] dark:text-white';
-    case 'GITLAB':
-      return 'text-[#FC6D26]';
-    default:
-      return 'text-primary';
-  }
-};
-
 export const RepositoryDetailPage = () => {
   // Refs
+  const aiChatPanelRef = useRef<AIChatPanelRef>(null);
 
   // State
   const [repository, setRepository] = useState<Repository | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activePanel, setActivePanel] = useState<'files' | 'chat'>('files');
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [activeDragItem, setActiveDragItem] = useState<{
+    name: string;
+    path: string;
+    type: 'file' | 'directory';
+  } | null>(null);
 
   // External Hooks
   const { id: repositoryId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const repositoryService = useRepositoryService();
+
+  // Setup drag and drop sensors with activation constraints
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Start drag after 8px movement to avoid conflicts with clicks
+      },
+    })
+  );
 
   // Computed Values
   const lastSynced = repository?.lastSyncedAt
@@ -115,9 +105,34 @@ export const RepositoryDetailPage = () => {
     }
   }, [repositoryId, repositoryService]);
 
-  const handleFileSelect = useCallback((filePath: string) => {
-    setSelectedFile(filePath);
-    // setActivePanel('chat');
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    const { active } = event;
+    if (active.data.current) {
+      setActiveDragItem(
+        active.data.current as {
+          name: string;
+          path: string;
+          type: 'file' | 'directory';
+        }
+      );
+    }
+  }, []);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+
+    // If dropped over the chat input
+    if (over && over.id === 'chat-input-droppable' && active.data.current) {
+      const fileData = active.data.current as {
+        name: string;
+        path: string;
+        type: 'file' | 'directory';
+      };
+      aiChatPanelRef.current?.handleFileDrop(fileData);
+    }
+
+    // Clear the active drag item
+    setActiveDragItem(null);
   }, []);
 
   // Early Returns
@@ -140,124 +155,87 @@ export const RepositoryDetailPage = () => {
 
   // Render
   return (
-    <div className="bg-background flex h-screen flex-col">
-      {/* Header */}
-      <header className="border-border flex items-center justify-between border-b px-6 py-4">
-        <div className="flex items-center gap-4">
-          <IconButton onClick={handleBack} label={t`Back`} icon={<ArrowLeftIcon size={20} />} />
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="bg-background flex h-screen flex-col">
+        {/* Header */}
+        <RepositoryHeader
+          repository={repository}
+          lastSynced={lastSynced}
+          onBack={handleBack}
+          onSync={handleSync}
+        />
 
-          <div
+        {/* Main Content */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Left Panel - File Tree */}
+          <aside
             className={cn(
-              'bg-secondary/50 flex items-center justify-center rounded-lg p-2',
-              getProviderColor(repository.provider)
+              'border-border flex flex-col border-r transition-all',
+              activePanel === 'files' ? 'min-w-64' : 'w-fit'
             )}
           >
-            {getProviderIcon(repository.provider)}
-          </div>
-
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold">{repository.name}</h1>
-              {repository.isPrivate && (
-                <Badge variant="secondary" className="text-xs">
-                  {t`Private`}
-                </Badge>
+            <div className="border-border flex h-[57px] items-center justify-between border-b px-4 py-3">
+              {activePanel === 'files' ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <FolderOpenIcon size={20} className="text-primary" />
+                    <span className="font-semibold">{t`Files`}</span>
+                  </div>
+                </>
+              ) : (
+                <Button
+                  onClick={() => setActivePanel('files')}
+                  variant="ghost"
+                  size="sm"
+                  aria-label={t`Show files`}
+                >
+                  <FolderOpenIcon size={18} />
+                </Button>
               )}
             </div>
-            <p className="text-muted-foreground text-sm">{repository.fullName}</p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <div className="text-muted-foreground flex flex-col items-end text-xs">
-            <span>{t`Last synced:`}</span>
-            <span className="font-medium">{lastSynced}</span>
-          </div>
-          <Button onClick={handleSync} variant="outline" size="sm">
-            <ArrowsClockwiseIcon size={16} className="mr-2" />
-            {t`Sync`}
-          </Button>
-          <Button onClick={() => window.open(repository.url, '_blank')} variant="outline" size="sm">
-            <LinkSimpleIcon size={16} className="mr-2" />
-            {t`View on ${repository.provider}`}
-          </Button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Panel - File Tree */}
-        <aside
-          className={cn(
-            'border-border flex flex-col border-r transition-all',
-            activePanel === 'files' ? 'w-80' : 'w-fit'
-          )}
-        >
-          <div className="border-border flex h-[57px] items-center justify-between border-b px-4 py-3">
-            {activePanel === 'files' ? (
-              <>
-                <div className="flex items-center gap-2">
-                  <FolderOpenIcon size={20} className="text-primary" />
-                  <span className="font-semibold">{t`Files`}</span>
-                </div>
-              </>
-            ) : (
-              <Button
-                onClick={() => setActivePanel('files')}
-                variant="ghost"
-                size="sm"
-                aria-label={t`Show files`}
-              >
-                <FolderOpenIcon size={18} />
-              </Button>
+            {activePanel === 'files' && (
+              <div className="scrollbar-macos flex-1 overflow-y-auto">
+                <FileTreePanel repository={repository} />
+              </div>
             )}
-          </div>
+          </aside>
 
-          {activePanel === 'files' && (
-            <div className="flex-1 overflow-y-auto">
-              <FileTreePanel
-                repository={repository}
-                onFileSelect={handleFileSelect}
-                selectedFile={selectedFile}
-              />
-            </div>
-          )}
-        </aside>
-
-        <main className="flex flex-1 flex-col">
-          {activePanel === 'chat' && (
-            <div className="border-border flex items-center justify-between border-b px-4 py-3">
-              <>
-                <div className="flex items-center gap-2">
-                  <ChatCircleDotsIcon size={20} className="text-primary" />
-                  <span className="font-semibold">{t`AI Assistant`}</span>
-                </div>
-                <IconButton
-                  onClick={() => setActivePanel('files')}
-                  label={t`Show files`}
-                  icon={<FileCodeIcon size={18} />}
-                />
-              </>
-            </div>
-          )}
-          {selectedFile === null && (
+          <main className="flex flex-1 flex-col">
             <div className="border-border flex h-[57px] items-center justify-between border-b px-4 py-3">
               <div className="flex items-center gap-2">
                 <ChatCircleDotsIcon size={20} className="text-primary" />
                 <span className="font-semibold">{t`AI Assistant`}</span>
               </div>
+              {activePanel === 'chat' && (
+                <IconButton
+                  onClick={() => setActivePanel('files')}
+                  label={t`Show files`}
+                  icon={<FileCodeIcon size={18} />}
+                />
+              )}
             </div>
-          )}
 
-          <div className="flex-1 overflow-hidden">
-            <AIChatPanel
-              repository={repository}
-              selectedFile={selectedFile}
-              onClearFileSelection={() => setSelectedFile(null)}
-            />
-          </div>
-        </main>
+            <div className="flex-1 overflow-hidden">
+              <AIChatPanel ref={aiChatPanelRef} repository={repository} />
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+
+      {/* Drag Overlay */}
+      <DragOverlay dropAnimation={null}>
+        {activeDragItem && (
+          <div className="bg-primary/10 border-primary flex items-center gap-2 rounded-lg border-2 px-3 py-2 shadow-lg backdrop-blur-sm">
+            {activeDragItem.type === 'directory' ? (
+              <FolderIcon size={16} className="text-primary" />
+            ) : (
+              <FileCodeIcon size={16} className="text-primary" />
+            )}
+            <span className="text-foreground text-sm font-medium">{activeDragItem.name}</span>
+          </div>
+        )}
+      </DragOverlay>
+    </DndContext>
   );
 };

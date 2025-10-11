@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '@/lib/constants';
 import { useAuth } from '@clerk/clerk-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 /**
  * API Error with additional context
@@ -184,7 +184,16 @@ export class ApiClient {
 export function useApiClient() {
   const { getToken } = useAuth();
 
-  return useMemo(() => {
-    return new ApiClient(API_BASE_URL, getToken);
+  // Use ref to store the latest getToken without causing re-renders
+  const getTokenRef = useRef(getToken);
+
+  // Update ref when getToken changes
+  useEffect(() => {
+    getTokenRef.current = getToken;
   }, [getToken]);
+
+  // Create API client with stable reference that uses the latest getToken
+  return useMemo(() => {
+    return new ApiClient(API_BASE_URL, () => getTokenRef.current());
+  }, []);
 }
