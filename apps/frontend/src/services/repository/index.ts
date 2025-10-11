@@ -10,6 +10,8 @@ import {
   deleteRepository,
   getAvailableGitHubRepositories,
   getRepositoryById,
+  getRepositoryFileContent,
+  getRepositoryFileTree,
   getWorkspaceRepositories,
   syncRepository,
   updateRepository,
@@ -28,6 +30,8 @@ export function createRepositoryService(apiClient: ApiClient) {
     getGitHubStatus: getGitHubStatus.bind(null, apiClient),
     initiateGitHubAuth: initiateGitHubAuth.bind(null, apiClient),
     disconnectGitHub: disconnectGitHub.bind(null, apiClient),
+    getRepositoryFileTree: getRepositoryFileTree.bind(null, apiClient),
+    getRepositoryFileContent: getRepositoryFileContent.bind(null, apiClient),
   };
 }
 

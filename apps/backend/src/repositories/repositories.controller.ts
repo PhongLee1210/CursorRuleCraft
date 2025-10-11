@@ -371,4 +371,118 @@ export class RepositoriesController {
       );
     }
   }
+
+  /**
+   * Get repository file tree
+   * GET /repositories/:id/tree
+   */
+  @Get(':id/tree')
+  async getRepositoryFileTree(
+    @ClerkToken() clerkToken: string,
+    @CurrentUser('sub') userId: string,
+    @Param('id') repositoryId: string,
+    @Query('branch') branch?: string
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      // Get git integration
+      const integration = await this.gitIntegrationService.getGitIntegrationById(
+        clerkToken,
+        repository.git_integration_id
+      );
+
+      // Parse owner and repo from full_name (e.g., "owner/repo")
+      const [owner, repo] = repository.full_name.split('/');
+
+      // Fetch file tree from GitHub
+      const fileTree = await this.gitIntegrationService.fetchGitHubFileTree(
+        integration.access_token,
+        owner,
+        repo,
+        branch || repository.default_branch
+      );
+
+      return { data: fileTree };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to fetch repository file tree',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Get file content from repository
+   * GET /repositories/:id/file
+   */
+  @Get(':id/file')
+  async getRepositoryFileContent(
+    @ClerkToken() clerkToken: string,
+    @CurrentUser('sub') userId: string,
+    @Param('id') repositoryId: string,
+    @Query('path') path: string,
+    @Query('branch') branch?: string
+  ) {
+    if (!path) {
+      throw new HttpException('path query parameter is required', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      // Get git integration
+      const integration = await this.gitIntegrationService.getGitIntegrationById(
+        clerkToken,
+        repository.git_integration_id
+      );
+
+      // Parse owner and repo from full_name (e.g., "owner/repo")
+      const [owner, repo] = repository.full_name.split('/');
+
+      // Fetch file content from GitHub
+      const content = await this.gitIntegrationService.fetchGitHubFileContent(
+        integration.access_token,
+        owner,
+        repo,
+        path,
+        branch || repository.default_branch
+      );
+
+      return { data: { content, path } };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to fetch file content',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
 }

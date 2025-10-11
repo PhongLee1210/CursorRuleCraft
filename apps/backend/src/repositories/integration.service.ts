@@ -305,4 +305,155 @@ export class IntegrationService {
       );
     }
   }
+
+  /**
+   * Fetch repository file tree from GitHub
+   */
+  async fetchGitHubFileTree(
+    accessToken: string,
+    owner: string,
+    repo: string,
+    branch?: string
+  ): Promise<any> {
+    try {
+      // First, get the default branch if not provided
+      let branchToUse = branch;
+      if (!branchToUse) {
+        const repoData = await this.fetchGitHubRepository(accessToken, owner, repo);
+        branchToUse = repoData.default_branch;
+      }
+
+      // Get the tree recursively
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/git/trees/${branchToUse}?recursive=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`GitHub API error: ${error.message || response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Transform flat tree into hierarchical structure
+      return this.buildFileTree(data.tree);
+    } catch (error) {
+      throw new Error(
+        `Failed to fetch GitHub file tree: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Fetch file content from GitHub
+   */
+  async fetchGitHubFileContent(
+    accessToken: string,
+    owner: string,
+    repo: string,
+    path: string,
+    branch?: string
+  ): Promise<string> {
+    try {
+      const ref = branch ? `?ref=${branch}` : '';
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}${ref}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/vnd.github.raw+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`GitHub API error: ${error.message || response.statusText}`);
+      }
+
+      return await response.text();
+    } catch (error) {
+      throw new Error(
+        `Failed to fetch GitHub file content: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Build hierarchical file tree from flat GitHub tree
+   */
+  private buildFileTree(flatTree: any[]): any[] {
+    const root: any[] = [];
+    const pathMap = new Map<string, any>();
+
+    // Filter out .git directory and other hidden files/directories
+    const filteredTree = flatTree.filter(
+      (item) => !item.path.startsWith('.git/') && !item.path.startsWith('.')
+    );
+
+    // Sort by path to ensure parents are processed before children
+    filteredTree.sort((a, b) => a.path.localeCompare(b.path));
+
+    for (const item of filteredTree) {
+      const parts = item.path.split('/');
+      const name = parts[parts.length - 1];
+      const parentPath = parts.slice(0, -1).join('/');
+
+      const node = {
+        name,
+        path: item.path,
+        type: item.type === 'tree' ? 'directory' : 'file',
+        children: item.type === 'tree' ? [] : undefined,
+      };
+
+      pathMap.set(item.path, node);
+
+      if (parentPath) {
+        const parent = pathMap.get(parentPath);
+        if (parent && parent.children) {
+          parent.children.push(node);
+        }
+      } else {
+        root.push(node);
+      }
+    }
+
+    // Sort tree: directories first, then alphabetically (like GitHub)
+    this.sortFileTree(root);
+
+    return root;
+  }
+
+  /**
+   * Sort file tree nodes: directories first, then files, both alphabetically
+   * This matches GitHub's file tree sorting behavior
+   */
+  private sortFileTree(nodes: any[]): void {
+    nodes.sort((a, b) => {
+      // Directories come before files
+      if (a.type === 'directory' && b.type === 'file') {
+        return -1;
+      }
+      if (a.type === 'file' && b.type === 'directory') {
+        return 1;
+      }
+      // Within same type, sort alphabetically (case-insensitive)
+      return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    });
+
+    // Recursively sort children
+    for (const node of nodes) {
+      if (node.children && node.children.length > 0) {
+        this.sortFileTree(node.children);
+      }
+    }
+  }
 }

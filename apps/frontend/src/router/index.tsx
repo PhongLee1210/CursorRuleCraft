@@ -8,6 +8,7 @@ import { SSOCallbackPage } from '@/pages/auth/sso/page';
 import { VerifyEmailPage } from '@/pages/auth/verify-email/page';
 import { CursorRuleDetailPage } from '@/pages/cursor/rules/page';
 import { DashboardLayout } from '@/pages/dashboard/layout';
+import { RepositoryDetailPage } from '@/pages/dashboard/repositories/detail/page';
 import { RepositoriesPage } from '@/pages/dashboard/repositories/page';
 import { SettingsPage } from '@/pages/dashboard/settings/page';
 import { ErrorPage } from '@/pages/error/page';
@@ -48,6 +49,8 @@ export const routes = createRoutesFromElements(
             <Route index element={<RepositoriesPage />} />
             <Route path="repositories" element={<RepositoriesPage />} />
           </Route>
+          {/* Repository detail page - no layout for more space */}
+          <Route path="repositories/:id" element={<RepositoryDetailPage />} />
           <Route path="settings">
             <Route element={<DashboardLayout />}>
               <Route index element={<SettingsPage />} />

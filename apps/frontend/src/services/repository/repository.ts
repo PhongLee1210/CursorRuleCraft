@@ -279,3 +279,81 @@ export async function connectGitHubRepository(
     };
   }
 }
+
+/**
+ * Get repository file tree
+ */
+export async function getRepositoryFileTree(
+  apiClient: ApiClient,
+  repositoryId: string,
+  branch?: string
+): Promise<RepositoryServiceResult<any[]>> {
+  try {
+    const response = await apiClient.get<{ data: any[] }>(
+      `/api/repositories/${repositoryId}/tree`,
+      {
+        params: branch ? { branch } : undefined,
+      }
+    );
+
+    if (response.error) {
+      console.error('[RepositoryService] Error fetching file tree:', response.error);
+      return {
+        data: null,
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data!.data,
+      error: null,
+    };
+  } catch (error) {
+    console.error('[RepositoryService] Unexpected error fetching file tree:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+    };
+  }
+}
+
+/**
+ * Get file content from repository
+ */
+export async function getRepositoryFileContent(
+  apiClient: ApiClient,
+  repositoryId: string,
+  path: string,
+  branch?: string
+): Promise<RepositoryServiceResult<{ content: string; path: string }>> {
+  try {
+    const params: any = { path };
+    if (branch) {
+      params.branch = branch;
+    }
+
+    const response = await apiClient.get<{ data: { content: string; path: string } }>(
+      `/api/repositories/${repositoryId}/file`,
+      { params }
+    );
+
+    if (response.error) {
+      console.error('[RepositoryService] Error fetching file content:', response.error);
+      return {
+        data: null,
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data!.data,
+      error: null,
+    };
+  } catch (error) {
+    console.error('[RepositoryService] Unexpected error fetching file content:', error);
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+    };
+  }
+}
