@@ -1,34 +1,37 @@
+import { AppController } from '@/app.controller';
+import { AppService } from '@/app.service';
+import { ClerkAuthGuard } from '@/auth/clerk-auth.guard';
+import { RepositoriesModule } from '@/repositories/repositories.module';
+import { SupabaseModule } from '@/supabase/supabase.module';
+import { WorkspacesModule } from '@/workspaces/workspaces.module';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClerkAuthGuard } from './auth/clerk-auth.guard';
-import { SupabaseModule } from './supabase/supabase.module';
-import { UsersModule } from './users/users.module';
-import { WorkspacesModule } from './workspaces/workspaces.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD, Reflector } from '@nestjs/core';
 
 @Module({
   imports: [
-    // Configure environment variables
+    // Configure environment variables FIRST - required by other modules
+    // In Nx monorepos, the working directory is the workspace root
+    // So we load .env from the root (where nx commands run from)
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '../../.env', // Load from root .env
+      envFilePath: '.env', // Nx runs from workspace root, so this points to root .env
+      ignoreEnvFile: false,
     }),
-    // Import Supabase module globally
     SupabaseModule,
-    // Import Users module for user management endpoints
-    UsersModule,
-    // Import Workspaces module for workspace management endpoints
     WorkspacesModule,
+    RepositoriesModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    // Apply Clerk authentication guard globally to all routes
+    // Apply Clerk authentication guard globally to all routes using factory
     {
       provide: APP_GUARD,
-      useClass: ClerkAuthGuard,
+      useFactory: (reflector: Reflector, configService: ConfigService) => {
+        return new ClerkAuthGuard(reflector, configService);
+      },
+      inject: [Reflector, ConfigService],
     },
   ],
 })

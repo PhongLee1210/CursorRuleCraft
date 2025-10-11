@@ -42,7 +42,7 @@ export async function createWorkspace(
     console.error('[WorkspaceService] Unexpected error creating workspace:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error: error as any,
     };
   }
 }

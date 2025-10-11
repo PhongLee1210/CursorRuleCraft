@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button';
-import { useSignIn } from '@clerk/clerk-react';
+import { useSignIn, useSignUp } from '@clerk/clerk-react';
 import type { OAuthStrategy } from '@clerk/types';
 import { t } from '@lingui/macro';
 import { CircleNotch } from '@phosphor-icons/react';
@@ -10,32 +10,67 @@ import { useAuthProviders, type OAuthProvider } from '@/hooks/useAuthProviders';
 export const SocialAuth = () => {
   const { providers, hasOAuthProviders } = useAuthProviders();
   const { signIn } = useSignIn();
+  const { signUp } = useSignUp();
   const [isLoading, setIsLoading] = useState<string | null>(null);
 
   // Don't render if no OAuth providers are enabled
   if (!hasOAuthProviders) return null;
 
   /**
-   * Handle OAuth sign-in with redirect
+   * Handle OAuth sign-in/sign-up with redirect
    * Uses Clerk's authenticateWithRedirect method for OAuth flow
+   * This method handles both existing users (sign-in) and new users (sign-up)
    */
   const handleOAuthSignIn = async (provider: OAuthProvider) => {
-    if (!signIn) return;
+    // Prefer signUp for OAuth as it handles both sign-in and sign-up
+    const authMethod = signUp || signIn;
+
+    if (!authMethod) {
+      console.error('[OAuth] Neither SignIn nor SignUp available');
+      return;
+    }
 
     try {
       setIsLoading(provider);
+      console.log(`[OAuth] Starting ${provider} authentication...`);
+      console.log('[OAuth] Using auth method:', signUp ? 'signUp' : 'signIn');
 
       // Map provider to Clerk OAuth strategy
       const strategy: OAuthStrategy = `oauth_${provider}` as OAuthStrategy;
 
-      // Initiate OAuth flow with redirect
-      await signIn.authenticateWithRedirect({
+      // Use signUp.authenticateWithRedirect if available (handles both sign-in and sign-up)
+      // Otherwise fall back to signIn.authenticateWithRedirect
+      await authMethod.authenticateWithRedirect({
         strategy,
-        redirectUrl: '/auth/callback',
-        redirectUrlComplete: '/dashboard',
+        // Let ClerkProvider settings handle redirects
+        // This prevents the #/continue fragment issue
+        redirectUrl: `${window.location.origin}/auth/callback`,
+        redirectUrlComplete: `${window.location.origin}/dashboard`,
       });
-    } catch (error) {
-      console.error(`Error signing in with ${provider}:`, error);
+
+      console.log(`[OAuth] Redirect initiated for ${provider}`);
+    } catch (error: any) {
+      console.error(`[OAuth] Error with ${provider} authentication:`, error);
+
+      // Handle specific Clerk errors
+      if (error?.errors) {
+        const clerkErrors = error.errors;
+        console.error('[OAuth] Clerk errors:', clerkErrors);
+
+        // Check for account transfer error
+        const hasTransferError = clerkErrors.some(
+          (err: any) => err.code === 'account_transfer_invalid'
+        );
+
+        if (hasTransferError) {
+          console.error(
+            '[OAuth] Account transfer invalid - This means username/password are still required. ' +
+              'Go to Clerk Dashboard → User & Authentication → Email, Phone, Username and ' +
+              'disable or make Username optional.'
+          );
+        }
+      }
+
       setIsLoading(null);
     }
   };

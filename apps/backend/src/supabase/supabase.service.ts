@@ -1,97 +1,95 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 /**
- * Supabase Service
+ * Supabase Service with Clerk Integration
  *
- * This service provides a singleton Supabase client instance configured with
- * the Service Role Key. This allows the backend to:
+ * This service creates Supabase clients that use Clerk session tokens for authentication.
+ * This approach respects Row Level Security (RLS) policies based on the authenticated user.
  *
- * 1. Bypass all Row Level Security (RLS) policies
- * 2. Perform administrative operations on the database
- * 3. Access all data regardless of user permissions
+ * Reference: https://clerk.com/docs/guides/development/integrations/databases/supabase
  *
- * ⚠️ WARNING: Never expose this client or service role key to the frontend!
- * The service role key has full database access and should only be used server-side.
+ * Key differences from the old approach:
+ * - Uses Clerk session tokens instead of Service Role Key
+ * - Respects RLS policies (doesn't bypass them)
+ * - Each request gets a client scoped to the authenticated user
+ *
+ * Note: For admin operations that need to bypass RLS, create a separate service
+ * with the Service Role Key (use sparingly and with caution).
  */
 @Injectable()
-export class SupabaseService implements OnModuleInit {
-  private supabaseClient: SupabaseClient;
+export class SupabaseService {
+  private supabaseUrl: string;
+  private supabaseAnonKey: string;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+    console.log('[SupabaseService] Constructor called');
 
-  /**
-   * Initialize the Supabase client on module initialization
-   */
-  onModuleInit() {
-    const supabaseUrl = this.configService.get<string>('SUPABASE_URL');
-    const supabaseServiceRoleKey = this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
+    // Read environment variables using ConfigService
+    this.supabaseUrl = this.configService.get<string>('SUPABASE_URL');
+    this.supabaseAnonKey = this.configService.get<string>('SUPABASE_ANON_KEY');
 
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
+    if (!this.supabaseUrl || !this.supabaseAnonKey) {
       throw new Error(
-        'Missing required Supabase configuration. Please ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in your .env file.'
+        'Missing required Supabase configuration. Please ensure SUPABASE_URL and SUPABASE_ANON_KEY are set in your .env file.'
       );
     }
 
-    // Create Supabase client with Service Role Key
-    // This client bypasses all RLS policies
-    this.supabaseClient = createClient(supabaseUrl, supabaseServiceRoleKey, {
+    console.log('✅ Supabase service initialized with Clerk integration');
+    console.log('   Supabase URL:', this.supabaseUrl);
+  }
+
+  /**
+   * Create a Supabase client with Clerk session token
+   *
+   * This creates a client that respects RLS policies based on the Clerk user.
+   * The Clerk session token is passed in the Authorization header and accessed
+   * via auth.jwt()->>'sub' in RLS policies.
+   *
+   * @param clerkToken - The Clerk session token from the request
+   * @returns SupabaseClient configured with the Clerk token
+   */
+  getClientWithClerkToken(clerkToken: string): SupabaseClient {
+    if (!clerkToken) {
+      throw new Error('Clerk token is required to create Supabase client');
+    }
+
+    // Create Supabase client with Clerk token
+    // The token will be used in RLS policies via auth.jwt()
+    return createClient(this.supabaseUrl, this.supabaseAnonKey, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${clerkToken}`,
+        },
+      },
       auth: {
         autoRefreshToken: false,
         persistSession: false,
       },
     });
-
-    console.log('✅ Supabase client initialized with Service Role Key');
   }
 
   /**
-   * Get the Supabase client instance
+   * DEPRECATED: Get the admin Supabase client (bypasses RLS)
    *
-   * This client has full database access via the Service Role Key.
-   * Use with caution and never expose to the frontend.
+   * This method is kept for backwards compatibility but should be avoided.
+   * Instead, use getClientWithClerkToken() to respect RLS policies.
+   *
+   * For true admin operations, create a separate AdminSupabaseService.
    */
   getClient(): SupabaseClient {
-    if (!this.supabaseClient) {
-      throw new Error('Supabase client not initialized');
-    }
-    return this.supabaseClient;
-  }
+    console.warn(
+      '⚠️ WARNING: getClient() is deprecated. Use getClientWithClerkToken() instead to respect RLS policies.'
+    );
 
-  /**
-   * Example: Get all users (bypasses RLS)
-   *
-   * This is just an example method showing how to use the Supabase client.
-   * You can add more methods here for your specific use cases.
-   */
-  async getAllUsers() {
-    const { data, error } = await this.supabaseClient.from('users').select('*');
-
-    if (error) {
-      throw new Error(`Failed to fetch users: ${error.message}`);
-    }
-
-    return data;
-  }
-
-  /**
-   * Example: Create or update user
-   *
-   * This method demonstrates how to perform upsert operations
-   * using the service role key which bypasses RLS.
-   */
-  async upsertUser(userId: string, userData: Record<string, any>) {
-    const { data, error } = await this.supabaseClient
-      .from('users')
-      .upsert({ id: userId, ...userData }, { onConflict: 'id' })
-      .select()
-      .single();
-
-    if (error) {
-      throw new Error(`Failed to upsert user: ${error.message}`);
-    }
-
-    return data;
+    // For now, return a client with anon key
+    // This will fail for operations that require authentication
+    return createClient(this.supabaseUrl, this.supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
   }
 }

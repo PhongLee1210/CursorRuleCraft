@@ -43,7 +43,7 @@ export const CursorRuleDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="container mx-auto mt-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -54,7 +54,7 @@ export const CursorRuleDetailPage = () => {
           {/* Back Button */}
           <Link
             to="/#templates"
-            className="text-muted-foreground mb-6 inline-flex items-center gap-2 text-sm transition-colors hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground mb-6 inline-flex items-center gap-2 text-sm transition-colors"
           >
             <ArrowLeft size={16} />
             {t`Back to Templates`}
@@ -62,7 +62,7 @@ export const CursorRuleDetailPage = () => {
 
           {/* Header with Logo/Icon */}
           <div className="mb-6 flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="bg-primary/10 text-primary flex h-12 w-12 items-center justify-center rounded-lg">
               <span className="text-2xl font-bold">{template.name.charAt(0)}</span>
             </div>
             <div className="flex w-full items-center justify-between gap-2">
@@ -125,7 +125,7 @@ export const CursorRuleDetailPage = () => {
           </div>
 
           {/* How to Use Section */}
-          <div className="my-8 rounded-lg border-2 border-dashed border-border p-6">
+          <div className="border-border my-8 rounded-lg border-2 border-dashed p-6">
             <h1 className="mb-6 text-2xl">{t`How to Use Cursor Rules`}</h1>
 
             <section className="mb-6">
@@ -139,7 +139,7 @@ export const CursorRuleDetailPage = () => {
               <h2 className="mb-3 text-xl">{t`Installation Methods`}</h2>
               <ol className="list-inside list-decimal space-y-2">
                 <li className="text-[#878787]">
-                  <span className="font-medium text-foreground">{t`Quick Install (Recommended)`}</span>
+                  <span className="text-foreground font-medium">{t`Quick Install (Recommended)`}</span>
                   <ul className="ml-6 mt-1 list-disc space-y-1">
                     <li>{t`Click the "Add to Cursor" button above`}</li>
                     <li>{t`Cursor will open with the rule content ready to use`}</li>
@@ -147,13 +147,13 @@ export const CursorRuleDetailPage = () => {
                   </ul>
                 </li>
                 <li className="text-[#878787]">
-                  <span className="font-medium text-foreground">{t`Manual Installation`}</span>
+                  <span className="text-foreground font-medium">{t`Manual Installation`}</span>
                   <ul className="ml-6 mt-1 list-disc space-y-1">
                     <li>{t`Copy the rule content or download the .cursorrules file`}</li>
                     <li>{t`Open your project in Cursor IDE`}</li>
                     <li>
                       {t`Create a new file named`}{' '}
-                      <code className="bg-muted rounded px-1 py-0.5 font-mono text-sm text-foreground">
+                      <code className="bg-muted text-foreground rounded px-1 py-0.5 font-mono text-sm">
                         .cursorrules
                       </code>{' '}
                       {t`in your project root`}
@@ -168,13 +168,13 @@ export const CursorRuleDetailPage = () => {
               <h2 className="mb-3 text-xl">{t`Using the Rules`}</h2>
               <ol className="list-inside list-decimal space-y-2">
                 <li className="text-[#878787]">
-                  <span className="font-medium text-foreground">{t`Automatic Application`}</span>
+                  <span className="text-foreground font-medium">{t`Automatic Application`}</span>
                   <ul className="ml-6 mt-1 list-disc">
                     <li>{t`Once saved, Cursor automatically applies these rules to all AI interactions in your project`}</li>
                   </ul>
                 </li>
                 <li className="text-[#878787]">
-                  <span className="font-medium text-foreground">{t`Customization`}</span>
+                  <span className="text-foreground font-medium">{t`Customization`}</span>
                   <ul className="ml-6 mt-1 list-disc">
                     <li>{t`Feel free to modify the rules to match your specific needs`}</li>
                     <li>{t`Add project-specific guidelines and conventions`}</li>
@@ -217,9 +217,9 @@ export const CursorRuleDetailPage = () => {
                       to={`/cursor/rules/${relatedTemplate.id}`}
                       className="block"
                     >
-                      <div className="bg-card group rounded-lg border p-4 transition-all hover:border-primary/50 hover:shadow-md">
+                      <div className="bg-card hover:border-primary/50 group rounded-lg border p-4 transition-all hover:shadow-md">
                         <div className="mb-2 flex items-start justify-between gap-2">
-                          <h3 className="font-semibold transition-colors group-hover:text-primary">
+                          <h3 className="group-hover:text-primary font-semibold transition-colors">
                             {relatedTemplate.name}
                           </h3>
                           <Badge variant="secondary" className="shrink-0 text-xs">

@@ -3,6 +3,23 @@
  * This package contains common types shared between frontend and backend
  */
 
+// ============================================================================
+// Git Integration Types
+// ============================================================================
+
+/**
+ * Git provider types
+ */
+export enum GitProvider {
+  GITHUB = 'GITHUB',
+  GITLAB = 'GITLAB',
+  BITBUCKET = 'BITBUCKET',
+}
+
+// ============================================================================
+// API Response Wrappers
+// ============================================================================
+
 // API Response wrappers
 export interface ApiResponse<T> {
   data: T;

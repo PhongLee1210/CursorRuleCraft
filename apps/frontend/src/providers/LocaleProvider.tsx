@@ -1,10 +1,10 @@
+import { useUser } from '@clerk/clerk-react';
 import { i18n } from '@lingui/core';
 import { detect, fromStorage, fromUrl } from '@lingui/detect-locale';
 import { I18nProvider } from '@lingui/react';
 import { useEffect } from 'react';
 
 import { defaultLocale, dynamicActivate } from '@/lib/lingui';
-import { useAuthStore } from '@/stores/auth';
 
 // Languages
 export type Language = {
@@ -24,7 +24,9 @@ type Props = {
 };
 
 export const LocaleProvider = ({ children }: Props) => {
-  const userLocale = useAuthStore((state) => state.user?.locale ?? defaultLocale);
+  const { user } = useUser();
+  // Get locale from Clerk user metadata or fallback to default
+  const userLocale = (user?.publicMetadata?.locale as string) ?? defaultLocale;
 
   useEffect(() => {
     const detectedLocale =
@@ -45,9 +47,8 @@ export const changeLanguage = async (locale: string) => {
   // Update locale in local storage
   window.localStorage.setItem('locale', locale);
 
-  // Update locale in user profile, if authenticated
-  //   const state = useAuthStore.getState();
-  //   if (state.user) await updateUser({ locale }).catch(() => null);
+  // TODO: Update locale in Clerk user metadata if needed
+  // You can use Clerk's user.update({ publicMetadata: { locale } }) if you want to persist locale
 
   // Reload the page for language switch to take effect
   window.location.reload();

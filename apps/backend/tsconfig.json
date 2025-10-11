@@ -20,8 +20,10 @@
     "verbatimModuleSyntax": false,
     "noEmit": false,
     "allowImportingTsExtensions": false,
+    "baseUrl": ".",
     "paths": {
-      "@cursorrulecraft/shared-types": ["../../packages/shared-types/src/index.ts"]
+      "@cursorrulecraft/shared-types": ["../../packages/shared-types/src/index.ts"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts"],

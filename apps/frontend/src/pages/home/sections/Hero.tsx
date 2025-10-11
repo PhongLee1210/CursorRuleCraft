@@ -7,16 +7,15 @@ import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 
 import { useLogout } from '@/hooks/useLogout';
-import { useAuthStore } from '@/stores/auth';
+import { useAuth } from '@clerk/clerk-react';
 import { BookIcon, SignOutIcon } from '@phosphor-icons/react';
 import { Link } from 'react-router';
 
 export const HeroCTA = () => {
   const { logout } = useLogout();
+  const { isSignedIn } = useAuth();
 
-  const isLoggedIn = useAuthStore((state) => !!state.user);
-
-  if (isLoggedIn) {
+  if (isSignedIn) {
     return (
       <>
         <Button asChild size="lg">
@@ -55,7 +54,7 @@ export const Decoration = {
   Grid: () => (
     <svg
       aria-hidden="true"
-      className="absolute inset-0 -z-10 size-full stroke-foreground/10 opacity-60 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)] dark:opacity-40"
+      className="stroke-foreground/10 absolute inset-0 -z-10 size-full opacity-60 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)] dark:opacity-40"
     >
       <defs>
         <pattern
@@ -69,7 +68,7 @@ export const Decoration = {
           <path d="M.5 200V.5H200" fill="none" />
         </pattern>
       </defs>
-      <svg x="50%" y={-1} className="overflow-visible fill-border/20">
+      <svg x="50%" y={-1} className="fill-border/20 overflow-visible">
         <path
           d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z"
           strokeWidth={0}
@@ -130,7 +129,7 @@ export const HeroSection = () => (
           </h1>
         </div>
 
-        <p className="prose prose-base mt-6 text-lg leading-8 dark:prose-invert">
+        <p className="prose prose-base dark:prose-invert mt-6 text-lg leading-8">
           {t`CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects.`}
         </p>
 
@@ -161,7 +160,7 @@ export const HeroSection = () => (
                 loading="lazy"
                 src="/screenshots/cursor-project-rules.png"
                 alt="CursorRulesCraft - Screenshot - Rules Builder Screen"
-                className="w-[76rem] rounded-lg bg-background/5 shadow-2xl ring-1 ring-foreground/10"
+                className="bg-background/5 ring-foreground/10 w-[76rem] rounded-lg shadow-2xl ring-1"
               />
             </Tilt>
           </motion.div>

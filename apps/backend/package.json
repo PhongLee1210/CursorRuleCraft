@@ -4,7 +4,8 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "nest build --webpack --webpackPath webpack.config.js --watch",
+    "dev:tsx": "tsx watch src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
     "start:prod": "NODE_ENV=production node dist/main.js",

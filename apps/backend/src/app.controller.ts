@@ -19,13 +19,4 @@ export class AppController {
       service: 'CursorRuleCraft Backend',
     };
   }
-
-  /**
-   * Protected endpoint example
-   * This requires authentication via Clerk JWT
-   */
-  @Get('hello')
-  getHello() {
-    return this.appService.getHello();
-  }
 }

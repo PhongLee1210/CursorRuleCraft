@@ -1,0 +1,5 @@
+# Supabase local development
+.branches
+.temp
+.env
+

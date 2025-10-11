@@ -12,7 +12,21 @@ if (!PUBLISHABLE_KEY) {
 
 export const ClerkProvider = ({ children }: PropsWithChildren) => {
   return (
-    <BaseClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/auth/login">
+    <BaseClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      signInForceRedirectUrl="/dashboard"
+      signUpForceRedirectUrl="/dashboard"
+      afterSignOutUrl="/auth/login"
+      signInUrl="/auth/login"
+      signUpUrl="/auth/register"
+      signInFallbackRedirectUrl="/dashboard"
+      signUpFallbackRedirectUrl="/dashboard"
+      appearance={{
+        variables: {
+          colorPrimary: 'hsl(var(--primary))',
+        },
+      }}
+    >
       {children}
     </BaseClerkProvider>
   );

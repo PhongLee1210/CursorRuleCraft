@@ -9,15 +9,13 @@ import {
   DialogTrigger,
 } from '@/components/Dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
-import { useExample } from '@/hooks/useExample';
 import { useState } from 'react';
 
 function App() {
   const [count, setCount] = useState(0);
-  const { data, isLoading, error } = useExample();
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen p-8">
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight">CursorRulesCraft</h1>
@@ -85,30 +83,6 @@ function App() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </div>
-
-        {/* Example: Tanstack Query Data Fetching */}
-        <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-          <h2 className="mb-4 text-2xl font-semibold">Data Fetching Example</h2>
-          {isLoading && <p className="text-muted-foreground">Loading...</p>}
-          {error && <p className="text-destructive">Error: {error.message}</p>}
-          {data && (
-            <div className="space-y-2">
-              <p className="text-muted-foreground text-sm">Fetched from JSONPlaceholder API:</p>
-              <div className="bg-muted rounded-md p-4">
-                <p className="font-medium">
-                  <span className="text-muted-foreground">ID:</span> {data.id}
-                </p>
-                <p className="font-medium">
-                  <span className="text-muted-foreground">Title:</span> {data.title}
-                </p>
-                <p className="font-medium">
-                  <span className="text-muted-foreground">Completed:</span>{' '}
-                  {data.completed ? '✅' : '❌'}
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -1,0 +1,139 @@
+---
+globs: package.json
+alwaysApply: false
+---
+# Package Versions & API Compatibility
+
+This project uses specific versions of libraries. **Always reference these versions** to ensure API compatibility and use the correct features.
+
+## Current Package Versions
+
+All versions are defined in [package.json](mdc:package.json).
+
+### Core Framework
+
+- **React**: `^19.2.0` (React 19)
+- **React DOM**: `^19.2.0`
+- **TypeScript**: `^5.9.3`
+- **Vite**: `^7.1.9` (Vite 7)
+
+### Styling & UI
+
+- **Tailwind CSS**: `3.4.0`
+- **Autoprefixer**: `10.4.21`
+- **PostCSS**: `^8.5.6`
+- **Framer Motion**: `^12.23.22`
+- **tailwind-merge**: `^3.3.1`
+- **tailwindcss-animate**: `^1.0.7`
+- **class-variance-authority**: `^0.7.1`
+
+### Icons & Graphics
+
+- **@phosphor-icons/react**: `^2.1.10` (Phosphor Icons v2)
+
+### UI Components (Radix UI)
+
+- **@radix-ui/react-accordion**: `^1.2.12`
+- **@radix-ui/react-dialog**: `^1.1.15`
+- **@radix-ui/react-dropdown-menu**: `^2.1.16`
+- **@radix-ui/react-scroll-area**: `^1.2.10`
+- **@radix-ui/react-select**: `^2.2.6`
+- **@radix-ui/react-separator**: `^1.1.7`
+- **@radix-ui/react-slot**: `^1.2.3`
+- **@radix-ui/react-tabs**: `^1.1.13`
+- **@radix-ui/react-toast**: `^1.2.15`
+- **@radix-ui/react-tooltip**: `^1.2.8`
+
+### State & Data Management
+
+- **@tanstack/react-query**: `^5.90.2` (TanStack Query v5)
+- **zustand**: `^5.0.8`
+
+### Routing & Authentication
+
+- **react-router**: `^7.9.3` (React Router v7)
+- **@clerk/clerk-react**: `^5.51.0`
+
+### Backend & Database
+
+- **@supabase/supabase-js**: `^2.74.0`
+
+### Internationalization
+
+- **@lingui/macro**: `^5.5.0`
+- **@lingui/react**: `^5.5.0`
+- **@lingui/detect-locale**: `^5.5.0`
+
+### Utilities
+
+- **usehooks-ts**: `^3.1.1`
+- **react-helmet-async**: `^2.0.5`
+- **react-parallax-tilt**: `^1.7.310`
+- **clsx**: `^2.1.1`
+
+## Package Management
+
+### Priority Package Manager: Bun
+
+This project uses **Bun** as the primary package manager. Always use Bun for package operations:
+
+- **Installing packages**: `bun add <package-name>`
+- **Installing dev dependencies**: `bun add -d <package-name>`
+- **Installing all dependencies**: `bun install`
+- **Removing packages**: `bun remove <package-name>`
+- **Running scripts**: `bun run <script-name>` or `bun <script-name>`
+- **Updating packages**: `bun update <package-name>`
+
+## Important API Guidelines
+
+### React 19 Specific
+
+- React 19 supports automatic batching everywhere
+- Use `use()` hook for promises and context
+- Use New Server Components APIs (if applicable)
+
+### Vite 7 Specific
+
+- Use Native ESM-first approach
+- Use `vite.config.ts` for configuration
+
+### Tailwind CSS 3.4
+
+- Use modern arbitrary values syntax `[value]`
+- Use container queries via `@tailwindcss/container-queries`
+- Use typography plugin via `@tailwindcss/typography`
+
+### Phosphor Icons v2
+
+- Import from `@phosphor-icons/react`
+- Available props: `size`, `weight`, `color`, `mirrored`
+- Example: `<CaretDown size={20} weight="bold" />`
+
+### TanStack Query v5
+
+- Use `useQuery()`, `useMutation()`, `useQueryClient()`
+- Use query key format as arrays
+- For `refetchOnMount`, use "always" string instead of boolean
+
+### React Router v7
+
+- Use Data Router APIs: `createBrowserRouter`, `RouterProvider`
+- Use Loaders and Actions for data fetching
+- Use hooks: `useLoaderData()`, `useNavigate()`, `useParams()`
+
+### Radix UI Latest
+
+- Use composition pattern with `asChild` prop
+- Use controlled or uncontrolled components
+- Use proper accessibility attributes
+
+### Framer Motion v12
+
+- Use `motion.*` components with animate props
+- Use layout animations with `layout` prop
+- Use variants for complex animations
+
+### Clerk v5
+
+- Use `<ClerkProvider>`, `useUser()`, `useAuth()`
+- Use modern sign-in/sign-up components

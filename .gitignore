@@ -39,5 +39,7 @@ bun.lockb
 .env.test.local
 .env.production.local
 
-# But keep the example file
+# But keep the template/example files
+!.env.template
+!.env.example
 !.env.local.example

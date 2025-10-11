@@ -6,14 +6,14 @@ import { Logo } from '@/components/Logo';
 import { ThemeSwitch } from '@/components/ThemeSwitch';
 
 export const Footer = () => (
-  <footer className="bg-background">
+  <footer>
     <Separator />
 
     <div className="container grid py-12 sm:grid-cols-3 lg:grid-cols-4">
       <div className="flex flex-col gap-y-2">
         <Logo size={24} className="-ml-2" />
 
-        <p className="prose prose-sm leading-relaxed opacity-60 dark:prose-invert">
+        <p className="prose prose-sm dark:prose-invert leading-relaxed opacity-60">
           {`A free and open-source cursor rules builder that helps you craft, customize, and optimize your project cursor rules configuration for better AI-assisted coding.`}
         </p>
 

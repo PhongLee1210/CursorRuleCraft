@@ -1,3 +1,4 @@
+import { ClerkToken } from '@/auth/decorators/clerk-token.decorator';
 import {
   Body,
   Controller,
@@ -9,7 +10,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { WorkspacesService } from './workspaces.service';
 
 /**
@@ -31,12 +31,12 @@ export class WorkspacesController {
    * Body: { name: "My Workspace" }
    */
   @Post()
-  async createWorkspace(@CurrentUser('sub') userId: string, @Body('name') name: string) {
+  async createWorkspace(@ClerkToken() clerkToken: string, @Body('name') name: string) {
     if (!name || name.trim().length === 0) {
       throw new Error('Workspace name is required');
     }
 
-    const workspace = await this.workspacesService.createWorkspace(userId, name.trim());
+    const workspace = await this.workspacesService.createWorkspace(clerkToken, name.trim());
 
     return {
       message: 'Successfully created workspace',
@@ -52,8 +52,8 @@ export class WorkspacesController {
    * Headers: { Authorization: "Bearer <clerk-jwt-token>" }
    */
   @Get()
-  async getUserWorkspaces(@CurrentUser('sub') userId: string) {
-    const workspaces = await this.workspacesService.getUserWorkspaces(userId);
+  async getUserWorkspaces(@ClerkToken() clerkToken: string) {
+    const workspaces = await this.workspacesService.getUserWorkspaces(clerkToken);
 
     return {
       message: 'Successfully retrieved workspaces',
@@ -69,8 +69,8 @@ export class WorkspacesController {
    * Headers: { Authorization: "Bearer <clerk-jwt-token>" }
    */
   @Get('owned')
-  async getOwnedWorkspaces(@CurrentUser('sub') userId: string) {
-    const workspaces = await this.workspacesService.getOwnedWorkspaces(userId);
+  async getOwnedWorkspaces(@ClerkToken() clerkToken: string) {
+    const workspaces = await this.workspacesService.getOwnedWorkspaces(clerkToken);
 
     return {
       message: 'Successfully retrieved owned workspaces',
@@ -86,17 +86,14 @@ export class WorkspacesController {
    * Headers: { Authorization: "Bearer <clerk-jwt-token>" }
    */
   @Get(':workspaceId')
-  async getWorkspace(
-    @CurrentUser('sub') userId: string,
-    @Param('workspaceId') workspaceId: string
-  ) {
+  async getWorkspace(@ClerkToken() clerkToken: string, @Param('workspaceId') workspaceId: string) {
     // Check if user has access to this workspace
-    const hasAccess = await this.workspacesService.hasWorkspaceAccess(workspaceId, userId);
+    const hasAccess = await this.workspacesService.hasWorkspaceAccess(clerkToken, workspaceId);
     if (!hasAccess) {
       throw new ForbiddenException('You do not have access to this workspace');
     }
 
-    const workspace = await this.workspacesService.getWorkspaceById(workspaceId);
+    const workspace = await this.workspacesService.getWorkspaceById(clerkToken, workspaceId);
 
     return {
       message: 'Successfully retrieved workspace',
@@ -114,19 +111,23 @@ export class WorkspacesController {
    */
   @Put(':workspaceId')
   async updateWorkspace(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string,
     @Body() updates: { name?: string }
   ) {
     // Check if user is admin or owner
-    const isAdmin = await this.workspacesService.isWorkspaceAdmin(workspaceId, userId);
+    const isAdmin = await this.workspacesService.isWorkspaceAdmin(clerkToken, workspaceId);
     if (!isAdmin) {
       throw new ForbiddenException(
         'Only workspace admins and owners can update workspace settings'
       );
     }
 
-    const workspace = await this.workspacesService.updateWorkspace(workspaceId, updates);
+    const workspace = await this.workspacesService.updateWorkspace(
+      clerkToken,
+      workspaceId,
+      updates
+    );
 
     return {
       message: 'Successfully updated workspace',
@@ -143,16 +144,16 @@ export class WorkspacesController {
    */
   @Delete(':workspaceId')
   async deleteWorkspace(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string
   ) {
     // Only workspace owner can delete the workspace
-    const isOwner = await this.workspacesService.isWorkspaceOwner(workspaceId, userId);
+    const isOwner = await this.workspacesService.isWorkspaceOwner(clerkToken, workspaceId);
     if (!isOwner) {
       throw new ForbiddenException('Only the workspace owner can delete the workspace');
     }
 
-    await this.workspacesService.deleteWorkspace(workspaceId);
+    await this.workspacesService.deleteWorkspace(clerkToken, workspaceId);
 
     return {
       message: 'Successfully deleted workspace',
@@ -169,16 +170,16 @@ export class WorkspacesController {
    */
   @Get(':workspaceId/members')
   async getWorkspaceMembers(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string
   ) {
     // Check if user has access to this workspace
-    const hasAccess = await this.workspacesService.hasWorkspaceAccess(workspaceId, userId);
+    const hasAccess = await this.workspacesService.hasWorkspaceAccess(clerkToken, workspaceId);
     if (!hasAccess) {
       throw new ForbiddenException('You do not have access to this workspace');
     }
 
-    const members = await this.workspacesService.getWorkspaceMembers(workspaceId);
+    const members = await this.workspacesService.getWorkspaceMembers(clerkToken, workspaceId);
 
     return {
       message: 'Successfully retrieved workspace members',
@@ -196,25 +197,26 @@ export class WorkspacesController {
    */
   @Post(':workspaceId/members')
   async addWorkspaceMember(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string,
     @Body() body: { userId: string; role?: 'OWNER' | 'ADMIN' | 'MEMBER' }
   ) {
     // Check if user is admin or owner
-    const isAdmin = await this.workspacesService.isWorkspaceAdmin(workspaceId, userId);
+    const isAdmin = await this.workspacesService.isWorkspaceAdmin(clerkToken, workspaceId);
     if (!isAdmin) {
       throw new ForbiddenException('Only workspace admins and owners can add members');
     }
 
     // Only owners can add other owners
     if (body.role === 'OWNER') {
-      const isOwner = await this.workspacesService.isWorkspaceOwner(workspaceId, userId);
+      const isOwner = await this.workspacesService.isWorkspaceOwner(clerkToken, workspaceId);
       if (!isOwner) {
         throw new ForbiddenException('Only the workspace owner can add other owners');
       }
     }
 
     const member = await this.workspacesService.addWorkspaceMember(
+      clerkToken,
       workspaceId,
       body.userId,
       body.role || 'MEMBER'
@@ -235,29 +237,33 @@ export class WorkspacesController {
    */
   @Delete(':workspaceId/members/:memberId')
   async removeWorkspaceMember(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string,
     @Param('memberId') memberId: string
   ) {
     // Check if user is admin or owner
-    const isAdmin = await this.workspacesService.isWorkspaceAdmin(workspaceId, userId);
+    const isAdmin = await this.workspacesService.isWorkspaceAdmin(clerkToken, workspaceId);
     if (!isAdmin) {
       throw new ForbiddenException('Only workspace admins and owners can remove members');
     }
 
     // Check if trying to remove an owner
-    const memberRole = await this.workspacesService.getUserRoleInWorkspace(workspaceId, memberId);
+    const memberRole = await this.workspacesService.getSpecificUserRoleInWorkspace(
+      clerkToken,
+      workspaceId,
+      memberId
+    );
     if (memberRole === 'OWNER') {
       throw new ForbiddenException('Cannot remove workspace owner. Transfer ownership first.');
     }
 
     // Admins cannot remove other admins
-    const isOwner = await this.workspacesService.isWorkspaceOwner(workspaceId, userId);
+    const isOwner = await this.workspacesService.isWorkspaceOwner(clerkToken, workspaceId);
     if (!isOwner && memberRole === 'ADMIN') {
       throw new ForbiddenException('Only the workspace owner can remove admins');
     }
 
-    await this.workspacesService.removeWorkspaceMember(workspaceId, memberId);
+    await this.workspacesService.removeWorkspaceMember(clerkToken, workspaceId, memberId);
 
     return {
       message: 'Successfully removed member from workspace',
@@ -275,20 +281,24 @@ export class WorkspacesController {
    */
   @Put(':workspaceId/members/:memberId')
   async updateWorkspaceMemberRole(
-    @CurrentUser('sub') userId: string,
+    @ClerkToken() clerkToken: string,
     @Param('workspaceId') workspaceId: string,
     @Param('memberId') memberId: string,
     @Body('role') role: 'OWNER' | 'ADMIN' | 'MEMBER'
   ) {
     // Check if user is admin or owner
-    const isAdmin = await this.workspacesService.isWorkspaceAdmin(workspaceId, userId);
+    const isAdmin = await this.workspacesService.isWorkspaceAdmin(clerkToken, workspaceId);
     if (!isAdmin) {
       throw new ForbiddenException('Only workspace admins and owners can update member roles');
     }
 
     // Only owners can promote to owner or modify owner roles
-    const isOwner = await this.workspacesService.isWorkspaceOwner(workspaceId, userId);
-    const memberRole = await this.workspacesService.getUserRoleInWorkspace(workspaceId, memberId);
+    const isOwner = await this.workspacesService.isWorkspaceOwner(clerkToken, workspaceId);
+    const memberRole = await this.workspacesService.getSpecificUserRoleInWorkspace(
+      clerkToken,
+      workspaceId,
+      memberId
+    );
 
     if ((role === 'OWNER' || memberRole === 'OWNER') && !isOwner) {
       throw new ForbiddenException('Only the workspace owner can manage owner roles');
@@ -300,6 +310,7 @@ export class WorkspacesController {
     }
 
     const member = await this.workspacesService.updateWorkspaceMemberRole(
+      clerkToken,
       workspaceId,
       memberId,
       role
@@ -319,8 +330,8 @@ export class WorkspacesController {
    * Headers: { Authorization: "Bearer <clerk-jwt-token>" }
    */
   @Get(':workspaceId/role')
-  async getUserRole(@CurrentUser('sub') userId: string, @Param('workspaceId') workspaceId: string) {
-    const role = await this.workspacesService.getUserRoleInWorkspace(workspaceId, userId);
+  async getUserRole(@ClerkToken() clerkToken: string, @Param('workspaceId') workspaceId: string) {
+    const role = await this.workspacesService.getUserRoleInWorkspace(clerkToken, workspaceId);
 
     if (!role) {
       throw new NotFoundException('User is not a member of this workspace');

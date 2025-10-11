@@ -1,0 +1,125 @@
+---
+alwaysApply: false
+description: File structure and naming conventions for frontend and backend applications in the monorepo
+---
+# File Structure and Naming Conventions
+
+This document outlines the file structure and naming conventions to be followed in this project.
+
+## Monorepo Structure
+
+This is an Nx monorepo with the following top-level structure:
+
+- `apps/`: Contains the frontend and backend applications
+  - `apps/frontend/`: React + Vite frontend application
+  - `apps/backend/`: NestJS backend application
+- `packages/`: Shared packages used across applications
+  - `packages/shared-types/`: Shared TypeScript types and interfaces
+- `supabase/`: Supabase configuration and database migrations
+
+## Frontend Structure
+
+The frontend application is located at [apps/frontend](mdc:apps/frontend) and follows a React-based architecture.
+
+### Frontend Directory Structure
+
+```
+apps/frontend/src/
+├── components/        # Shared, reusable UI components (PascalCase)
+│   ├── Button.tsx
+│   ├── Dialog.tsx
+│   ├── Input.tsx
+│   └── ...
+├── pages/            # Application pages and views (Next.js-style routing)
+│   ├── home/
+│   │   ├── page.tsx
+│   │   └── layout.tsx
+│   ├── auth/
+│   │   ├── login/page.tsx
+│   │   ├── register/page.tsx
+│   │   └── layout.tsx
+│   └── dashboard/
+├── hooks/            # Custom React hooks (camelCase, prefixed with 'use')
+│   ├── useTheme.ts
+│   ├── useWorkspace.ts
+│   └── index.ts
+├── lib/              # Utility functions, constants, and configurations
+│   ├── api-client.ts
+│   ├── constants.ts
+│   ├── utils.ts
+│   └── seo.ts
+├── providers/        # Global context providers (PascalCase)
+│   ├── ClerkProvider.tsx
+│   ├── ThemeProvider.tsx
+│   ├── WorkspaceProvider.tsx
+│   └── index.tsx
+├── router/           # Routing configuration
+│   ├── guards/       # Route protection components
+│   └── index.tsx
+├── services/         # API service layers (lowercase modules, kebab-case files)
+│   ├── auth/
+│   ├── repository/
+│   └── workspace/
+├── stores/           # Global state management (camelCase)
+│   └── workspace.ts
+├── styles/           # Global styles and theme definitions
+│   ├── index.css
+│   ├── _colors.css
+│   ├── _fonts.css
+│   └── _theme.css
+├── types/            # TypeScript type definitions (camelCase)
+│   ├── index.ts
+│   ├── workspace.ts
+│   └── repository.ts
+└── locales/          # Internationalization files
+    ├── en-US/
+    └── messages.pot
+```
+
+## Backend Structure
+
+The backend application is located at [apps/backend](mdc:apps/backend) and uses NestJS framework.
+
+### Backend Directory Structure
+
+```
+apps/backend/src/
+├── main.ts           # Application entry point and bootstrap
+├── app.module.ts     # Root application module
+├── app.controller.ts # Root application controller
+├── app.service.ts    # Root application service
+├── auth/             # Authentication module
+│   ├── clerk-auth.guard.ts
+│   └── decorators/
+│       ├── clerk-token.decorator.ts
+│       ├── current-user.decorator.ts
+│       └── public.decorator.ts
+├── repositories/     # Repository management module
+│   ├── repositories.module.ts
+│   ├── repositories.controller.ts
+│   ├── repositories.service.ts
+│   ├── github-auth.controller.ts
+│   ├── integration.service.ts
+│   └── types/
+│       ├── integration.ts
+│       └── repository.ts
+├── workspaces/       # Workspace management module
+│   ├── workspaces.module.ts
+│   ├── workspaces.controller.ts
+│   └── workspaces.service.ts
+└── supabase/         # Supabase integration module
+    ├── supabase.module.ts
+    └── supabase.service.ts
+```
+
+### Backend Module Structure
+
+Each feature module follows the NestJS convention:
+- `*.module.ts`: Module definition and dependency injection
+- `*.controller.ts`: HTTP request handlers and route definitions
+- `*.service.ts`: Business logic and data access
+- `types/`: TypeScript interfaces and types specific to the module
+
+## Database Migrations
+
+Database migrations are located at [supabase/migrations](mdc:supabase/migrations)

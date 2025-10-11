@@ -1,0 +1,220 @@
+---
+description: React code structure and best practices for organizing components with proper ordering and performance optimization
+globs: apps/frontend/src/**/*.tsx
+alwaysApply: false
+---
+## Performance Best Practices
+
+### Use `useCallback` for Event Handlers
+Wrap event handlers with `useCallback`:
+```tsx
+const handleClick = useCallback(() => {
+  doSomething();
+}, [dependencies]);
+
+<Button onClick={handleClick} />
+```
+
+### Use `useMemo` for Expensive Computations
+Memoize expensive calculations:
+```tsx
+const sortedList = useMemo(() => {
+  return items.sort((a, b) => a.value - b.value);
+}, [items]);
+```
+
+### Use `useRef` for Mutable Values
+Use refs for values that don't trigger re-renders:
+```tsx
+const timerRef = useRef<NodeJS.Timeout | null>(null);
+```
+
+## Error Handling Patterns
+
+### Use try-catch for async operations
+```tsx
+const handleAction = useCallback(async () => {
+  setIsLoading(true);
+  setError(null); // Clear previous errors
+  
+  try {
+    const result = await apiCall();
+    setData(result);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    setError(message);
+  } finally {
+    setIsLoading(false); // Always runs
+  }
+}, []);
+```
+
+## State Management Patterns
+
+### Boolean State for UI States
+```tsx
+const [isLoading, setIsLoading] = useState(false);
+const [isOpen, setIsOpen] = useState(false);
+const [isValid, setIsValid] = useState(false);
+```
+
+### Null for Optional Data
+```tsx
+const [data, setData] = useState<Data | null>(null);
+const [error, setError] = useState<string | null>(null);
+```
+
+### Arrays with Empty Defaults
+```tsx
+const [items, setItems] = useState<Item[]>([]);
+```
+
+## Accessibility Best Practices
+
+### Provide ARIA labels for icon-only buttons
+```tsx
+<Button aria-label={t`Submit form`}>
+  <IconSubmit />
+</Button>
+```
+
+### Use semantic HTML
+```tsx
+<main>
+  <section aria-labelledby="title">
+    <h1 id="title">{title}</h1>
+  </section>
+</main>
+```
+
+### Keyboard Navigation
+```tsx
+<div
+  role="button"
+  tabIndex={0}
+  onClick={handleClick}
+  onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+>
+```
+
+## Component Organization
+
+Here's a complete example following all the rules:
+```tsx
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router';
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { useAuth } from '@/hooks/useAuth';
+import { apiClient } from '@/lib/api-client';
+import type { User } from '@/types';
+
+// Constants
+const MAX_LENGTH = 100;
+const DEBOUNCE_DELAY = 300;
+
+// Types
+interface FormData {
+  name: string;
+  email: string;
+}
+
+interface MyComponentProps {
+  userId: string;
+  onSuccess?: () => void;
+}
+
+export const MyComponent = ({ userId, onSuccess }: MyComponentProps) => {
+  // Refs
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  // State
+  const [formData, setFormData] = useState<FormData>({ name: '', email: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // External Hooks
+  const navigate = useNavigate();
+  const { user, isLoaded } = useAuth();
+  
+  // Computed Values
+  const isValid = useMemo(() => {
+    return formData.name.length > 0 && formData.email.includes('@');
+  }, [formData]);
+  
+  // Effects
+  useEffect(() => {
+    if (isLoaded && !user) {
+      navigate('/login');
+    }
+  }, [isLoaded, user, navigate]);
+  
+  // Event Handlers
+  const handleInputChange = useCallback((field: keyof FormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  }, []);
+  
+  const handleSubmit = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      await apiClient.post('/submit', formData);
+      onSuccess?.();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [formData, onSuccess]);
+  
+  // Early Returns
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!user) {
+    return null;
+  }
+  
+  // Render
+  return (
+    <div className="container">
+      <Input
+        ref={inputRef}
+        value={formData.name}
+        onChange={(e) => handleInputChange('name', e.target.value)}
+        maxLength={MAX_LENGTH}
+      />
+      
+      <Button
+        onClick={handleSubmit}
+        disabled={!isValid || isLoading}
+      >
+        Submit
+      </Button>
+      
+      {error && <div className="error">{error}</div>}
+    </div>
+  );
+};
+```
+
+## Tailwind CSS Best Practices
+
+### Use the `cn()` Utility
+Import and use `cn()` from `@/lib/utils` for class merging and conditional classes:
+```tsx
+import { cn } from '@/lib/utils';
+
+<div className={cn('base-class', isActive && 'active-class', className)} />
+```
+
+### Theme Colors with Tailwind Config and @/styles
+1. **CSS Variables** (`@/styles/_theme.css`): Define theme colors as CSS custom properties
+2. **Tailwind Config** (`tailwind.config.js`): Reference CSS variables with HSL alpha support
+3. **Component Usage**: Use semantic class names that automatically adapt to theme
+
+### Tailwind Class Ordering
+Order classes logically: Layout → Positioning → Sizing → Spacing → Typography → Colors → Effects → States → Responsive → Animations

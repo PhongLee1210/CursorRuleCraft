@@ -1,4 +1,4 @@
-import { createClerkClient } from '@clerk/backend';
+import { verifyToken } from '@clerk/backend';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
@@ -20,8 +20,6 @@ import { IS_PUBLIC_KEY } from './decorators/public.decorator';
  */
 @Injectable()
 export class ClerkAuthGuard implements CanActivate {
-  private clerkClient;
-
   constructor(
     private reflector: Reflector,
     private configService: ConfigService
@@ -31,9 +29,6 @@ export class ClerkAuthGuard implements CanActivate {
     if (!secretKey) {
       throw new Error('CLERK_SECRET_KEY is not defined in environment variables');
     }
-
-    // Initialize Clerk client with secret key
-    this.clerkClient = createClerkClient({ secretKey });
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -57,15 +52,22 @@ export class ClerkAuthGuard implements CanActivate {
     }
 
     try {
-      // Verify the token with Clerk
-      const verifiedToken = await this.clerkClient.verifyToken(token, {
+      // Verify the token with Clerk using the standalone verifyToken function
+      const verifiedToken = await verifyToken(token, {
         secretKey: this.configService.get<string>('CLERK_SECRET_KEY'),
+        // Validate that the token is from an authorized frontend origin
+        authorizedParties: [
+          this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000',
+          'http://localhost:5173', // Vite default port
+        ].filter(Boolean),
       });
 
       // Attach the verified token payload to the request
       // This makes the user data available in controllers via @Req()
       (request as any).auth = verifiedToken;
       (request as any).userId = verifiedToken.sub;
+      // Also attach the raw token for Supabase integration
+      (request as any).clerkToken = token;
 
       return true;
     } catch (error) {

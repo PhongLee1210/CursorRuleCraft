@@ -74,109 +74,261 @@ CursorRulesCraft/
 ├── packages/
 │   └── shared-types/    # Shared TypeScript types
 ├── supabase/            # Supabase configuration
+├── .env                 # ⚠️ SINGLE unified environment file (gitignored)
+├── .env.template        # Template with all required variables
 ├── nx.json              # Nx workspace configuration
 └── package.json         # Root workspace scripts
 ```
 
+### Environment Configuration
+
+**This monorepo uses a unified environment variable approach:**
+
+- ✅ **Single `.env` file** at the root for all apps
+- ✅ **Frontend (Vite)**: Reads from root via `envDir: '../../'`
+- ✅ **Backend (NestJS)**: Reads from root via `envFilePath: '../../.env'`
+- ✅ **NX**: Tracks `.env` as shared global input
+- ❌ **Do NOT** create `.env` files in `apps/frontend/` or `apps/backend/`
+
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Bun** - Fast JavaScript runtime and package manager
+Install these tools before starting:
+
+- **Node.js v22+** - Required runtime version
+
   ```bash
-  curl -fsSL https://bun.sh/install | bash
+  # Using nvm (recommended)
+  nvm install 22
+  nvm use 22
+
+  # Or using fnm
+  fnm install 22
+  fnm use 22
+
+  # Verify version
+  node --version  # Should show v22.x.x
   ```
 
-### Installation
+  _Note: The project includes `.nvmrc` and `.node-version` files for automatic version switching._
+
+- **Bun** - Fast JavaScript runtime: `curl -fsSL https://bun.sh/install | bash`
+- **Docker** - Required for local Supabase: [Install Docker](https://docs.docker.com/get-docker/)
+- **Supabase CLI** - Database management:
+
+  ```bash
+  # macOS
+  brew install supabase/tap/supabase
+
+  # Or via npm
+  npm install -g supabase
+  ```
+
+### Setup Steps
+
+**1. Clone and Install**
 
 ```bash
-# Install dependencies
+git clone https://github.com/your-username/CursorRulesCraft.git
+cd CursorRulesCraft
 bun install
 ```
 
-### Supabase Setup
-
-1. Create a Supabase project at [database.new](https://database.new)
-2. Copy `.env.local.example` to `.env.local`
-3. Add your Supabase credentials to `.env.local`
-4. Follow the detailed setup guide in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
-
-### Backend API Setup
-
-The backend is a **NestJS** server with **Clerk authentication** and **Supabase integration** (using Service Role Key).
-
-1. Create a `.env` file in the monorepo root with:
-
-   ```bash
-   PORT=4000
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # NOT anon key!
-   CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-   CLERK_SECRET_KEY=your_clerk_secret_key
-   ```
-
-2. Start the backend server:
-
-   ```bash
-   cd apps/backend
-   bun run dev
-   ```
-
-3. The API will be available at `http://localhost:4000/api`
-
-**📖 Backend Documentation:**
-
-- [Backend README](./apps/backend/README.md) - Complete documentation
-- [Quick Start Guide](./apps/backend/QUICKSTART.md) - 5-minute setup
-- [Environment Variables](./apps/backend/ENV.md) - Configuration guide
-- [Setup Complete](./apps/backend/SETUP_COMPLETE.md) - Architecture overview
-- **[Frontend-Backend Integration](./FRONTEND_BACKEND_INTEGRATION.md) - How frontend calls the backend API** ⭐
-
-**Key Features:**
-
-- ✅ Global JWT authentication via Clerk
-- ✅ Supabase Service Role Key (bypasses RLS)
-- ✅ Protected & public endpoints
-- ✅ Type-safe with TypeScript
-- ✅ Hot reload in development
-- ✅ Frontend integrates with backend API (no direct Supabase access)
-
-### Development
+**2. Start Supabase (Important!)**
 
 ```bash
-# Start development server (with hot reload)
-bun run dev
-
-# Open http://localhost:3000 in your browser
+supabase start
 ```
 
-### Building
+This will:
+
+- Start local PostgreSQL database on port 54322
+- Start Supabase Studio on http://127.0.0.1:54323
+- Apply all migrations from `supabase/migrations/`
+- Output your local credentials (**keep this!**)
+
+You'll see output like:
+
+```
+API URL: http://127.0.0.1:54321
+anon key: eyJhbG...
+service_role key: eyJhbG...
+```
+
+**3. Create `.env` File**
+
+Create a `.env` file in the project root with these values:
 
 ```bash
-# Build for production
-bun run build
+# ==============================================================================
+# Backend API Configuration
+# ==============================================================================
+PORT=4000
+FRONTEND_URL=http://localhost:3000
 
-# Preview production build
-bun run preview
+# ==============================================================================
+# Supabase (from supabase start output above)
+# ==============================================================================
+SUPABASE_URL=http://127.0.0.1:54321
+SUPABASE_SERVICE_ROLE_KEY=<paste service_role key here>
+SUPABASE_ANON_KEY=<paste anon key here>
+
+# ==============================================================================
+# Clerk Authentication (get from https://dashboard.clerk.com)
+# ==============================================================================
+CLERK_SECRET_KEY=sk_test_your_clerk_secret_key
+
+# ==============================================================================
+# GitHub OAuth (get from https://github.com/settings/developers)
+# ==============================================================================
+GITHUB_APP_ID=your_github_app_id
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_REDIRECT_URI=http://localhost:4000/api/auth/github/callback
+
+# ==============================================================================
+# Frontend Environment Variables (VITE_* prefix required)
+# ==============================================================================
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
+VITE_API_BASE_URL=http://localhost:4000/api
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_ANON_KEY=<paste anon key here>
 ```
 
-### Code Quality
+**Important Notes**:
+
+- The monorepo uses **ONE unified `.env` file at the root** - both apps read from it
+- Frontend: Vite is configured with `envDir: '../../'` in `vite.config.ts`
+- Backend: NestJS ConfigModule points to `../../.env` in `app.module.ts`
+- Without the `.env` file, the backend will crash with error 500!
+
+**4. Run the Application**
 
 ```bash
-# Run ESLint
-bun run lint
-
-# Format code with Prettier
-bun run format
-
-# Check formatting
-bun run format:check
-
-# Type check
-bun run type-check
+bun run dev:all
 ```
+
+This starts:
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:4000
+- Supabase Studio: http://127.0.0.1:54323
+
+### Common Commands
+
+```bash
+# Development
+bun run dev:all          # Run frontend + backend
+bun run dev:frontend     # Frontend only
+bun run dev:backend      # Backend only
+
+# Supabase
+bun run supabase:start   # Start local Supabase
+bun run supabase:stop    # Stop local Supabase
+bun run supabase:status  # Check status
+bun run supabase:studio  # Open Studio UI
+bun run supabase:reset   # Reset database (WARNING: destroys data)
+
+# Build
+bun run build:frontend   # Build frontend
+bun run build:backend    # Build backend
+```
+
+### Database Migrations
+
+All migrations are in `supabase/migrations/`:
+
+- `000_create_users.sql` - User table for Clerk authentication
+- `001_create_workspaces.sql` - Workspace and member tables
+- `002_create_repositories.sql` - Repository and Git integration tables
+
+**Create a new migration:**
+
+```bash
+supabase db diff -f migration_name
+```
+
+**Apply migrations manually:**
+
+```bash
+supabase db reset
+```
+
+### Getting API Keys
+
+**Clerk (Authentication):**
+
+1. Go to https://dashboard.clerk.com
+2. Create/select your app → API Keys
+3. Copy Secret Key and Publishable Key
+
+**GitHub OAuth (Repository Integration):**
+
+1. Go to https://github.com/settings/developers
+2. New OAuth App:
+   - Homepage URL: `http://localhost:3000`
+   - Callback URL: `http://localhost:3000/auth/callback/github`
+3. Copy Client ID and generate Client Secret
+
+### Troubleshooting
+
+**Error 500: Cannot read properties of undefined**
+
+- ✅ Make sure `.env` file exists in project root
+- ✅ Verify all Supabase variables are set
+- ✅ Run `supabase status` to check if Supabase is running
+
+**Backend won't start:**
+
+```bash
+# Check if Supabase is running
+supabase status
+
+# If not, start it
+supabase start
+
+# Verify .env file exists
+ls -la .env
+```
+
+**Port already in use:**
+
+```bash
+# Check what's using the port
+lsof -i :54321
+
+# Stop Supabase and restart
+supabase stop
+supabase start
+```
+
+### Deploying to Production
+
+**1. Login to Supabase CLI**
+
+```bash
+supabase login
+```
+
+**2. Link Your Project**
+
+```bash
+supabase link --project-ref YOUR_PROJECT_REF
+```
+
+**3. Push Migrations**
+
+```bash
+supabase db push
+```
+
+⚠️ **Warning**: This modifies your production database. Review migrations first!
+
+**4. Update Production `.env`**
+Replace local Supabase credentials with production values from https://app.supabase.com (Project Settings → API)
 
 ---
 

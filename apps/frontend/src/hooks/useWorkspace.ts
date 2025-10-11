@@ -6,12 +6,7 @@
 
 import { useWorkspaceService } from '@/hooks/useWorkspaceService';
 import { useWorkspaceStore } from '@/stores/workspace';
-import type {
-  CreateWorkspaceOptions,
-  UpdateWorkspaceOptions,
-  Workspace,
-  WorkspaceRole,
-} from '@/types/workspace';
+import type { UpdateWorkspaceOptions, Workspace, WorkspaceRole } from '@/types/workspace';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 /**
@@ -131,32 +126,6 @@ export function useWorkspaceRole(workspaceId: string | undefined) {
     },
     enabled: !!workspaceId,
     staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-}
-
-/**
- * Hook to create a workspace
- */
-export function useCreateWorkspace() {
-  const workspaceService = useWorkspaceService();
-  const queryClient = useQueryClient();
-  const addWorkspace = useWorkspaceStore((state) => state.addWorkspace);
-
-  return useMutation({
-    mutationFn: async (options: CreateWorkspaceOptions) => {
-      const result = await workspaceService.createWorkspace(options);
-      if (result.error) {
-        throw result.error;
-      }
-      return result.data!;
-    },
-    onSuccess: (workspace: Workspace) => {
-      // Add workspace to store
-      addWorkspace(workspace);
-      // Invalidate workspace queries
-      queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.owned() });
-    },
   });
 }
 

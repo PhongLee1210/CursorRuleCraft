@@ -29,5 +29,5 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
-export * from './user';
+export * from './repository';
 export * from './workspace';

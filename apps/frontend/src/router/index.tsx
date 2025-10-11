@@ -1,11 +1,15 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router';
 
+import { GitHubCallbackPage } from '@/pages/auth/callback/github/page';
 import { AuthLayout } from '@/pages/auth/layout';
 import { LoginPage } from '@/pages/auth/login/page';
 import { RegisterPage } from '@/pages/auth/register/page';
 import { SSOCallbackPage } from '@/pages/auth/sso/page';
 import { VerifyEmailPage } from '@/pages/auth/verify-email/page';
 import { CursorRuleDetailPage } from '@/pages/cursor/rules/page';
+import { DashboardLayout } from '@/pages/dashboard/layout';
+import { RepositoriesPage } from '@/pages/dashboard/repositories/page';
+import { SettingsPage } from '@/pages/dashboard/settings/page';
 import { ErrorPage } from '@/pages/error/page';
 import { HomeLayout } from '@/pages/home/layout';
 import { HomePage } from '@/pages/home/page';
@@ -28,25 +32,29 @@ export const routes = createRoutesFromElements(
             <Route path="register" element={<RegisterPage />} />
           </Route>
 
-          {/* Email Verification - requires authentication */}
-          <Route element={<AuthGuard />}>
-            <Route path="verify-email" element={<VerifyEmailPage />} />
-          </Route>
+          <Route path="verify-email" element={<VerifyEmailPage />} />
 
-          {/* OAuth Callback */}
+          {/* OAuth Callbacks - no auth required */}
           <Route path="callback" element={<SSOCallbackPage />} />
+          <Route path="callback/github" element={<GitHubCallbackPage />} />
         </Route>
 
         <Route index element={<Navigate replace to="/auth/login" />} />
       </Route>
 
-      {/* <Route path="dashboard">
+      <Route path="dashboard">
         <Route element={<AuthGuard />}>
-          <Route element={<MainLayout />}>
-            <Route index element={<DashboardPage />} />
+          <Route element={<DashboardLayout />}>
+            <Route index element={<RepositoriesPage />} />
+            <Route path="repositories" element={<RepositoriesPage />} />
+          </Route>
+          <Route path="settings">
+            <Route element={<DashboardLayout />}>
+              <Route index element={<SettingsPage />} />
+            </Route>
           </Route>
         </Route>
-      </Route> */}
+      </Route>
     </Route>
   </Route>
 );

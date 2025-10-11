@@ -2,6 +2,14 @@ import type { Workspace } from '@/types/workspace';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// Types
+export type WorkspaceInitError = {
+  type: 'fetch_failed' | 'server_error';
+  message: string;
+  statusCode?: number;
+  retryable: boolean;
+};
+
 interface WorkspaceState {
   // Current active workspace
   currentWorkspace: Workspace | null;
@@ -9,8 +17,14 @@ interface WorkspaceState {
   // All workspaces available to the user
   workspaces: Workspace[];
 
-  // Loading state
+  // Loading state (for general operations)
   isLoading: boolean;
+
+  // Initialization state (for workspace setup)
+  isInitializing: boolean;
+
+  // Initialization error
+  initError: WorkspaceInitError | null;
 
   // Actions
   setCurrentWorkspace: (workspace: Workspace | null) => void;
@@ -19,6 +33,8 @@ interface WorkspaceState {
   updateWorkspace: (workspaceId: string, updates: Partial<Workspace>) => void;
   removeWorkspace: (workspaceId: string) => void;
   setLoading: (isLoading: boolean) => void;
+  setInitializing: (isInitializing: boolean) => void;
+  setInitError: (error: WorkspaceInitError | null) => void;
   reset: () => void;
 }
 
@@ -26,6 +42,8 @@ const initialState = {
   currentWorkspace: null,
   workspaces: [],
   isLoading: false,
+  isInitializing: false,
+  initError: null,
 };
 
 /**
@@ -94,6 +112,14 @@ export const useWorkspaceStore = create<WorkspaceState>()(
 
       setLoading: (isLoading) => {
         set({ isLoading });
+      },
+
+      setInitializing: (isInitializing) => {
+        set({ isInitializing });
+      },
+
+      setInitError: (error) => {
+        set({ initError: error });
       },
 
       reset: () => {

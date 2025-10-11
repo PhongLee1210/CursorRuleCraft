@@ -10,6 +10,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 
 import { Copyright } from '@/components/Copyright';
+import { Logo } from '@/components/Logo';
 
 type Props = {
   className?: string;
@@ -20,7 +21,7 @@ const ActiveIndicator = ({ className }: Props) => (
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     className={cn(
-      'size-1.5 animate-pulse rounded-full bg-info shadow-[0_0_12px] shadow-info',
+      'bg-info shadow-info size-1.5 animate-pulse rounded-full shadow-[0_0_12px]',
       className
     )}
   />
@@ -47,7 +48,7 @@ const SidebarItem = ({ path, name, shortcut, icon, onClick }: SidebarItemProps) 
       variant="ghost"
       className={cn(
         'h-auto justify-start px-4 py-3',
-        isActive && 'pointer-events-none bg-secondary/50 text-secondary-foreground'
+        isActive && 'bg-secondary/50 text-secondary-foreground pointer-events-none'
       )}
       onClick={onClick}
     >
@@ -69,7 +70,7 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
   const navigate = useNavigate();
 
   useKeyboardShortcut(['shift', 'r'], () => {
-    void navigate('/dashboard/resumes');
+    void navigate('/dashboard/repositories');
     setOpen?.(false);
   });
 
@@ -80,8 +81,8 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
 
   const sidebarItems: SidebarItem[] = [
     {
-      path: '/dashboard/cursor/rules',
-      name: t`Cursor Rules`,
+      path: '/dashboard/repositories',
+      name: t`Repositories`,
       shortcut: '⇧R',
       icon: <ReadCvLogoIcon />,
     },
@@ -94,18 +95,18 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
   ];
 
   return (
-    <div className="flex h-full flex-col gap-y-4">
+    <div className="border-border flex h-full flex-col border-r">
       <div className="ml-12 flex justify-center lg:ml-0">
-        {/* <Button asChild size="icon" variant="ghost" className="p-0">
-          <Link to="/">
-            <Icon size={24} className="mx-auto hidden lg:block" />
+        <Button asChild size="icon" variant="ghost" className="h-fit py-6">
+          <Link to="/" className="block w-full">
+            <Logo size={24} />
           </Link>
-        </Button> */}
+        </Button>
       </div>
 
       <Separator className="opacity-50" />
 
-      <div className="grid gap-y-2">
+      <div className="grid gap-y-2 p-4">
         {sidebarItems.map((item) => (
           <SidebarItem {...item} key={item.path} onClick={() => setOpen?.(false)} />
         ))}
@@ -116,7 +117,7 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
       <Separator className="opacity-50" />
 
       <SignedIn>
-        <div className="px-3">
+        <div className="px-3 pt-4">
           <UserButton
             appearance={{
               elements: {
@@ -129,7 +130,7 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
         </div>
       </SignedIn>
 
-      <Copyright className="ml-2" />
+      <Copyright className="p-4" />
     </div>
   );
 };

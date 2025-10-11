@@ -62,7 +62,7 @@
     --secondary-foreground: var(--zinc-50);
 
     /* Error */
-    --error: var(--rose-700);
+    --error: var(--rose-500);
     --error-accent: var(--rose-800);
     --error-foreground: var(--rose-50);
 
@@ -82,9 +82,8 @@
     --success-foreground: var(--emerald-50);
   }
 
-  /* Apply default colors to body and html */
-  html,
-  body {
+  /* Apply default colors to html root */
+  html {
     @apply bg-background text-foreground;
   }
 

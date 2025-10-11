@@ -92,7 +92,7 @@ export const LoginPage = () => {
               })}
               className={errors.identifier ? 'border-error' : ''}
             />
-            {errors.identifier && <p className="text-sm text-error">{errors.identifier.message}</p>}
+            {errors.identifier && <p className="text-error text-sm">{errors.identifier.message}</p>}
           </div>
 
           {/* Password Field */}
@@ -119,7 +119,7 @@ export const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
                 tabIndex={-1}
               >
                 {showPassword ? (
@@ -129,7 +129,7 @@ export const LoginPage = () => {
                 )}
               </button>
             </div>
-            {errors.password && <p className="text-sm text-error">{errors.password.message}</p>}
+            {errors.password && <p className="text-error text-sm">{errors.password.message}</p>}
             <p className="text-muted-foreground text-xs">
               <Trans>
                 Hold <b>Ctrl</b> to display your password temporarily

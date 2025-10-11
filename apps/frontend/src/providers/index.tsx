@@ -1,24 +1,24 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { Outlet } from 'react-router';
 
-import { AuthSyncProvider } from '@/providers/AuthSyncProvider';
 import { ClerkProvider } from '@/providers/ClerkProvider';
 import { LocaleProvider } from '@/providers/LocaleProvider';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { WorkspaceProvider } from '@/providers/WorkspaceProvider';
 
 export const Providers = () => (
-  <LocaleProvider>
-    <HelmetProvider>
-      <ClerkProvider>
+  <HelmetProvider>
+    <ClerkProvider>
+      <LocaleProvider>
         <QueryProvider>
-          <AuthSyncProvider>
+          <WorkspaceProvider>
             <ThemeProvider>
               <Outlet />
             </ThemeProvider>
-          </AuthSyncProvider>
+          </WorkspaceProvider>
         </QueryProvider>
-      </ClerkProvider>
-    </HelmetProvider>
-  </LocaleProvider>
+      </LocaleProvider>
+    </ClerkProvider>
+  </HelmetProvider>
 );

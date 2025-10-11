@@ -13,7 +13,7 @@ export const HomePage = () => {
   const { i18n } = useLingui();
 
   return (
-    <main className="relative isolate bg-background">
+    <main className="relative isolate">
       <Helmet prioritizeSeoTags>
         <html lang={i18n.locale} />
       </Helmet>

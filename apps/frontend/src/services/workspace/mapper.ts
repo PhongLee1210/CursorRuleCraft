@@ -1,4 +1,3 @@
-import { mapToUserDto } from '@/services/user/mapper';
 import type { Workspace, WorkspaceDetail, WorkspaceMember } from '@/types/workspace';
 
 /**
@@ -10,13 +9,13 @@ export function mapToWorkspaceDto(data: any): Workspace {
     ownerId: data.owner_id,
     name: data.name,
     createdAt: data.created_at,
-    owner: data.owner ? mapToUserDto(data.owner) : undefined,
     userRole: data.userRole || data.user_role,
   };
 }
 
 /**
- * Maps raw workspace data with owner info to WorkspaceDetail type
+ * Maps raw workspace data to WorkspaceDetail type
+ * Note: Same as Workspace since we don't store user objects
  */
 export function mapToWorkspaceDetailDto(data: any): WorkspaceDetail {
   return {
@@ -24,7 +23,6 @@ export function mapToWorkspaceDetailDto(data: any): WorkspaceDetail {
     ownerId: data.owner_id,
     name: data.name,
     createdAt: data.created_at,
-    owner: mapToUserDto(data.owner),
     userRole: data.userRole || data.user_role,
   };
 }
@@ -37,6 +35,5 @@ export function mapToWorkspaceMemberDto(data: any): WorkspaceMember {
     workspaceId: data.workspace_id,
     userId: data.user_id,
     role: data.role,
-    user: data.user ? mapToUserDto(data.user) : undefined,
   };
 }

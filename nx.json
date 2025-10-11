@@ -10,7 +10,7 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.js"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.env"]
   },
   "targetDefaults": {
     "build": {
@@ -31,9 +31,6 @@
     }
   },
   "plugins": [],
-  "affected": {
-    "defaultBase": "main"
-  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",

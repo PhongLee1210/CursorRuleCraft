@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
+  envDir: '../../',
   cacheDir: '../../node_modules/.vite/frontend',
   build: {
     sourcemap: true,

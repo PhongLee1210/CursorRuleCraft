@@ -3,11 +3,26 @@ import { useAuth } from '@clerk/clerk-react';
 import { useMemo } from 'react';
 
 /**
+ * API Error with additional context
+ */
+export class ApiError extends Error {
+  statusCode?: number;
+  response?: any;
+
+  constructor(message: string, statusCode?: number, response?: any) {
+    super(message);
+    this.name = 'ApiError';
+    this.statusCode = statusCode;
+    this.response = response;
+  }
+}
+
+/**
  * Generic API response wrapper
  */
 export interface ApiResponse<T = any> {
   data: T | null;
-  error: Error | null;
+  error: ApiError | null;
   message?: string;
 }
 
@@ -70,7 +85,11 @@ export class ApiClient {
       if (!response.ok) {
         return {
           data: null,
-          error: new Error(data.message || `HTTP ${response.status}: ${response.statusText}`),
+          error: new ApiError(
+            data.message || `HTTP ${response.status}: ${response.statusText}`,
+            response.status,
+            data
+          ),
           message: data.message,
         };
       }
@@ -84,7 +103,13 @@ export class ApiClient {
       console.error('[ApiClient] Request error:', error);
       return {
         data: null,
-        error: error instanceof Error ? error : new Error('Unknown error occurred'),
+        error:
+          error instanceof ApiError
+            ? error
+            : new ApiError(
+                error instanceof Error ? error.message : 'Unknown error occurred',
+                0 // Network error
+              ),
       };
     }
   }

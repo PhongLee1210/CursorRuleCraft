@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth';
+import { useWorkspaceStore } from '@/stores/workspace';
 import { useClerk } from '@clerk/clerk-react';
 import { useCallback, useState } from 'react';
 
@@ -8,16 +8,16 @@ type UseLogoutOutput = {
 };
 
 /**
- * Custom hook to handle user logout with both Clerk and Supabase integration.
+ * Custom hook to handle user logout with Clerk.
  *
  * This hook:
  * - Signs out the user from Clerk
- * - Clears the user state from the Zustand auth store
+ * - Resets the workspace store
  * - Handles any errors that occur during logout
  *
  * **Navigation:** This hook does not handle navigation. If the user is on a protected route,
  * the `AuthGuard` will automatically redirect them to the login page after logout.
- * For public pages, the UI will update reactively based on the auth state.
+ * For public pages, the UI will update reactively based on Clerk's auth state.
  *
  * @returns Object containing logout function and loading state
  *
@@ -36,25 +36,23 @@ type UseLogoutOutput = {
  */
 export const useLogout = (): UseLogoutOutput => {
   const { signOut } = useClerk();
-  const setUser = useAuthStore((state) => state.setUser);
+  const resetWorkspace = useWorkspaceStore((state) => state.reset);
   const [isLoading, setIsLoading] = useState(false);
 
   const logout = useCallback(async () => {
     try {
       setIsLoading(true);
 
-      // Clear user state from Zustand store
-      setUser(null);
+      // Reset workspace store before signing out
+      resetWorkspace();
 
-      // Sign out from Clerk
-      // AuthGuard will handle redirect if user is on a protected route
       await signOut();
     } catch (error) {
       console.error('Error during logout:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [signOut, setUser]);
+  }, [signOut, resetWorkspace]);
 
   return {
     logout,

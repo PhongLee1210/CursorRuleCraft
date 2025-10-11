@@ -8,6 +8,14 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "bun run dev",
+        "cwd": "apps/backend",
+        "color": true
+      }
+    },
+    "dev:tsx": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run dev:tsx",
         "cwd": "apps/backend"
       }
     },

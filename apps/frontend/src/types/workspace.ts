@@ -1,8 +1,8 @@
+import type { ApiError } from '@/lib/api-client';
+
 /**
  * Workspace types and interfaces
  */
-
-import type { UserDto } from './user';
 
 /**
  * Workspace role enum
@@ -17,7 +17,6 @@ export interface Workspace {
   ownerId: string;
   name: string;
   createdAt: string;
-  owner?: UserDto;
   userRole?: WorkspaceRole; // The current user's role in this workspace
 }
 
@@ -28,14 +27,15 @@ export interface WorkspaceMember {
   workspaceId: string;
   userId: string;
   role: WorkspaceRole;
-  user?: UserDto;
 }
 
 /**
- * Workspace with full details (includes owner info)
+ * Workspace with full details
+ * Note: owner is just the ownerId (Clerk user ID)
+ * Fetch user details from Clerk using ownerId if needed
  */
 export interface WorkspaceDetail extends Workspace {
-  owner: UserDto;
+  // No additional fields - just use ownerId from Workspace
 }
 
 /**
@@ -72,7 +72,7 @@ export interface UpdateWorkspaceMemberRoleOptions {
  */
 export interface WorkspaceServiceResult<T> {
   data: T | null;
-  error: Error | null;
+  error: ApiError | null;
 }
 
 /**
@@ -80,7 +80,7 @@ export interface WorkspaceServiceResult<T> {
  */
 export function hasWorkspaceError<T>(
   result: WorkspaceServiceResult<T>
-): result is WorkspaceServiceResult<null> & { error: Error } {
+): result is WorkspaceServiceResult<null> & { error: ApiError } {
   return result.error !== null;
 }
 

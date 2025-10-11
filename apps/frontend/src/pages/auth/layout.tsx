@@ -22,7 +22,7 @@ export const AuthLayout = () => {
   const hideDivider = !providers.includes('email') || providers.length === 1;
 
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen w-screen overflow-hidden">
       <div className="relative flex w-full flex-col justify-center gap-y-8 px-12 sm:mx-auto sm:w-[420px] sm:flex-shrink-0 sm:px-0 lg:w-[480px] lg:px-0">
         <div className="top-2 z-10 flex w-full items-center justify-between px-12 sm:px-0 lg:absolute lg:pl-12 lg:pr-4">
           <Link to="/" className="block">
@@ -64,7 +64,7 @@ export const AuthLayout = () => {
           src="https://unsplash.com/photos/a-sign-with-a-question-mark-and-a-question-mark-drawn-on-it-OAsF0QMRWlA"
         />
 
-        <div className="absolute bottom-5 right-5 z-10 bg-primary/30 px-4 py-2 text-xs font-medium text-primary-foreground backdrop-blur-sm">
+        <div className="bg-primary/30 text-primary-foreground absolute bottom-5 right-5 z-10 px-4 py-2 text-xs font-medium backdrop-blur-sm">
           <a
             target="_blank"
             rel="noopener noreferrer nofollow"
