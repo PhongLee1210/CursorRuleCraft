@@ -22,7 +22,7 @@ export async function createWorkspace(
   options: CreateWorkspaceOptions
 ): Promise<WorkspaceServiceResult<Workspace>> {
   try {
-    const response = await apiClient.post<{ data: any }>('/api/workspaces', {
+    const response = await apiClient.post<{ data: any }>('/workspaces', {
       name: options.name,
     });
 
@@ -54,7 +54,7 @@ export async function getUserWorkspaces(
   apiClient: ApiClient
 ): Promise<WorkspaceServiceResult<Workspace[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>('/api/workspaces');
+    const response = await apiClient.get<{ data: any[] }>('/workspaces');
 
     if (response.error) {
       console.error('[WorkspaceService] Error fetching user workspaces:', response.error);
@@ -86,7 +86,7 @@ export async function getOwnedWorkspaces(
   apiClient: ApiClient
 ): Promise<WorkspaceServiceResult<Workspace[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>('/api/workspaces/owned');
+    const response = await apiClient.get<{ data: any[] }>('/workspaces/owned');
 
     if (response.error) {
       console.error('[WorkspaceService] Error fetching owned workspaces:', response.error);
@@ -119,7 +119,7 @@ export async function getWorkspaceById(
   workspaceId: string
 ): Promise<WorkspaceServiceResult<WorkspaceDetail>> {
   try {
-    const response = await apiClient.get<{ data: any }>(`/api/workspaces/${workspaceId}`);
+    const response = await apiClient.get<{ data: any }>(`/workspaces/${workspaceId}`);
 
     if (response.error) {
       console.error('[WorkspaceService] Error fetching workspace:', response.error);
@@ -151,7 +151,7 @@ export async function updateWorkspace(
   options: UpdateWorkspaceOptions
 ): Promise<WorkspaceServiceResult<Workspace>> {
   try {
-    const response = await apiClient.put<{ data: any }>(`/api/workspaces/${workspaceId}`, options);
+    const response = await apiClient.put<{ data: any }>(`/workspaces/${workspaceId}`, options);
 
     if (response.error) {
       console.error('[WorkspaceService] Error updating workspace:', response.error);
@@ -182,7 +182,7 @@ export async function deleteWorkspace(
   workspaceId: string
 ): Promise<WorkspaceServiceResult<boolean>> {
   try {
-    const response = await apiClient.delete<{ data: boolean }>(`/api/workspaces/${workspaceId}`);
+    const response = await apiClient.delete<{ data: boolean }>(`/workspaces/${workspaceId}`);
 
     if (response.error) {
       console.error('[WorkspaceService] Error deleting workspace:', response.error);
@@ -213,7 +213,7 @@ export async function getWorkspaceMembers(
   workspaceId: string
 ): Promise<WorkspaceServiceResult<WorkspaceMember[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>(`/api/workspaces/${workspaceId}/members`);
+    const response = await apiClient.get<{ data: any[] }>(`/workspaces/${workspaceId}/members`);
 
     if (response.error) {
       console.error('[WorkspaceService] Error fetching workspace members:', response.error);
@@ -248,7 +248,7 @@ export async function addWorkspaceMember(
   role: WorkspaceRole = 'MEMBER'
 ): Promise<WorkspaceServiceResult<WorkspaceMember>> {
   try {
-    const response = await apiClient.post<{ data: any }>(`/api/workspaces/${workspaceId}/members`, {
+    const response = await apiClient.post<{ data: any }>(`/workspaces/${workspaceId}/members`, {
       userId,
       role,
     });
@@ -284,7 +284,7 @@ export async function removeWorkspaceMember(
 ): Promise<WorkspaceServiceResult<boolean>> {
   try {
     const response = await apiClient.delete<{ data: boolean }>(
-      `/api/workspaces/${workspaceId}/members/${memberId}`
+      `/workspaces/${workspaceId}/members/${memberId}`
     );
 
     if (response.error) {
@@ -319,7 +319,7 @@ export async function updateWorkspaceMemberRole(
 ): Promise<WorkspaceServiceResult<WorkspaceMember>> {
   try {
     const response = await apiClient.put<{ data: any }>(
-      `/api/workspaces/${workspaceId}/members/${memberId}`,
+      `/workspaces/${workspaceId}/members/${memberId}`,
       { role }
     );
 
@@ -353,7 +353,7 @@ export async function getUserRoleInWorkspace(
 ): Promise<WorkspaceServiceResult<WorkspaceRole>> {
   try {
     const response = await apiClient.get<{ data: { role: WorkspaceRole } }>(
-      `/api/workspaces/${workspaceId}/role`
+      `/workspaces/${workspaceId}/role`
     );
 
     if (response.error) {

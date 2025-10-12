@@ -1,4 +1,4 @@
-import { GitProvider } from './repository';
+import { GitProvider } from '@/repositories/types/repository';
 
 /**
  * Git Integration entity from database
@@ -13,6 +13,10 @@ export interface GitIntegration {
   refresh_token?: string;
   token_expires_at?: string;
   scopes: string[];
+  // GitHub App Installation fields
+  installation_id?: number; // GitHub App installation ID
+  installation_token_expires_at?: string; // When the installation token expires (1 hour)
+  auth_type?: 'oauth' | 'installation'; // Type of authentication
   created_at: string;
   updated_at: string;
 }
@@ -29,6 +33,10 @@ export interface CreateGitIntegrationDto {
   refresh_token?: string;
   token_expires_at?: string;
   scopes: string[];
+  // GitHub App Installation fields
+  installation_id?: number;
+  installation_token_expires_at?: string;
+  auth_type?: 'oauth' | 'installation';
 }
 
 /**

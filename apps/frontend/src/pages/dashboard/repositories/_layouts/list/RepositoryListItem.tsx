@@ -20,10 +20,12 @@ import {
   ArrowsClockwiseIcon,
   DotsThreeVerticalIcon,
   FolderOpenIcon,
+  GitBranchIcon,
   GithubLogoIcon,
   GitlabLogoIcon,
   LinkSimpleIcon,
   SpinnerGapIcon,
+  StarIcon,
   TrashSimpleIcon,
 } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
@@ -121,11 +123,16 @@ export const RepositoryListItem = ({ repository }: Props) => {
           className="group"
           start={getProviderIcon(repository.provider)}
           title={
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="font-semibold">{repository.name}</span>
               {repository.isPrivate && (
                 <Badge variant="secondary" className="text-xs">
                   {t`Private`}
+                </Badge>
+              )}
+              {repository.language && (
+                <Badge variant="secondary" outline className="text-xs">
+                  {repository.language}
                 </Badge>
               )}
             </div>
@@ -133,7 +140,20 @@ export const RepositoryListItem = ({ repository }: Props) => {
           description={
             <div className="space-y-1">
               <p className="text-xs opacity-75">{repository.fullName}</p>
-              <p className="text-xs opacity-60">{t`Last synced: ${lastSynced}`}</p>
+              <div className="flex items-center gap-3 text-xs opacity-60">
+                <div className="flex items-center gap-1">
+                  <GitBranchIcon size={12} weight="bold" />
+                  <span>{repository.defaultBranch}</span>
+                </div>
+                {repository.starsCount !== undefined && (
+                  <div className="flex items-center gap-1">
+                    <StarIcon size={12} weight="bold" />
+                    <span>{repository.starsCount}</span>
+                  </div>
+                )}
+                <span>•</span>
+                <span>{t`Last synced: ${lastSynced}`}</span>
+              </div>
             </div>
           }
           end={dropdownMenu}

@@ -1,24 +1,26 @@
-import {
-  CreateGitIntegrationDto,
-  GitHubRepository,
-  GitIntegration,
-} from '@/repositories/types/integration';
-import { GitProvider } from '@/repositories/types/repository';
 import { SupabaseService } from '@/supabase/supabase.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { GitProvider } from '../types/repository';
+import { GitHubAppService } from './github-app.service';
+import { CreateGitIntegrationDto, GitHubRepository, GitIntegration } from './integration.types';
 
 /**
  * Git Integration Service
  *
  * This service handles OAuth integrations with Git providers
  * and provides methods to interact with their APIs.
+ *
+ * Supports both:
+ * - OAuth tokens (can expire/be revoked)
+ * - GitHub App installation tokens (auto-refresh, more reliable)
  */
 @Injectable()
 export class IntegrationService {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly githubAppService: GitHubAppService
   ) {}
 
   /**
@@ -105,6 +107,17 @@ export class IntegrationService {
     userId: string,
     provider: GitProvider
   ): Promise<GitIntegration | null> {
+    // Validate inputs
+    if (!userId) {
+      console.error('getUserGitIntegration called with empty userId');
+      throw new Error('User ID is required to fetch git integration');
+    }
+
+    if (!clerkToken) {
+      console.error('getUserGitIntegration called with empty clerkToken');
+      throw new Error('Authentication token is required to fetch git integration');
+    }
+
     const client = this.supabaseService.getClientWithClerkToken(clerkToken);
 
     const { data, error } = await client
@@ -116,8 +129,13 @@ export class IntegrationService {
 
     if (error) {
       if (error.code === 'PGRST116') {
+        // No matching row found - this is expected when user hasn't connected yet
         return null;
       }
+      console.error(
+        `Failed to fetch git integration for user ${userId}, provider ${provider}:`,
+        error
+      );
       throw new Error(`Failed to fetch git integration: ${error.message}`);
     }
 
@@ -159,6 +177,144 @@ export class IntegrationService {
   }
 
   /**
+   * Get a valid access token for GitHub API calls
+   *
+   * This method handles both OAuth and Installation tokens:
+   * - For OAuth: returns the stored token (may be expired)
+   * - For Installation: generates a fresh token if expired
+   *
+   * @param integration - Git integration record
+   * @param clerkToken - Clerk token for database updates
+   * @returns Valid access token
+   */
+  async getValidAccessToken(integration: GitIntegration, clerkToken: string): Promise<string> {
+    // For OAuth authentication, return the stored token
+    if (integration.auth_type === 'oauth' || !integration.auth_type) {
+      return integration.access_token;
+    }
+
+    // For Installation authentication, check if token needs refresh
+    if (integration.auth_type === 'installation' && integration.installation_id) {
+      const now = new Date();
+      const expiresAt = integration.installation_token_expires_at
+        ? new Date(integration.installation_token_expires_at)
+        : new Date(0); // Expired date if not set
+
+      // If token is still valid (with 5-minute buffer), return it
+      const bufferMs = 5 * 60 * 1000; // 5 minutes
+      if (expiresAt.getTime() - now.getTime() > bufferMs) {
+        return integration.access_token;
+      }
+
+      // Token expired or about to expire, generate a new one
+      console.log(
+        `🔄 Installation token expired for integration ${integration.id}, generating new one...`
+      );
+
+      try {
+        const newToken = await this.githubAppService.generateInstallationToken(
+          integration.installation_id
+        );
+
+        // Update the stored token and expiration
+        const newExpiresAt = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour from now
+
+        await this.updateIntegrationToken(clerkToken, integration.id, newToken, newExpiresAt);
+
+        console.log(`✅ Generated new installation token for integration ${integration.id}`);
+        return newToken;
+      } catch (error) {
+        console.error(`❌ Failed to refresh installation token for ${integration.id}:`, error);
+        // Fall back to stored token (will likely fail, but let the error propagate naturally)
+        return integration.access_token;
+      }
+    }
+
+    // Fallback to stored token
+    return integration.access_token;
+  }
+
+  /**
+   * Update integration token and expiration
+   * @private
+   */
+  private async updateIntegrationToken(
+    clerkToken: string,
+    integrationId: string,
+    accessToken: string,
+    expiresAt: Date
+  ): Promise<void> {
+    const client = this.supabaseService.getClientWithClerkToken(clerkToken);
+
+    const { error } = await client
+      .from('git_integrations')
+      .update({
+        access_token: accessToken,
+        installation_token_expires_at: expiresAt.toISOString(),
+      })
+      .eq('id', integrationId);
+
+    if (error) {
+      console.error(`Failed to update integration token:`, error);
+    }
+  }
+
+  /**
+   * Migrate an OAuth integration to use GitHub App installation tokens
+   * This is useful for converting existing OAuth integrations to the more reliable installation token approach
+   *
+   * @param integration - Existing OAuth integration
+   * @param clerkToken - Clerk token for database updates
+   * @returns Updated integration with installation token
+   */
+  async migrateToInstallationToken(
+    integration: GitIntegration,
+    clerkToken: string
+  ): Promise<GitIntegration> {
+    // Only works if GitHub App is configured
+    if (!this.githubAppService.isConfigured()) {
+      throw new Error('GitHub App not configured. Cannot migrate to installation tokens.');
+    }
+
+    // Get installation ID using the OAuth token
+    const installationId = await this.githubAppService.getInstallationIdForUser(
+      integration.access_token
+    );
+
+    if (!installationId) {
+      throw new Error(
+        'GitHub App is not installed for this user. Please install the GitHub App first.'
+      );
+    }
+
+    // Generate an installation token
+    const installationToken = await this.githubAppService.generateInstallationToken(installationId);
+
+    // Update the integration record
+    const client = this.supabaseService.getClientWithClerkToken(clerkToken);
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+
+    const { data, error } = await client
+      .from('git_integrations')
+      .update({
+        installation_id: installationId,
+        installation_token_expires_at: expiresAt.toISOString(),
+        access_token: installationToken,
+        auth_type: 'installation',
+      })
+      .eq('id', integration.id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to migrate integration: ${error.message}`);
+    }
+
+    console.log(`✅ Migrated integration ${integration.id} to use installation tokens`);
+    return data;
+  }
+
+  /**
    * Fetch repositories from GitHub API
    */
   async fetchGitHubRepositories(
@@ -179,7 +335,27 @@ export class IntegrationService {
       );
 
       if (!response.ok) {
-        const error = await response.json();
+        // Handle 401 Unauthorized (Bad credentials) specifically
+        if (response.status === 401) {
+          throw new Error(
+            'GITHUB_TOKEN_EXPIRED: Your GitHub access token has expired or been revoked. Please reconnect your GitHub account.'
+          );
+        }
+
+        // Handle 403 Forbidden (Rate limit or permission issues)
+        if (response.status === 403) {
+          const error = await response.json().catch(() => ({}));
+          if (error.message && error.message.includes('rate limit')) {
+            throw new Error('GitHub API rate limit exceeded. Please try again later.');
+          }
+          throw new Error(
+            'GitHub API access forbidden. Please check your permissions and try reconnecting your GitHub account.'
+          );
+        }
+
+        // Handle other errors
+        const error = await response.json().catch(() => ({ message: response.statusText }));
+        console.error('GitHub API error:', { status: response.status, error });
         throw new Error(`GitHub API error: ${error.message || response.statusText}`);
       }
 
@@ -251,6 +427,49 @@ export class IntegrationService {
         `Failed to fetch GitHub user: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     }
+  }
+
+  /**
+   * Validate GitHub token by making a lightweight API call
+   * Returns true if token is valid, false if revoked/expired
+   */
+  async validateGitHubToken(accessToken: string): Promise<boolean> {
+    try {
+      const response = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.error('Error validating GitHub token:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Check if a git integration token is still valid
+   * If invalid, optionally delete the integration
+   */
+  async checkAndCleanInvalidIntegration(
+    clerkToken: string,
+    integrationId: string,
+    accessToken: string
+  ): Promise<boolean> {
+    const isValid = await this.validateGitHubToken(accessToken);
+
+    if (!isValid) {
+      console.log(
+        `Integration ${integrationId} has invalid token. Consider removing it from database.`
+      );
+      // Optionally auto-delete invalid integrations
+      // await this.deleteGitIntegration(clerkToken, integrationId);
+    }
+
+    return isValid;
   }
 
   /**

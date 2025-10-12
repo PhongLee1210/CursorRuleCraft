@@ -29,5 +29,6 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
+export * from './cursor-rules';
 export * from './repository';
 export * from './workspace';

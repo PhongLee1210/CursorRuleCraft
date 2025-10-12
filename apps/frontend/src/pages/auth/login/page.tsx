@@ -6,7 +6,7 @@ import { t, Trans } from '@lingui/macro';
 import { ArrowRightIcon, EyeIcon, EyeSlashIcon, WarningIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 interface LoginFormData {
   identifier: string;
@@ -16,6 +16,7 @@ interface LoginFormData {
 export const LoginPage = () => {
   const { login, isLoading } = useLogin();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,9 +36,18 @@ export const LoginPage = () => {
       setError(null);
       const result = await login(data);
 
-      // If login is successful and status is complete, redirect to dashboard
+      // If login is successful and status is complete, redirect
       if (result.status === 'complete') {
-        navigate('/dashboard');
+        // Check if there's a saved location to redirect back to (from AuthGuard or WorkspaceProvider)
+        const from = (location.state as any)?.from;
+
+        if (from?.pathname && from.pathname !== '/auth/login') {
+          // Redirect to the saved location with full path
+          navigate(`${from.pathname}${from.search || ''}${from.hash || ''}`, { replace: true });
+        } else {
+          // Default redirect to dashboard
+          navigate('/dashboard', { replace: true });
+        }
       }
     } catch (err: any) {
       console.error('Login error:', err);

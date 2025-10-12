@@ -105,7 +105,7 @@ export const RegisterPage = () => {
                 })}
                 className={errors.firstName ? 'border-error' : ''}
               />
-              {errors.firstName && <p className="text-sm text-error">{errors.firstName.message}</p>}
+              {errors.firstName && <p className="text-error text-sm">{errors.firstName.message}</p>}
             </div>
 
             <div className="space-y-2">
@@ -123,7 +123,7 @@ export const RegisterPage = () => {
                 })}
                 className={errors.lastName ? 'border-error' : ''}
               />
-              {errors.lastName && <p className="text-sm text-error">{errors.lastName.message}</p>}
+              {errors.lastName && <p className="text-error text-sm">{errors.lastName.message}</p>}
             </div>
           </div>
 
@@ -151,7 +151,7 @@ export const RegisterPage = () => {
               })}
               className={errors.username ? 'border-error' : ''}
             />
-            {errors.username && <p className="text-sm text-error">{errors.username.message}</p>}
+            {errors.username && <p className="text-error text-sm">{errors.username.message}</p>}
           </div>
 
           {/* Email Field */}
@@ -175,7 +175,7 @@ export const RegisterPage = () => {
               className={errors.emailAddress ? 'border-error' : ''}
             />
             {errors.emailAddress && (
-              <p className="text-sm text-error">{errors.emailAddress.message}</p>
+              <p className="text-error text-sm">{errors.emailAddress.message}</p>
             )}
           </div>
 
@@ -203,7 +203,7 @@ export const RegisterPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
                 tabIndex={-1}
               >
                 {showPassword ? (
@@ -213,7 +213,7 @@ export const RegisterPage = () => {
                 )}
               </button>
             </div>
-            {errors.password && <p className="text-sm text-error">{errors.password.message}</p>}
+            {errors.password && <p className="text-error text-sm">{errors.password.message}</p>}
             <p className="text-muted-foreground text-xs">
               <Trans>Use at least 8 characters with a mix of letters, numbers, and symbols</Trans>
             </p>

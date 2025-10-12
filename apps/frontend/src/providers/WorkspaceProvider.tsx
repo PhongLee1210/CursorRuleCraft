@@ -1,5 +1,6 @@
-import { useAuth, useUser } from '@clerk/clerk-react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useAuth, useClerk, useUser } from '@clerk/clerk-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Alert } from '@/components/Alert';
 import { LoadingBanner } from '@/components/LoadingBanner';
@@ -12,6 +13,7 @@ const MAX_RETRY_ATTEMPTS = 3;
 const INITIAL_RETRY_DELAY = 1000;
 const MAX_RETRY_DELAY = 10000;
 const TOKEN_READY_DELAY = 300;
+const REDIRECT_DELAY = 3000; // Delay before redirecting to login page
 const RETRYABLE_STATUS_CODES = [0, 500, 503];
 
 /**
@@ -44,9 +46,15 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
   const workspaceInitializedRef = useRef(false);
   const retryCountRef = useRef(0);
 
+  // State
+  const [isClearingAuth, setIsClearingAuth] = useState(false);
+
   // External Hooks
   const { user, isSignedIn, isLoaded: isUserLoaded } = useUser();
   const { isLoaded: isAuthLoaded, getToken } = useAuth();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+  const location = useLocation();
   const workspaceService = useWorkspaceService();
 
   // Store
@@ -57,6 +65,29 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
   const initError = useWorkspaceStore((state) => state.initError);
 
   // Event Handlers & Functions
+  /**
+   * Sign out and redirect to login page with saved location
+   */
+  const clearAuthAndRedirect = useCallback(async () => {
+    try {
+      setIsClearingAuth(true);
+      console.log('[WorkspaceInit] Signing out and redirecting to login with saved location...');
+
+      await signOut();
+
+      // Navigate to login page with saved location state (same pattern as AuthGuard)
+      navigate('/auth/login', {
+        replace: true,
+        state: { from: location },
+      });
+    } catch (err) {
+      console.error('[WorkspaceInit] Error during sign out:', err);
+      navigate('/auth/login', { replace: true });
+    } finally {
+      setIsClearingAuth(false);
+    }
+  }, [navigate, location]);
+
   /**
    * Initialize workspace with retry logic
    */
@@ -124,6 +155,12 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
             retryable: isRetryable,
           });
           setInitializing(false);
+
+          // Sign out and redirect after a delay
+          console.log(
+            `[WorkspaceInit] All retries exhausted. Signing out in ${REDIRECT_DELAY}ms...`
+          );
+          setTimeout(() => clearAuthAndRedirect(), REDIRECT_DELAY);
           return;
         }
 
@@ -149,19 +186,16 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
           retryable: true,
         });
         setInitializing(false);
+
+        // Sign out and redirect after a delay for unexpected errors
+        console.log(
+          `[WorkspaceInit] Unexpected error occurred. Signing out in ${REDIRECT_DELAY}ms...`
+        );
+        setTimeout(() => clearAuthAndRedirect(), REDIRECT_DELAY);
       }
     },
-    [getToken, workspaceService, setWorkspaces, setInitializing, setInitError]
+    [getToken, workspaceService, setWorkspaces, setInitializing, setInitError, clearAuthAndRedirect]
   );
-
-  /**
-   * Manual retry handler
-   */
-  const handleRetry = useCallback(() => {
-    retryCountRef.current = 0;
-    setInitError(null);
-    initializeWorkspace();
-  }, [initializeWorkspace]);
 
   // Side Effects
   useEffect(() => {
@@ -198,7 +232,7 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
   // Early Returns - Error State (Blocks UI completely)
   if (initError && !isInitializing) {
     return (
-      <div className="bg-background fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="w-full max-w-2xl px-4">
           <Alert
             variant="error"
@@ -206,22 +240,58 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
             title="Workspace Initialization Failed"
             message={initError.message}
             details={
-              initError.statusCode === 500 ? (
-                <>
-                  💡 <strong>Admin action required:</strong> Please check the database RLS policies
-                  configuration.
-                </>
-              ) : undefined
-            }
-            action={
-              initError.retryable
-                ? {
-                    label: 'Retry',
-                    onClick: handleRetry,
-                  }
-                : undefined
+              <>
+                {initError.statusCode === 500 && (
+                  <>
+                    💡 <strong>Admin action required:</strong> Please check the database RLS
+                    policies configuration.
+                    <br />
+                  </>
+                )}
+                <div className="mt-2 flex items-center gap-2">
+                  <svg
+                    className="text-primary size-4 animate-spin"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  <span>
+                    Redirecting to login page in a moment. You can return here after signing back
+                    in...
+                  </span>
+                </div>
+              </>
             }
           />
+        </div>
+      </div>
+    );
+  }
+
+  // Early Returns - Signing Out State (Blocks UI completely)
+  if (isClearingAuth) {
+    return (
+      <div className="fixed inset-0 z-50">
+        <LoadingBanner message="Signing you out..." />
+        <div className="flex h-screen items-center justify-center">
+          <div className="text-muted-foreground text-center">
+            <p>Redirecting to login page...</p>
+          </div>
         </div>
       </div>
     );
@@ -230,7 +300,7 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
   // Early Returns - Loading State (Blocks UI completely)
   if (isInitializing) {
     return (
-      <div className="bg-background fixed inset-0 z-50">
+      <div className="fixed inset-0 z-50">
         <LoadingBanner
           message="Initializing workspace..."
           progress={
@@ -248,6 +318,5 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
     );
   }
 
-  // Main Render - Only render children after successful initialization
   return <>{children}</>;
 }

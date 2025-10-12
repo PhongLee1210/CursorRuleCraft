@@ -29,7 +29,7 @@ export const CreateRepositoryListItem = () => {
       // First, connect to GitHub
       connectGitHub();
     } else {
-      // Already connected, show repository selector
+      // Already connected, show repository selector (will check token status there)
       setShowSelector(true);
     }
   }, [isConnected, connectGitHub]);

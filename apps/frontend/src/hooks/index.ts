@@ -1,6 +1,7 @@
 export { useAuthProviders } from './useAuthProviders';
 export type { OAuthProvider, UseAuthProvidersReturn } from './useAuthProviders';
 
+export * from './useCursorRules';
 export * from './useGitHubAuth';
 export * from './useLogout';
 export * from './useRepositories';

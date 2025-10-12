@@ -162,25 +162,6 @@ export class ApiClient {
   }
 }
 
-/**
- * React hook to create an authenticated API client
- *
- * @example
- * ```tsx
- * function MyComponent() {
- *   const apiClient = useApiClient();
- *
- *   const fetchData = async () => {
- *     const { data, error } = await apiClient.get('/api/users/me');
- *     if (error) {
- *       console.error('Error:', error);
- *       return;
- *     }
- *     console.log('User data:', data);
- *   };
- * }
- * ```
- */
 export function useApiClient() {
   const { getToken } = useAuth();
 

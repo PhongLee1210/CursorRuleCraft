@@ -1,6 +1,8 @@
 import { ClerkToken } from '@/auth/decorators/clerk-token.decorator';
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { IntegrationService } from '@/repositories/integration.service';
+import { CreateRuleDto, UpdateRuleDto } from '@/repositories/cursor-rules/cursor-rules.dto';
+import { CursorRulesService } from '@/repositories/cursor-rules/cursor-rules.service';
+import { IntegrationService } from '@/repositories/github/integration.service';
 import { RepositoriesService } from '@/repositories/repositories.service';
 import {
   AddRepositoryDto,
@@ -32,7 +34,8 @@ export class RepositoriesController {
   constructor(
     private readonly repositoriesService: RepositoriesService,
     private readonly gitIntegrationService: IntegrationService,
-    private readonly workspacesService: WorkspacesService
+    private readonly workspacesService: WorkspacesService,
+    private readonly cursorRulesService: CursorRulesService
   ) {}
 
   /**
@@ -82,6 +85,15 @@ export class RepositoriesController {
     @Query('perPage') perPage?: string
   ) {
     try {
+      // Validate userId
+      if (!userId) {
+        console.error('User ID is missing from authentication token');
+        throw new HttpException(
+          'User authentication failed. User ID not found in token.',
+          HttpStatus.UNAUTHORIZED
+        );
+      }
+
       // Get user's GitHub integration
       const integration = await this.gitIntegrationService.getUserGitIntegration(
         clerkToken,
@@ -99,17 +111,46 @@ export class RepositoriesController {
         };
       }
 
+      // Get a valid access token (handles both OAuth and installation tokens)
+      const accessToken = await this.gitIntegrationService.getValidAccessToken(
+        integration,
+        clerkToken
+      );
+
       const repositories = await this.gitIntegrationService.fetchGitHubRepositories(
-        integration.access_token,
+        accessToken,
         page ? parseInt(page) : 1,
         perPage ? parseInt(perPage) : 30
       );
 
       return { data: repositories };
     } catch (error) {
+      // Log the error for debugging
+      console.error('Error in getAvailableGitHubRepositories:', error);
+
       if (error instanceof HttpException) {
         throw error;
       }
+
+      // Check if it's a token expiration error
+      if (error instanceof Error && error.message.includes('GITHUB_TOKEN_EXPIRED')) {
+        return {
+          data: [],
+          message:
+            'Your GitHub access token has expired. Please reconnect your GitHub account to continue.',
+          requiresReconnect: true,
+          error: 'token_expired',
+        };
+      }
+
+      // Check if it's a rate limit error
+      if (error instanceof Error && error.message.includes('rate limit')) {
+        throw new HttpException(
+          'GitHub API rate limit exceeded. Please try again later.',
+          HttpStatus.TOO_MANY_REQUESTS
+        );
+      }
+
       throw new HttpException(
         error instanceof Error ? error.message : 'Failed to fetch GitHub repositories',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -481,6 +522,252 @@ export class RepositoriesController {
       }
       throw new HttpException(
         error instanceof Error ? error.message : 'Failed to fetch file content',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  // ============================================================================
+  // CURSOR RULES ENDPOINTS
+  // ============================================================================
+
+  /**
+   * Get virtual tree structure of cursor rules
+   * GET /repositories/:id/rules/tree
+   */
+  @Get(':id/rules/tree')
+  async getRulesTree(@ClerkToken() clerkToken: string, @Param('id') repositoryId: string) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      const tree = await this.cursorRulesService.getRulesTree(clerkToken, repositoryId);
+      return { data: tree };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to fetch rules tree',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Get all rules for a repository
+   * GET /repositories/:id/rules
+   */
+  @Get(':id/rules')
+  async getRepositoryRules(
+    @ClerkToken() clerkToken: string,
+    @Param('id') repositoryId: string,
+    @Query('active') activeOnly?: string
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      const rules =
+        activeOnly === 'true'
+          ? await this.cursorRulesService.getActiveRules(clerkToken, repositoryId)
+          : await this.cursorRulesService.getRules(clerkToken, repositoryId);
+
+      return { data: rules };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to fetch rules',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Get a specific rule by ID
+   * GET /repositories/:id/rules/:ruleId
+   */
+  @Get(':id/rules/:ruleId')
+  async getRule(
+    @ClerkToken() clerkToken: string,
+    @Param('id') repositoryId: string,
+    @Param('ruleId') ruleId: string
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      const rule = await this.cursorRulesService.getRuleById(clerkToken, ruleId);
+
+      // Verify rule belongs to this repository
+      if (rule.repository_id !== repositoryId) {
+        throw new HttpException('Rule not found in this repository', HttpStatus.NOT_FOUND);
+      }
+
+      return { data: rule };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to fetch rule',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Create a new rule
+   * POST /repositories/:id/rules
+   */
+  @Post(':id/rules')
+  async createRule(
+    @ClerkToken() clerkToken: string,
+    @CurrentUser('sub') userId: string,
+    @Param('id') repositoryId: string,
+    @Body() body: CreateRuleDto
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      const rule = await this.cursorRulesService.createRule(clerkToken, userId, repositoryId, body);
+      return { data: rule };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to create rule',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Update a rule
+   * PUT /repositories/:id/rules/:ruleId
+   */
+  @Put(':id/rules/:ruleId')
+  async updateRule(
+    @ClerkToken() clerkToken: string,
+    @Param('id') repositoryId: string,
+    @Param('ruleId') ruleId: string,
+    @Body() body: UpdateRuleDto
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      // Get rule to verify it belongs to this repository
+      const existingRule = await this.cursorRulesService.getRuleById(clerkToken, ruleId);
+      if (existingRule.repository_id !== repositoryId) {
+        throw new HttpException('Rule not found in this repository', HttpStatus.NOT_FOUND);
+      }
+
+      const rule = await this.cursorRulesService.updateRule(clerkToken, ruleId, body);
+      return { data: rule };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to update rule',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  /**
+   * Delete a rule
+   * DELETE /repositories/:id/rules/:ruleId
+   */
+  @Delete(':id/rules/:ruleId')
+  async deleteRule(
+    @ClerkToken() clerkToken: string,
+    @Param('id') repositoryId: string,
+    @Param('ruleId') ruleId: string
+  ) {
+    try {
+      // Get repository to check workspace access
+      const repository = await this.repositoriesService.getRepositoryById(clerkToken, repositoryId);
+
+      // Check if user has access to workspace
+      const hasAccess = await this.workspacesService.hasWorkspaceAccess(
+        clerkToken,
+        repository.workspace_id
+      );
+
+      if (!hasAccess) {
+        throw new HttpException('Access denied', HttpStatus.FORBIDDEN);
+      }
+
+      // Get rule to verify it belongs to this repository
+      const existingRule = await this.cursorRulesService.getRuleById(clerkToken, ruleId);
+      if (existingRule.repository_id !== repositoryId) {
+        throw new HttpException('Rule not found in this repository', HttpStatus.NOT_FOUND);
+      }
+
+      await this.cursorRulesService.deleteRule(clerkToken, ruleId);
+      return { success: true };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        error instanceof Error ? error.message : 'Failed to delete rule',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }

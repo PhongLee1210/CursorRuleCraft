@@ -9,6 +9,7 @@ import {
 } from '@/components/Dialog';
 import { Input } from '@/components/Input';
 import { ScrollArea } from '@/components/ScrollArea';
+import { useGitHubAuth } from '@/hooks/useGitHubAuth';
 import { useGitHubRepositories, useRepositories } from '@/hooks/useRepositories';
 import { cn } from '@/lib/utils';
 import type { GitHubRepository } from '@/types/repository';
@@ -19,9 +20,10 @@ import {
   MagnifyingGlassIcon,
   SpinnerGapIcon,
   StarIcon,
+  WarningCircleIcon,
 } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 interface GitHubRepositorySelectorDialogProps {
@@ -36,8 +38,14 @@ export const GitHubRepositorySelectorDialog = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch] = useDebounceValue(searchQuery, 300);
 
-  const { repositories: githubRepos, isLoading } = useGitHubRepositories();
+  const {
+    repositories: githubRepos,
+    isLoading,
+    requiresReconnect,
+    message,
+  } = useGitHubRepositories(1, 30, open); // Only fetch when dialog is open
   const { connectGitHubRepository } = useRepositories();
+  const { connectGitHub } = useGitHubAuth();
 
   // Filter repositories based on search
   const filteredRepos = githubRepos.filter((repo: GitHubRepository) => {
@@ -49,15 +57,23 @@ export const GitHubRepositorySelectorDialog = ({
     );
   });
 
-  const handleConnect = async (repo: GitHubRepository) => {
-    try {
-      const [owner, repoName] = repo.full_name.split('/');
-      await connectGitHubRepository.mutateAsync({ owner, repo: repoName });
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Failed to connect repository:', error);
-    }
-  };
+  const handleConnect = useCallback(
+    async (repo: GitHubRepository) => {
+      try {
+        const [owner, repoName] = repo.full_name.split('/');
+        await connectGitHubRepository.mutateAsync({ owner, repo: repoName });
+        onOpenChange(false);
+      } catch (error) {
+        console.error('Failed to connect repository:', error);
+      }
+    },
+    [connectGitHubRepository, onOpenChange]
+  );
+
+  const handleReconnect = useCallback(() => {
+    connectGitHub();
+    onOpenChange(false);
+  }, [connectGitHub, onOpenChange]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -89,7 +105,24 @@ export const GitHubRepositorySelectorDialog = ({
 
           {/* Repository List */}
           <ScrollArea className="h-[400px]">
-            {isLoading ? (
+            {requiresReconnect ? (
+              <div className="flex flex-col items-center justify-center gap-4 py-12">
+                <div className="bg-warning/10 flex flex-col items-center gap-3 rounded-lg p-6">
+                  <WarningCircleIcon size={48} className="text-warning" />
+                  <div className="text-center">
+                    <h3 className="text-foreground mb-2 font-semibold">{t`GitHub Token Expired`}</h3>
+                    <p className="text-muted-foreground max-w-md text-sm">
+                      {message ||
+                        t`Your GitHub access token has expired. Please reconnect your account to continue.`}
+                    </p>
+                  </div>
+                  <Button onClick={handleReconnect} className="mt-2">
+                    <GithubLogoIcon size={18} className="mr-2" />
+                    {t`Reconnect GitHub`}
+                  </Button>
+                </div>
+              </div>
+            ) : isLoading ? (
               <div className="flex flex-col items-center justify-center py-12">
                 <SpinnerGapIcon size={32} className="text-primary animate-spin" />
                 <p className="text-muted-foreground mt-4 text-sm">{t`Loading repositories...`}</p>

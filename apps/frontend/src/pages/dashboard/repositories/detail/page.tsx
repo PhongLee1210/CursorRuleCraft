@@ -7,6 +7,8 @@ import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
 import {
+  ArrowClockwiseIcon,
+  CaretRightIcon,
   ChatCircleDotsIcon,
   FileCodeIcon,
   FolderIcon,
@@ -17,9 +19,10 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { AIChatPanel, type AIChatPanelRef } from './components/AIChatPanel';
-import { FileTreePanel } from './components/FileTreePanel';
-import { RepositoryHeader } from './components/RepositoryHeader';
+import { AIChatPanel, type AIChatPanelRef } from './_components/AIChatPanel';
+import { CursorRulesPanel } from './_components/CursorRulesPanel';
+import { FileTreePanel } from './_components/FileTreePanel';
+import { RepositoryHeader } from './_components/RepositoryHeader';
 
 dayjs.extend(relativeTime);
 
@@ -31,7 +34,8 @@ export const RepositoryDetailPage = () => {
   const [repository, setRepository] = useState<Repository | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activePanel, setActivePanel] = useState<'files' | 'chat'>('files');
+  const [showLeftPanel, setShowLeftPanel] = useState(true);
+  const [showRightPanel, setShowRightPanel] = useState(true);
   const [activeDragItem, setActiveDragItem] = useState<{
     name: string;
     path: string;
@@ -135,6 +139,10 @@ export const RepositoryDetailPage = () => {
     setActiveDragItem(null);
   }, []);
 
+  const handleResetSession = useCallback(() => {
+    aiChatPanelRef.current?.resetSession();
+  }, []);
+
   // Early Returns
   if (isLoading) {
     return (
@@ -171,55 +179,78 @@ export const RepositoryDetailPage = () => {
           <aside
             className={cn(
               'border-border flex flex-col border-r transition-all',
-              activePanel === 'files' ? 'min-w-64' : 'w-fit'
+              showLeftPanel ? 'min-w-64' : 'w-fit'
             )}
           >
             <div className="border-border flex h-[57px] items-center justify-between border-b px-4 py-3">
-              {activePanel === 'files' ? (
+              {showLeftPanel ? (
                 <>
                   <div className="flex items-center gap-2">
                     <FolderOpenIcon size={20} className="text-primary" />
                     <span className="font-semibold">{t`Files`}</span>
                   </div>
+                  <IconButton
+                    onClick={() => setShowLeftPanel(false)}
+                    label={t`Hide files`}
+                    icon={<FolderOpenIcon size={18} />}
+                  />
                 </>
               ) : (
-                <Button
-                  onClick={() => setActivePanel('files')}
-                  variant="ghost"
-                  size="sm"
-                  aria-label={t`Show files`}
-                >
-                  <FolderOpenIcon size={18} />
-                </Button>
+                <IconButton
+                  onClick={() => setShowLeftPanel(true)}
+                  label={t`Show files`}
+                  icon={<FolderOpenIcon size={18} />}
+                />
               )}
             </div>
 
-            {activePanel === 'files' && (
+            {showLeftPanel && (
               <div className="scrollbar-macos flex-1 overflow-y-auto">
                 <FileTreePanel repository={repository} />
               </div>
             )}
           </aside>
 
-          <main className="flex flex-1 flex-col">
+          {/* Center Panel - AI Chat */}
+          <main className="flex min-w-0 flex-1 flex-col">
             <div className="border-border flex h-[57px] items-center justify-between border-b px-4 py-3">
-              <div className="flex items-center gap-2">
+              <div className="flex shrink items-center gap-2 truncate">
                 <ChatCircleDotsIcon size={20} className="text-primary" />
                 <span className="font-semibold">{t`AI Assistant`}</span>
               </div>
-              {activePanel === 'chat' && (
+              <div className="flex items-center gap-2">
                 <IconButton
-                  onClick={() => setActivePanel('files')}
-                  label={t`Show files`}
-                  icon={<FileCodeIcon size={18} />}
+                  onClick={handleResetSession}
+                  label={t`Reset session`}
+                  icon={<ArrowClockwiseIcon size={18} />}
                 />
-              )}
+                <div className="bg-border h-5 w-px" />
+                <IconButton
+                  onClick={() => setShowRightPanel((prev) => !prev)}
+                  label={showRightPanel ? t`Hide rules` : t`Show rules`}
+                  icon={showRightPanel ? <CaretRightIcon size={18} /> : <FileCodeIcon size={18} />}
+                />
+              </div>
             </div>
 
             <div className="flex-1 overflow-hidden">
               <AIChatPanel ref={aiChatPanelRef} repository={repository} />
             </div>
           </main>
+
+          {/* Right Panel - Cursor Rules */}
+          <aside
+            className={cn(
+              'border-border flex flex-col border-l transition-all',
+              showRightPanel ? 'min-w-64' : 'w-fit'
+            )}
+          >
+            {showRightPanel && (
+              <div className="scrollbar-macos flex-1 overflow-y-auto">
+                <CursorRulesPanel repository={repository} />
+              </div>
+            )}
+          </aside>
         </div>
       </div>
 

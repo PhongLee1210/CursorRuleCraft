@@ -14,10 +14,12 @@ import {
   ArrowsClockwiseIcon,
   DotsThreeVerticalIcon,
   FolderOpenIcon,
+  GitBranchIcon,
   GithubLogoIcon,
   GitlabLogoIcon,
   LinkSimpleIcon,
   SpinnerGapIcon,
+  StarIcon,
   TrashSimpleIcon,
 } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
@@ -138,12 +140,17 @@ export const RepositoryCard = ({ repository }: Props) => {
       </div>
 
       {/* Repository info */}
-      <div className="mt-4 flex-1 space-y-2">
-        <div className="flex items-center gap-2">
+      <div className="mt-4 flex-1 space-y-2 overflow-hidden break-words">
+        <div className="flex flex-wrap items-center gap-2">
           <h3 className="line-clamp-1 text-lg font-semibold">{repository.name}</h3>
           {repository.isPrivate && (
             <Badge variant="secondary" className="text-xs">
               {t`Private`}
+            </Badge>
+          )}
+          {repository.language && (
+            <Badge variant="secondary" outline className="text-xs">
+              {repository.language}
             </Badge>
           )}
         </div>
@@ -155,8 +162,20 @@ export const RepositoryCard = ({ repository }: Props) => {
         )}
       </div>
 
-      {/* Footer with sync status */}
-      <div className="mt-auto pt-4">
+      {/* Footer with metadata */}
+      <div className="mt-auto space-y-2 pt-4">
+        <div className="text-muted-foreground flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1">
+            <GitBranchIcon size={12} weight="bold" />
+            <span>{repository.defaultBranch}</span>
+          </div>
+          {repository.starsCount !== undefined && (
+            <div className="flex items-center gap-1">
+              <StarIcon size={12} weight="bold" />
+              <span>{repository.starsCount}</span>
+            </div>
+          )}
+        </div>
         <div className="text-muted-foreground flex items-center justify-between text-xs">
           <span>{t`Last synced:`}</span>
           <span>{lastSynced}</span>

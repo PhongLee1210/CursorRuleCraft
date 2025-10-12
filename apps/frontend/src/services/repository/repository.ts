@@ -19,7 +19,7 @@ export async function getWorkspaceRepositories(
   workspaceId: string
 ): Promise<RepositoryServiceResult<Repository[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>('/api/repositories', {
+    const response = await apiClient.get<{ data: any[] }>('/repositories', {
       params: { workspaceId },
     });
 
@@ -54,7 +54,7 @@ export async function getRepositoryById(
   repositoryId: string
 ): Promise<RepositoryServiceResult<Repository>> {
   try {
-    const response = await apiClient.get<{ data: any }>(`/api/repositories/${repositoryId}`);
+    const response = await apiClient.get<{ data: any }>(`/repositories/${repositoryId}`);
 
     if (response.error) {
       console.error('[RepositoryService] Error fetching repository:', response.error);
@@ -86,7 +86,7 @@ export async function addRepository(
 ): Promise<RepositoryServiceResult<Repository>> {
   try {
     const payload = mapToAddRepositoryPayload(options);
-    const response = await apiClient.post<{ data: any }>('/api/repositories', payload);
+    const response = await apiClient.post<{ data: any }>('/repositories', payload);
 
     if (response.error) {
       console.error('[RepositoryService] Error adding repository:', response.error);
@@ -119,10 +119,7 @@ export async function updateRepository(
 ): Promise<RepositoryServiceResult<Repository>> {
   try {
     const payload = mapToUpdateRepositoryPayload(options);
-    const response = await apiClient.put<{ data: any }>(
-      `/api/repositories/${repositoryId}`,
-      payload
-    );
+    const response = await apiClient.put<{ data: any }>(`/repositories/${repositoryId}`, payload);
 
     if (response.error) {
       console.error('[RepositoryService] Error updating repository:', response.error);
@@ -153,9 +150,7 @@ export async function deleteRepository(
   repositoryId: string
 ): Promise<RepositoryServiceResult<boolean>> {
   try {
-    const response = await apiClient.delete<{ success: boolean }>(
-      `/api/repositories/${repositoryId}`
-    );
+    const response = await apiClient.delete<{ success: boolean }>(`/repositories/${repositoryId}`);
 
     if (response.error) {
       console.error('[RepositoryService] Error deleting repository:', response.error);
@@ -186,7 +181,7 @@ export async function syncRepository(
   repositoryId: string
 ): Promise<RepositoryServiceResult<Repository>> {
   try {
-    const response = await apiClient.post<{ data: any }>(`/api/repositories/${repositoryId}/sync`);
+    const response = await apiClient.post<{ data: any }>(`/repositories/${repositoryId}/sync`);
 
     if (response.error) {
       console.error('[RepositoryService] Error syncing repository:', response.error);
@@ -216,9 +211,21 @@ export async function getAvailableGitHubRepositories(
   apiClient: ApiClient,
   page = 1,
   perPage = 30
-): Promise<RepositoryServiceResult<any[]>> {
+): Promise<
+  RepositoryServiceResult<any[]> & {
+    requiresSetup?: boolean;
+    requiresReconnect?: boolean;
+    message?: string;
+  }
+> {
   try {
-    const response = await apiClient.get<{ data: any[] }>('/api/repositories/github/available', {
+    const response = await apiClient.get<{
+      data: any[];
+      message?: string;
+      requiresSetup?: boolean;
+      requiresReconnect?: boolean;
+      error?: string;
+    }>('/repositories/github/available', {
       params: { page, perPage },
     });
 
@@ -227,6 +234,17 @@ export async function getAvailableGitHubRepositories(
       return {
         data: null,
         error: response.error,
+      };
+    }
+
+    // Handle cases where GitHub is not connected or token expired
+    if (response.data?.requiresSetup || response.data?.requiresReconnect) {
+      return {
+        data: response.data.data || [],
+        error: null,
+        requiresSetup: response.data.requiresSetup,
+        requiresReconnect: response.data.requiresReconnect,
+        message: response.data.message,
       };
     }
 
@@ -253,7 +271,7 @@ export async function connectGitHubRepository(
   repo: string
 ): Promise<RepositoryServiceResult<Repository>> {
   try {
-    const response = await apiClient.post<{ data: any }>('/api/repositories/github/connect', {
+    const response = await apiClient.post<{ data: any }>('/repositories/github/connect', {
       workspaceId,
       owner,
       repo,
@@ -289,12 +307,9 @@ export async function getRepositoryFileTree(
   branch?: string
 ): Promise<RepositoryServiceResult<any[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>(
-      `/api/repositories/${repositoryId}/tree`,
-      {
-        params: branch ? { branch } : undefined,
-      }
-    );
+    const response = await apiClient.get<{ data: any[] }>(`/repositories/${repositoryId}/tree`, {
+      params: branch ? { branch } : undefined,
+    });
 
     if (response.error) {
       console.error('[RepositoryService] Error fetching file tree:', response.error);
@@ -333,7 +348,7 @@ export async function getRepositoryFileContent(
     }
 
     const response = await apiClient.get<{ data: { content: string; path: string } }>(
-      `/api/repositories/${repositoryId}/file`,
+      `/repositories/${repositoryId}/file`,
       { params }
     );
 

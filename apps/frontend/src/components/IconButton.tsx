@@ -26,7 +26,7 @@ export const IconButton = ({
         'backdrop-blur-sm',
         'text-[11px] font-medium',
         'transition-all duration-200',
-        'border border-border/50',
+        'border-border/50 border',
         className
       )}
     >
@@ -40,7 +40,7 @@ export const IconButton = ({
           // Desktop: hidden by default, show on hover
           'md:w-0 md:-translate-x-2 md:overflow-hidden md:opacity-0',
           'md:group-hover:w-auto md:group-hover:translate-x-0 md:group-hover:opacity-100',
-          'md:transition-all md:duration-200'
+          'text-nowrap md:transition-all md:duration-200'
         )}
       >
         {label}

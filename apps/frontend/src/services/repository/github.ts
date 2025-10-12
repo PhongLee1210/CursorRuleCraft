@@ -25,7 +25,7 @@ export async function getGitHubStatus(
   apiClient: ApiClient
 ): Promise<RepositoryServiceResult<GitHubStatus>> {
   try {
-    const response = await apiClient.get<GitHubStatus>('/api/auth/github/status');
+    const response = await apiClient.get<GitHubStatus>('/auth/github/status');
 
     if (response.error) {
       console.error('[GitHubService] Error fetching GitHub status:', response.error);
@@ -55,7 +55,7 @@ export async function initiateGitHubAuth(
   apiClient: ApiClient
 ): Promise<RepositoryServiceResult<GitHubAuthUrl>> {
   try {
-    const response = await apiClient.get<GitHubAuthUrl>('/api/auth/github/authorize');
+    const response = await apiClient.get<GitHubAuthUrl>('/auth/github/authorize');
 
     if (response.error) {
       console.error('[GitHubService] Error initiating GitHub auth:', response.error);
@@ -85,7 +85,7 @@ export async function disconnectGitHub(
   apiClient: ApiClient
 ): Promise<RepositoryServiceResult<boolean>> {
   try {
-    const response = await apiClient.get<{ success: boolean }>('/api/auth/github/disconnect');
+    const response = await apiClient.get<{ success: boolean }>('/auth/github/disconnect');
 
     if (response.error) {
       console.error('[GitHubService] Error disconnecting GitHub:', response.error);

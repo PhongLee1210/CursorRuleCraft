@@ -1,4 +1,5 @@
 import { AppModule } from '@/app.module';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import 'reflect-metadata';
 
@@ -16,6 +17,18 @@ async function bootstrap() {
     ].filter(Boolean),
     credentials: true,
   });
+
+  // Enable validation pipes globally
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip properties that don't have decorators
+      forbidNonWhitelisted: false, // Don't throw errors for extra properties
+      transform: true, // Automatically transform payloads to DTO instances
+      transformOptions: {
+        enableImplicitConversion: true, // Enable type conversion
+      },
+    })
+  );
 
   // Global prefix for all routes
   app.setGlobalPrefix('api');

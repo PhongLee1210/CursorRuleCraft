@@ -1,5 +1,6 @@
 import { GeneratedRuleCard, MessageBubble } from '@/components/chat';
 import { ChatInput, type MentionedFile } from '@/components/ChatInput';
+import type { RuleType } from '@/types/cursor-rules';
 import type { Repository } from '@/types/repository';
 import { t } from '@lingui/macro';
 import { SpinnerGapIcon } from '@phosphor-icons/react';
@@ -13,15 +14,18 @@ import {
   useState,
 } from 'react';
 
+interface GeneratedRuleDraft {
+  type: RuleType;
+  fileName: string;
+  content: string;
+}
+
 interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
-  generatedRule?: {
-    title: string;
-    content: string;
-  };
+  generatedRule?: GeneratedRuleDraft;
 }
 
 interface AIChatPanelProps {
@@ -32,6 +36,7 @@ interface AIChatPanelProps {
 
 export interface AIChatPanelRef {
   handleFileDrop: (file: { name: string; path: string; type: 'file' | 'directory' }) => void;
+  resetSession: () => void;
 }
 
 export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
@@ -118,7 +123,8 @@ export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
           content: t`I've analyzed your repository and generated a comprehensive project rule. You can copy it and add it to your Cursor project rules.`,
           timestamp: new Date(),
           generatedRule: {
-            title: `${repository.name} Project Rules`,
+            type: 'PROJECT_RULE',
+            fileName: `${repository.name.toLowerCase().replace(/\s+/g, '-')}-project-rules`,
             content: `# ${repository.name} Project Rules
 
 ## Overview
@@ -172,9 +178,16 @@ This project uses ${repository.language || 'multiple languages'} and follows spe
       []
     );
 
+    const resetSession = useCallback(() => {
+      setMessages([]);
+      setInput('');
+      setMentionedFiles([]);
+    }, []);
+
     // Expose methods to parent via ref
     useImperativeHandle(ref, () => ({
       handleFileDrop,
+      resetSession,
     }));
 
     // Render
@@ -189,7 +202,7 @@ This project uses ${repository.language || 'multiple languages'} and follows spe
                   <MessageBubble key={message.id} role={message.role} content={message.content}>
                     {message.generatedRule && (
                       <GeneratedRuleCard
-                        title={message.generatedRule.title}
+                        title={message.generatedRule.fileName}
                         content={message.generatedRule.content}
                         messageId={message.id}
                       />

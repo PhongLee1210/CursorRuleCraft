@@ -126,43 +126,51 @@ export function useRepositories() {
 /**
  * Hook for fetching available GitHub repositories
  *
+ * @param page - Page number for pagination (default: 1)
+ * @param perPage - Number of repositories per page (default: 30)
+ * @param enabled - Whether to fetch repositories (default: true). Set to false to prevent fetching.
+ *
  * @example
  * ```tsx
- * function GitHubRepoSelector() {
- *   const { repositories, isLoading, hasMore, fetchMore } = useGitHubRepositories();
+ * function GitHubRepoSelector({ isOpen }) {
+ *   const { repositories, isLoading, requiresReconnect } = useGitHubRepositories(1, 30, isOpen);
  *
  *   return (
  *     <div>
  *       {repositories?.map((repo) => (
  *         <div key={repo.id}>{repo.full_name}</div>
  *       ))}
- *       {hasMore && <button onClick={fetchMore}>Load More</button>}
  *     </div>
  *   );
  * }
  * ```
  */
-export function useGitHubRepositories(page = 1, perPage = 30) {
+export function useGitHubRepositories(page = 1, perPage = 30, enabled = true) {
   const repositoryService = useRepositoryService();
 
-  const {
-    data: repositories,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['github', 'repositories', page, perPage],
     queryFn: async () => {
       const result = await repositoryService.getAvailableGitHubRepositories(page, perPage);
       if (result.error) {
         throw result.error;
       }
-      return result.data;
+      return {
+        repositories: result.data ?? [],
+        requiresSetup: result.requiresSetup ?? false,
+        requiresReconnect: result.requiresReconnect ?? false,
+        message: result.message,
+      };
     },
+    enabled, // Only fetch when enabled is true
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   return {
-    repositories: repositories ?? [],
+    repositories: data?.repositories ?? [],
+    requiresSetup: data?.requiresSetup ?? false,
+    requiresReconnect: data?.requiresReconnect ?? false,
+    message: data?.message,
     isLoading,
     error,
   };
