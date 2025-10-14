@@ -58,8 +58,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built backend
-COPY --from=builder /app/dist/apps/backend ./
+# Copy built backend (TypeScript compiles to apps/backend/dist/)
+COPY --from=builder /app/apps/backend/dist ./
 
 # Install only production dependencies
 COPY --from=builder /app/apps/backend/package.json ./package.json
@@ -102,8 +102,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built backend
-COPY --from=builder /app/dist/apps/backend ./backend
+# Copy built backend (TypeScript compiles to apps/backend/dist/)
+COPY --from=builder /app/apps/backend/dist ./backend
 
 # Install backend production dependencies
 COPY --from=builder /app/apps/backend/package.json ./backend/package.json
