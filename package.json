@@ -34,6 +34,13 @@
     "supabase:status": "supabase status",
     "supabase:reset": "supabase db reset",
     "supabase:studio": "open http://127.0.0.1:54323",
+    "docker:dev": "./scripts/docker-dev.sh",
+    "docker:prod": "./scripts/docker-prod.sh up",
+    "docker:build": "docker-compose --env-file .env.docker build",
+    "docker:up": "docker-compose --env-file .env.docker up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v",
     "setup": "bun install && echo '\n⚠️  Next step: Install Supabase CLI if you haven''t already:\n   macOS: brew install supabase/tap/supabase\n   npm:   npm install -g supabase\n\nThen run: supabase start\nCopy the credentials to .env file, and run: bun run dev:all'"
   },
   "devDependencies": {

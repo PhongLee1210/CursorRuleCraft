@@ -43,3 +43,8 @@ bun.lockb
 !.env.template
 !.env.example
 !.env.local.example
+
+# Docker
+env.docker
+docker-compose.override.yml
+backup_*.sql

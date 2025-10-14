@@ -1,0 +1,35 @@
+version: '3.8'
+
+# Development Docker Compose configuration
+# This is a simplified version for local development with hot-reload
+
+services:
+  # PostgreSQL Database only
+  postgres:
+    image: postgres:15-alpine
+    container_name: cursorrulecraft-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cursorrulecraft_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./supabase/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cursorrulecraft-dev
+
+volumes:
+  postgres_dev_data:
+    driver: local
+
+networks:
+  cursorrulecraft-dev:
+    driver: bridge

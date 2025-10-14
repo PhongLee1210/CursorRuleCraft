@@ -60,15 +60,15 @@ export const AuthLayout = () => {
           width={1920}
           height={1080}
           alt="AI?"
-          className="h-screen w-full object-cover object-center"
-          src="https://unsplash.com/photos/a-sign-with-a-question-mark-and-a-question-mark-drawn-on-it-OAsF0QMRWlA"
+          className="h-screen w-full object-cover object-[30%_60%]"
+          src="https://images.unsplash.com/photo-1713345248737-2698000f143d"
         />
 
         <div className="bg-primary/30 text-primary-foreground absolute bottom-5 right-5 z-10 px-4 py-2 text-xs font-medium backdrop-blur-sm">
           <a
             target="_blank"
             rel="noopener noreferrer nofollow"
-            href="https://unsplash.com/photos/a-sign-with-a-question-mark-and-a-question-mark-drawn-on-it-OAsF0QMRWlA"
+            href="https://images.unsplash.com/photo-1713345248737-2698000f143d"
           >
             {t`Photograph by Nahrizul Kadri`}
           </a>

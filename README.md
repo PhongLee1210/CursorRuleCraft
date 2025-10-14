@@ -160,49 +160,45 @@ service_role key: eyJhbG...
 
 **3. Create `.env` File**
 
-Create a `.env` file in the project root with these values:
+Copy the example environment file and fill in your values:
 
 ```bash
-# ==============================================================================
-# Backend API Configuration
-# ==============================================================================
+cp env.example .env
+```
+
+Or manually create a `.env` file in the project root with these values:
+
+```bash
+# Backend API
 PORT=4000
 FRONTEND_URL=http://localhost:3000
 
-# ==============================================================================
-# Supabase (from supabase start output above)
-# ==============================================================================
+# Supabase (from supabase start output)
 SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_SERVICE_ROLE_KEY=<paste service_role key here>
-SUPABASE_ANON_KEY=<paste anon key here>
+SUPABASE_ANON_KEY=<paste anon key from supabase start>
+SUPABASE_SERVICE_ROLE_KEY=<paste service_role key from supabase start>
 
-# ==============================================================================
-# Clerk Authentication (get from https://dashboard.clerk.com)
-# ==============================================================================
+# Clerk (get from https://dashboard.clerk.com)
 CLERK_SECRET_KEY=sk_test_your_clerk_secret_key
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
 
-# ==============================================================================
-# GitHub OAuth (get from https://github.com/settings/developers)
-# ==============================================================================
+# GitHub OAuth (optional - get from https://github.com/settings/apps)
 GITHUB_APP_ID=your_github_app_id
+GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nyour_key\n-----END RSA PRIVATE KEY-----"
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 GITHUB_REDIRECT_URI=http://localhost:4000/api/auth/github/callback
 
-# ==============================================================================
-# Frontend Environment Variables (VITE_* prefix required)
-# ==============================================================================
-VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
-VITE_API_BASE_URL=http://localhost:4000/api
+# Frontend (VITE_* prefix required)
+VITE_API_URL=/api
 VITE_SUPABASE_URL=http://127.0.0.1:54321
-VITE_SUPABASE_ANON_KEY=<paste anon key here>
 ```
 
 **Important Notes**:
 
 - The monorepo uses **ONE unified `.env` file at the root** - both apps read from it
-- Frontend: Vite is configured with `envDir: '../../'` in `vite.config.ts`
-- Backend: NestJS ConfigModule points to `../../.env` in `app.module.ts`
+- See `env.example` for all available variables
+- Frontend vars MUST have `VITE_` prefix to be accessible
 - Without the `.env` file, the backend will crash with error 500!
 
 **4. Run the Application**
