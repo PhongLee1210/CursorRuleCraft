@@ -42,6 +42,6 @@
     "typescript": "^5.9.3"
   },
   "_moduleAliases": {
-    "@": "dist/apps/backend/src"
+    "@": "apps/backend/src"
   }
 }
