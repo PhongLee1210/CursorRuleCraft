@@ -182,7 +182,7 @@ export class GitHubAppService {
       await testOctokit.users.getAuthenticated();
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }

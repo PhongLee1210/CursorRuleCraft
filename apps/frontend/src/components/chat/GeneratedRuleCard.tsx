@@ -10,7 +10,7 @@ interface GeneratedRuleCardProps {
   messageId: string;
 }
 
-export const GeneratedRuleCard = memo<GeneratedRuleCardProps>(({ title, content, messageId }) => {
+export const GeneratedRuleCard = memo<GeneratedRuleCardProps>(({ title, content }) => {
   // State
   const [copied, setCopied] = useState(false);
 

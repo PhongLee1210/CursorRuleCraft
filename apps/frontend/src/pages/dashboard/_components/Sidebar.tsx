@@ -38,7 +38,7 @@ type SidebarItemProps = SidebarItem & {
   onClick?: () => void;
 };
 
-const SidebarItem = ({ path, name, shortcut, icon, onClick }: SidebarItemProps) => {
+const SidebarItemComponent = ({ path, name, shortcut, icon, onClick }: SidebarItemProps) => {
   const isActive = useLocation().pathname === path;
 
   return (
@@ -108,7 +108,7 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
 
       <div className="grid gap-y-2 p-4">
         {sidebarItems.map((item) => (
-          <SidebarItem {...item} key={item.path} onClick={() => setOpen?.(false)} />
+          <SidebarItemComponent {...item} key={item.path} onClick={() => setOpen?.(false)} />
         ))}
       </div>
 

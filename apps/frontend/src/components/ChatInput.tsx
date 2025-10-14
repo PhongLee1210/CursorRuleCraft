@@ -34,13 +34,6 @@ export interface MentionedFile {
   type: 'file' | 'directory';
 }
 
-interface QuickAction {
-  icon: React.ReactNode;
-  label: string;
-  onClick: () => void;
-}
-
-// Helper Functions
 function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]): React.RefCallback<T> {
   return (value: T | null) => {
     refs.forEach((ref) => {
@@ -100,7 +93,7 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [isFocused, setIsFocused] = useState(false);
-    const [isFileHovered, setIsFileHovered] = useState(false);
+    const [_isFileHovered, _setIsFileHovered] = useState(false);
 
     // Computed Values
     const filteredSuggestions = useMemo(
@@ -218,8 +211,6 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
         {selectedFile && (
           <div
             className="border-border/50 bg-secondary/20 hover:border-destructive/50 hover:bg-destructive/10 group mb-3 flex cursor-pointer items-center justify-between rounded-xl border px-3 py-2 transition-all"
-            onMouseEnter={() => setIsFileHovered(true)}
-            onMouseLeave={() => setIsFileHovered(false)}
             onClick={onClearFileSelection}
           >
             <div className="flex items-center gap-2">

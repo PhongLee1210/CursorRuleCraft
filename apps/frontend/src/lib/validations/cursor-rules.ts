@@ -29,7 +29,7 @@ export const createCursorRuleSchema = z.object({
     .array(z.string().min(1, 'Pattern cannot be empty'))
     .optional()
     .refine(
-      (patterns) => {
+      (_patterns) => {
         // If applyMode is 'specific', at least one pattern is required
         // This will be checked in the dialog component with additional context
         return true;

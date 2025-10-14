@@ -29,6 +29,7 @@ export interface ApiResponse<T = any> {
 /**
  * HTTP client configuration
  */
+// eslint-disable-next-line no-undef
 interface RequestConfig extends RequestInit {
   params?: Record<string, string | number | boolean>;
 }

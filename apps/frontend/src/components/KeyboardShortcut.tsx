@@ -21,11 +21,11 @@ export const KeyboardShortcut = ({
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      e.key === 'Control' && setValue(true);
+      if (e.key === 'Control') setValue(true);
     };
 
     const onKeyUp = (e: KeyboardEvent) => {
-      e.key === 'Control' && setValue(false);
+      if (e.key === 'Control') setValue(false);
     };
 
     document.addEventListener('keydown', onKeyDown);
