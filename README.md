@@ -1,5 +1,7 @@
 # CursorRulesCraft
 
+[![Build & Quality Check](https://github.com/PhongLee1210/CursorRuleCraft/actions/workflows/build-and-quality.yml/badge.svg)](https://github.com/PhongLee1210/CursorRuleCraft/actions/workflows/build-and-quality.yml)
+
 A modern React application built with TypeScript, Vite, TailwindCSS, Radix UI, and Tanstack Query.
 
 ## ✨ Features
