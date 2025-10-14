@@ -72,7 +72,7 @@ EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:4000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-CMD ["node", "main.js"]
+CMD ["node", "apps/backend/src/main.js"]
 
 # ============================================
 # Stage 4: Frontend Runtime (Nginx)
@@ -124,5 +124,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
 
-CMD ["sh", "-c", "cd /app/backend && node main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "cd /app/backend && node apps/backend/src/main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
 
