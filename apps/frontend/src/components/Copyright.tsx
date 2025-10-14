@@ -7,7 +7,7 @@ type Props = {
 export const Copyright = ({ className }: Props) => (
   <div
     className={cn(
-      'prose prose-sm flex max-w-none flex-col gap-y-1 text-xs opacity-40 dark:prose-invert',
+      'prose prose-sm dark:prose-invert flex max-w-none flex-col gap-y-1 text-xs opacity-40',
       className
     )}
   >

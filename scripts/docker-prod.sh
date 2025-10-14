@@ -15,13 +15,13 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}🚀 CursorRuleCraft Docker Production Deployment${NC}"
 echo ""
 
-# Check if .env.docker exists
-if [ ! -f .env.docker ]; then
-  echo -e "${YELLOW}⚠️  .env.docker not found!${NC}"
+# Check if .env exists
+if [ ! -f .env ]; then
+  echo -e "${YELLOW}⚠️  .env not found!${NC}"
   echo -e "Creating from example..."
-  cp env.docker.example .env.docker
-  echo -e "${GREEN}✅ Created .env.docker${NC}"
-  echo -e "${RED}❌ Please edit .env.docker with your production values before proceeding${NC}"
+  cp env.example .env
+  echo -e "${GREEN}✅ Created .env${NC}"
+  echo -e "${RED}❌ Please edit .env with your production values before proceeding${NC}"
   exit 1
 fi
 
@@ -32,57 +32,110 @@ if ! command -v docker &> /dev/null; then
   exit 1
 fi
 
-# Check for Docker Compose
-if ! command -v docker-compose &> /dev/null; then
-  echo -e "${RED}❌ Docker Compose is not installed${NC}"
-  exit 1
-fi
-
 # Parse command line arguments
 COMMAND=${1:-"up"}
+MODE=${2:-"combined"}  # combined (single container) or separate (docker-compose)
+
+# Load environment variables
+source .env
 
 case $COMMAND in
   build)
-    echo -e "${BLUE}📦 Building Docker images...${NC}"
-    docker-compose --env-file .env.docker build
-    echo -e "${GREEN}✅ Build complete!${NC}"
+    if [ "$MODE" = "combined" ]; then
+      echo -e "${BLUE}📦 Building combined Docker image...${NC}"
+      docker build \
+        --target combined \
+        --build-arg VITE_API_URL=/api \
+        --build-arg VITE_CLERK_PUBLISHABLE_KEY="${VITE_CLERK_PUBLISHABLE_KEY}" \
+        -t cursorrulecraft:combined \
+        .
+      echo -e "${GREEN}✅ Build complete!${NC}"
+    else
+      echo -e "${BLUE}📦 Building Docker images with docker-compose...${NC}"
+      docker-compose build
+      echo -e "${GREEN}✅ Build complete!${NC}"
+    fi
     ;;
   
   up)
-    echo -e "${BLUE}🚀 Starting all services...${NC}"
-    docker-compose --env-file .env.docker up -d --build
-    echo ""
-    echo -e "${GREEN}✅ All services are starting!${NC}"
-    echo ""
-    echo -e "${BLUE}Access your application:${NC}"
-    echo "  Frontend: http://localhost"
-    echo "  Backend API: http://localhost/api"
-    echo "  Health Check: http://localhost/api/health"
-    echo ""
-    echo -e "${YELLOW}View logs:${NC}"
-    echo "  docker-compose logs -f"
+    if [ "$MODE" = "combined" ]; then
+      echo -e "${BLUE}🚀 Starting combined service...${NC}"
+      docker run -d \
+        --name cursorrulecraft \
+        -p 80:80 \
+        --env-file .env \
+        cursorrulecraft:combined
+      echo ""
+      echo -e "${GREEN}✅ Service is starting!${NC}"
+      echo ""
+      echo -e "${BLUE}Access your application:${NC}"
+      echo "  Frontend: http://localhost"
+      echo "  Backend API: http://localhost/api"
+      echo "  Health Check: http://localhost/api/health"
+      echo ""
+      echo -e "${YELLOW}View logs:${NC}"
+      echo "  docker logs -f cursorrulecraft"
+    else
+      echo -e "${BLUE}🚀 Starting all services with docker-compose...${NC}"
+      docker-compose up -d --build
+      echo ""
+      echo -e "${GREEN}✅ All services are starting!${NC}"
+      echo ""
+      echo -e "${BLUE}Access your application:${NC}"
+      echo "  Frontend: http://localhost"
+      echo "  Backend API: http://localhost/api"
+      echo "  Health Check: http://localhost/api/health"
+      echo ""
+      echo -e "${YELLOW}View logs:${NC}"
+      echo "  docker-compose logs -f"
+    fi
     ;;
   
   down)
-    echo -e "${YELLOW}🛑 Stopping all services...${NC}"
-    docker-compose down
-    echo -e "${GREEN}✅ All services stopped${NC}"
+    if [ "$MODE" = "combined" ]; then
+      echo -e "${YELLOW}🛑 Stopping combined service...${NC}"
+      docker stop cursorrulecraft 2>/dev/null || true
+      docker rm cursorrulecraft 2>/dev/null || true
+      echo -e "${GREEN}✅ Service stopped${NC}"
+    else
+      echo -e "${YELLOW}🛑 Stopping all services...${NC}"
+      docker-compose down
+      echo -e "${GREEN}✅ All services stopped${NC}"
+    fi
     ;;
   
   restart)
-    echo -e "${BLUE}🔄 Restarting all services...${NC}"
-    docker-compose restart
-    echo -e "${GREEN}✅ Services restarted${NC}"
+    if [ "$MODE" = "combined" ]; then
+      echo -e "${BLUE}🔄 Restarting combined service...${NC}"
+      docker restart cursorrulecraft
+      echo -e "${GREEN}✅ Service restarted${NC}"
+    else
+      echo -e "${BLUE}🔄 Restarting all services...${NC}"
+      docker-compose restart
+      echo -e "${GREEN}✅ Services restarted${NC}"
+    fi
     ;;
   
   logs)
-    docker-compose logs -f
+    if [ "$MODE" = "combined" ]; then
+      docker logs -f cursorrulecraft
+    else
+      docker-compose logs -f
+    fi
     ;;
   
   clean)
-    echo -e "${YELLOW}🧹 Cleaning up containers and volumes...${NC}"
-    docker-compose down -v
-    echo -e "${GREEN}✅ Cleanup complete${NC}"
+    if [ "$MODE" = "combined" ]; then
+      echo -e "${YELLOW}🧹 Cleaning up container and image...${NC}"
+      docker stop cursorrulecraft 2>/dev/null || true
+      docker rm cursorrulecraft 2>/dev/null || true
+      docker rmi cursorrulecraft:combined 2>/dev/null || true
+      echo -e "${GREEN}✅ Cleanup complete${NC}"
+    else
+      echo -e "${YELLOW}🧹 Cleaning up containers and volumes...${NC}"
+      docker-compose down -v
+      echo -e "${GREEN}✅ Cleanup complete${NC}"
+    fi
     ;;
   
   health)
@@ -117,8 +170,17 @@ case $COMMAND in
     echo "  clean    - Stop and remove all containers and volumes"
     echo "  health   - Check service health"
     echo ""
+    echo -e "${BLUE}Modes:${NC}"
+    echo "  combined  - Single container (frontend + backend) [default]"
+    echo "  separate  - Separate containers via docker-compose"
+    echo ""
     echo -e "${BLUE}Usage:${NC}"
-    echo "  ./scripts/docker-prod.sh [command]"
+    echo "  ./scripts/docker-prod.sh [command] [mode]"
+    echo ""
+    echo -e "${BLUE}Examples:${NC}"
+    echo "  ./scripts/docker-prod.sh up combined     # Single container"
+    echo "  ./scripts/docker-prod.sh up separate     # Docker compose"
+    echo "  ./scripts/docker-prod.sh build           # Build combined (default)"
     exit 1
     ;;
 esac

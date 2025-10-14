@@ -85,7 +85,7 @@ export const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="relative bg-secondary-accent py-24 sm:py-32">
+    <section id="features" className="bg-secondary-accent relative py-24 sm:py-32">
       <div className="container">
         <div className="space-y-6 leading-loose">
           <h2 className="text-4xl font-bold">{t`Powerful Cursor Rules Generation, Made Simple.`}</h2>

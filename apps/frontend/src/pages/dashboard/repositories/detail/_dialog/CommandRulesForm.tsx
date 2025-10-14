@@ -46,9 +46,7 @@ export const CommandRulesForm = memo<CommandRulesFormProps>(
             disabled={isCreating}
             className={cn(
               'font-mono',
-              touchedFields.fileName &&
-                validationErrors.fileName &&
-                'border-error focus:ring-error'
+              touchedFields.fileName && validationErrors.fileName && 'border-error focus:ring-error'
             )}
             aria-invalid={touchedFields.fileName && !!validationErrors.fileName}
             aria-describedby={validationErrors.fileName ? 'fileName-error' : undefined}
@@ -98,4 +96,3 @@ export const CommandRulesForm = memo<CommandRulesFormProps>(
 );
 
 CommandRulesForm.displayName = 'CommandRulesForm';
-

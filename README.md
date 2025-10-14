@@ -305,6 +305,8 @@ supabase start
 
 ### Deploying to Production
 
+#### Database Setup (Supabase)
+
 **1. Login to Supabase CLI**
 
 ```bash
@@ -327,6 +329,70 @@ supabase db push
 
 **4. Update Production `.env`**
 Replace local Supabase credentials with production values from https://app.supabase.com (Project Settings → API)
+
+#### Application Deployment
+
+**🚀 Deploy to Render**
+
+This project supports **single-service Docker deployment** that combines both frontend and backend in one container.
+
+**Render Configuration:**
+
+1. Create a Web Service on Render
+2. Select Docker environment
+3. Docker command: `--target combined --build-arg VITE_API_URL=/api --build-arg VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY`
+4. Port: `80`
+5. Add required environment variables
+
+**Required Environment Variables:**
+
+```bash
+NODE_ENV=production
+VITE_API_URL=/api
+VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_key
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
+CLERK_SECRET_KEY=sk_live_your_key
+FRONTEND_URL=https://your-app.onrender.com
+ALLOWED_ORIGINS=https://your-app.onrender.com
+```
+
+**Test Locally:**
+
+```bash
+# Using the helper script (recommended)
+./scripts/docker-dev.sh combined
+
+# Or build and run manually
+docker build --target combined \
+  --build-arg VITE_API_URL=/api \
+  --build-arg VITE_CLERK_PUBLISHABLE_KEY=your_key \
+  -t cursorrulecraft:combined .
+docker run -d -p 8080:80 --env-file .env cursorrulecraft:combined
+
+# Test
+curl http://localhost:8080/health
+curl http://localhost:8080/api/health
+open http://localhost:8080
+```
+
+**Production Deployment:**
+
+```bash
+# Build and run combined service
+./scripts/docker-prod.sh build combined
+./scripts/docker-prod.sh up combined
+
+# View logs
+./scripts/docker-prod.sh logs combined
+
+# Stop service
+./scripts/docker-prod.sh down combined
+
+# Or use docker-compose (separate containers)
+./scripts/docker-prod.sh up separate
+```
 
 ---
 

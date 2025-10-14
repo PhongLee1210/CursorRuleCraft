@@ -107,6 +107,53 @@ services:
       timeout: 10s
       retries: 3
 
+  # ============================================
+  # Combined Service (Frontend + Backend in one container)
+  # Use this for Render-like single-service deployment
+  # ============================================
+  # Uncomment to test combined deployment locally:
+  #
+  # combined:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: combined
+  #     args:
+  #       VITE_API_URL: /api
+  #       VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY:-${CLERK_PUBLISHABLE_KEY}}
+  #   container_name: cursorrulecraft-combined
+  #   restart: unless-stopped
+  #   ports:
+  #     - '${APP_PORT:-8080}:80'
+  #   environment:
+  #     NODE_ENV: production
+  #     PORT: 4000
+  #     HOST: 0.0.0.0
+  #     SUPABASE_URL: ${SUPABASE_URL}
+  #     SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-${SUPABASE_KEY}}
+  #     SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+  #     CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY}
+  #     CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
+  #     CLERK_WEBHOOK_SECRET: ${CLERK_WEBHOOK_SECRET}
+  #     GITHUB_APP_ID: ${GITHUB_APP_ID}
+  #     GITHUB_APP_PRIVATE_KEY: ${GITHUB_APP_PRIVATE_KEY}
+  #     GITHUB_APP_PRIVATE_KEY_BASE64: ${GITHUB_APP_PRIVATE_KEY_BASE64}
+  #     GITHUB_APP_CLIENT_ID: ${GITHUB_APP_CLIENT_ID}
+  #     GITHUB_APP_CLIENT_SECRET: ${GITHUB_APP_CLIENT_SECRET}
+  #     GITHUB_APP_WEBHOOK_SECRET: ${GITHUB_APP_WEBHOOK_SECRET}
+  #     GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+  #     GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+  #     GITHUB_REDIRECT_URI: ${GITHUB_REDIRECT_URI:-http://localhost:8080/api/auth/github/callback}
+  #     FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+  #     ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
+  #   networks:
+  #     - cursorrulecraft
+  #   healthcheck:
+  #     test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:80/health']
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
 volumes:
   postgres_data:
     driver: local

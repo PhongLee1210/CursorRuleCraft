@@ -90,3 +90,35 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 CMD ["nginx", "-g", "daemon off;"]
 
+# ============================================
+# Stage 5: Combined Service (Frontend + Backend)
+# ============================================
+FROM nginx:alpine AS combined
+
+# Install Node.js runtime
+RUN apk add --no-cache nodejs npm
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copy built backend
+COPY --from=builder /app/dist/apps/backend ./backend
+
+# Install backend production dependencies
+COPY --from=builder /app/apps/backend/package.json ./backend/package.json
+RUN cd backend && npm install --omit=dev
+
+# Copy built frontend
+COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
+
+# Copy Nginx configuration for combined service
+COPY apps/frontend/nginx.combined.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
+
+CMD ["sh", "-c", "cd /app/backend && node main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
+

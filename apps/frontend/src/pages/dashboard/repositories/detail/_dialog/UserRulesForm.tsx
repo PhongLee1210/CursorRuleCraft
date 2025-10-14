@@ -71,4 +71,3 @@ export const UserRulesForm = memo<UserRulesFormProps>(
 );
 
 UserRulesForm.displayName = 'UserRulesForm';
-

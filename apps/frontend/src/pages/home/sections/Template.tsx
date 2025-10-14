@@ -52,7 +52,7 @@ const TemplateCard = ({
             <Badge
               key={tag}
               variant="secondary"
-              className="mr-1 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/80 mr-1 border-transparent"
             >
               {tag}
             </Badge>
@@ -170,7 +170,7 @@ export const TemplatesSection = () => {
         <p className="text-muted-foreground mt-8 text-center">
           {t`For more Cursor Rules examples and inspiration, visit the`}
           <a
-            className="ml-1 text-primary hover:underline"
+            className="text-primary ml-1 hover:underline"
             target="_blank"
             rel="noopener noreferrer"
             href="https://cursor.directory"

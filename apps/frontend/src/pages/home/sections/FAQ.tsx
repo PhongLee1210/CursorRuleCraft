@@ -10,7 +10,7 @@ const Question1 = () => (
     <AccordionTrigger className="text-left leading-relaxed">
       Who are you, and why did you build CursorRulesCraft?
     </AccordionTrigger>
-    <AccordionContent className="prose max-w-none dark:prose-invert">
+    <AccordionContent className="prose dark:prose-invert max-w-none">
       <p>
         I'm Phong Lee, a Software Engineer on my journey to becoming an AI Engineer. I'm passionate
         about leveraging AI to enhance developer productivity and streamline workflows.
@@ -51,7 +51,7 @@ const Question2 = () => (
     <AccordionTrigger className="text-left leading-relaxed">
       Is CursorRulesCraft free to use?
     </AccordionTrigger>
-    <AccordionContent className="prose max-w-none dark:prose-invert">
+    <AccordionContent className="prose dark:prose-invert max-w-none">
       <p>
         Yes! CursorRulesCraft is completely free and open-source. My goal is to help developers
         enhance their productivity with Cursor AI, and putting it behind a paywall would defeat that
@@ -84,7 +84,7 @@ const Question3 = () => (
     <AccordionTrigger className="text-left leading-relaxed">
       How can I contribute or support the project?
     </AccordionTrigger>
-    <AccordionContent className="prose max-w-none dark:prose-invert">
+    <AccordionContent className="prose dark:prose-invert max-w-none">
       <p>
         <strong>If you're a developer</strong>, contributions are always welcome! You can fork the
         repository on GitHub, make improvements, add new rule templates, or fix bugs. Pull requests
@@ -120,29 +120,29 @@ const Question4 = () => (
     <AccordionTrigger className="text-left leading-relaxed">
       What types of rules can I generate with CursorRulesCraft?
     </AccordionTrigger>
-    <AccordionContent className="prose max-w-none dark:prose-invert">
+    <AccordionContent className="prose dark:prose-invert max-w-none">
       <p>
         CursorRulesCraft supports a wide variety of rule templates for different frameworks,
         languages, and coding practices. Here are some of the categories available:
       </p>
 
       <div className="flex flex-wrap items-start justify-start gap-2">
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">React</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Next.js</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Vue</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">TypeScript</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Python</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Node.js</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">React</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Next.js</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Vue</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">TypeScript</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Python</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Node.js</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">
           TailwindCSS
         </span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Testing</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Testing</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">
           API Development
         </span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Clean Code</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">Security</span>
-        <span className="rounded-md bg-primary/10 px-3 py-1.5 text-sm font-medium">
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Clean Code</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">Security</span>
+        <span className="bg-primary/10 rounded-md px-3 py-1.5 text-sm font-medium">
           Performance
         </span>
       </div>
@@ -167,7 +167,7 @@ const Question5 = () => (
     <AccordionTrigger className="text-left leading-relaxed">
       What are best practices for using Cursor rules?
     </AccordionTrigger>
-    <AccordionContent className="prose max-w-none dark:prose-invert">
+    <AccordionContent className="prose dark:prose-invert max-w-none">
       <p>
         Cursor rules are incredibly powerful for guiding AI behavior in your projects. Here are some
         tips to get the most out of them:
