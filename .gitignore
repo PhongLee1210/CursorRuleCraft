@@ -48,3 +48,4 @@ bun.lockb
 env.docker
 docker-compose.override.yml
 backup_*.sql
+*.tsbuildinfo

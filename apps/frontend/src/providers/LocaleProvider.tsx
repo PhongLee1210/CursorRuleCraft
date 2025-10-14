@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { defaultLocale, dynamicActivate } from '@/lib/lingui';
 
 // Languages
-export type Language = {
+export type LanguageType = {
   id: string;
   name: string;
   locale: string;
@@ -15,7 +15,7 @@ export type Language = {
   progress?: number;
 };
 
-export const languages: Language[] = [
+export const languages: LanguageType[] = [
   { id: 'en-US', name: 'English', editorCode: 'en', locale: 'en-US' },
 ];
 
