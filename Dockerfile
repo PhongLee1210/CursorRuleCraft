@@ -40,8 +40,8 @@ ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 # Copy source code
 COPY . .
 
-# Build shared types first (dependency)
-RUN bunx nx build shared-types
+# Note: shared-types doesn't need building (it's TypeScript source files)
+# Both frontend and backend consume it directly via TypeScript
 
 # Build backend (no special env vars needed at build time)
 RUN bunx nx build backend --configuration=production
