@@ -62,8 +62,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/apps/backend/dist ./
 
 # Install only production dependencies
+# Remove workspace: protocol dependencies (already bundled in dist)
 COPY --from=builder /app/apps/backend/package.json ./package.json
-RUN npm install --omit=dev
+RUN sed -i '/"@cursorrulecraft\/shared-types":/d' package.json && \
+    npm install --omit=dev
 
 EXPOSE 4000
 
@@ -106,8 +108,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/apps/backend/dist ./backend
 
 # Install backend production dependencies
+# Remove workspace: protocol dependencies (already bundled in dist)
 COPY --from=builder /app/apps/backend/package.json ./backend/package.json
-RUN cd backend && npm install --omit=dev
+RUN sed -i '/"@cursorrulecraft\/shared-types":/d' ./backend/package.json && \
+    cd backend && npm install --omit=dev
 
 # Copy built frontend
 COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
