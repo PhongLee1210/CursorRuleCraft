@@ -7,7 +7,8 @@ services:
     branch: main
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    dockerCommand: sh -c "cd /app/backend && node main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"
+    # Use the 'combined' target from multi-stage Dockerfile
+    dockerTarget: combined
     buildFilter:
       paths:
         - apps/**
@@ -75,9 +76,6 @@ services:
         value: /api
       - key: VITE_CLERK_PUBLISHABLE_KEY
         fromEnvVar: VITE_CLERK_PUBLISHABLE_KEY
-
-    # Use the 'combined' target from multi-stage Dockerfile
-    dockerTarget: combined
 
     # Health check configuration
     healthCheckPath: /health
