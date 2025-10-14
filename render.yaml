@@ -1,0 +1,86 @@
+services:
+  - type: web
+    name: cursorrulecraft
+    runtime: docker
+    region: singapore # Change to your preferred region
+    plan: hobby # Change to your preferred plan
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: sh -c "cd /app/backend && node main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"
+    buildFilter:
+      paths:
+        - apps/**
+        - packages/**
+        - Dockerfile
+        - package.json
+        - bun.lock
+        - nx.json
+        - tsconfig*.json
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: HOST
+        value: 0.0.0.0
+
+      # Supabase Configuration (add actual values in Render dashboard)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+      # Clerk Authentication (add actual values in Render dashboard)
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+
+      # GitHub App Configuration (add actual values in Render dashboard)
+      - key: GITHUB_APP_ID
+        sync: false
+      - key: GITHUB_APP_PRIVATE_KEY_BASE64
+        sync: false
+      - key: GITHUB_APP_CLIENT_ID
+        sync: false
+      - key: GITHUB_APP_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_APP_WEBHOOK_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+
+      # URLs (auto-generated from Render)
+      - key: GITHUB_REDIRECT_URI
+        value: https://cursorrulecraft.onrender.com/api/auth/github/callback
+      - key: FRONTEND_URL
+        value: https://cursorrulecraft.onrender.com
+      - key: ALLOWED_ORIGINS
+        value: https://cursorrulecraft.onrender.com
+      - key: VITE_API_URL
+        value: /api
+
+    # Build configuration for Docker
+    dockerBuildArgs:
+      - key: VITE_API_URL
+        value: /api
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        fromEnvVar: VITE_CLERK_PUBLISHABLE_KEY
+
+    # Use the 'combined' target from multi-stage Dockerfile
+    dockerTarget: combined
+
+    # Health check configuration
+    healthCheckPath: /health
+
+    # Auto-deploy on push
+    autoDeploy: true

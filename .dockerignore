@@ -82,6 +82,8 @@ docs
 jest.config.js
 tsconfig*.json
 !tsconfig.base.json
+!tsconfig.json
+!tsconfig.node.json
 
 # Logs and temp files
 logs
