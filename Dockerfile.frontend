@@ -1,7 +1,7 @@
 # Dockerfile for Frontend Static Site
 # This builds the frontend and serves it with nginx
 
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 
 # Build args for environment variables
 ARG VITE_API_URL
