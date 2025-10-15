@@ -1,20 +1,18 @@
 services:
+  # Backend API Service
   - type: web
-    name: cursorrulecraft
+    name: cursorrulecraft-api
     runtime: docker
-    region: singapore # Change to your preferred region
-    plan: hobby # Change to your preferred plan
+    region: singapore
+    plan: hobby # Upgrade from hobby for better performance
     branch: main
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./Dockerfile.backend
     dockerContext: .
-    # Use the 'combined' target from multi-stage Dockerfile
-    dockerTarget: combined
     buildFilter:
       paths:
-        - apps/frontend/**
         - apps/backend/**
         - packages/shared-types/**
-        - Dockerfile
+        - Dockerfile.backend
         - package.json
         - bun.lock
         - nx.json
@@ -37,7 +35,7 @@ services:
       - key: HOST
         value: 0.0.0.0
 
-      # Supabase Configuration (add actual values in Render dashboard)
+      # Supabase Configuration
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY
@@ -45,17 +43,15 @@ services:
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
 
-      # Clerk Authentication (add actual values in Render dashboard)
+      # Clerk Authentication
       - key: CLERK_PUBLISHABLE_KEY
-        sync: false
-      - key: VITE_CLERK_PUBLISHABLE_KEY
         sync: false
       - key: CLERK_SECRET_KEY
         sync: false
       - key: CLERK_WEBHOOK_SECRET
         sync: false
 
-      # GitHub App Configuration (add actual values in Render dashboard)
+      # GitHub App Configuration
       - key: GITHUB_APP_ID
         sync: false
       - key: GITHUB_APP_PRIVATE_KEY_BASE64
@@ -71,26 +67,63 @@ services:
       - key: GITHUB_CLIENT_SECRET
         sync: false
 
-      # URLs (auto-generated from Render)
+      # URLs - Backend needs to know where frontend is
       - key: GITHUB_REDIRECT_URI
         value: https://cursorrulecraft.onrender.com/api/auth/github/callback
       - key: FRONTEND_URL
         value: https://cursorrulecraft.onrender.com
       - key: ALLOWED_ORIGINS
         value: https://cursorrulecraft.onrender.com
-      - key: VITE_API_URL
-        value: /api
 
-    # Build configuration for Docker
+    # Health check on /api/health endpoint
+    healthCheckPath: /api/health
+
+    # Auto-deploy on push
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: static_site
+    name: cursorrulecraft
+    runtime: docker
+    region: singapore
+    plan: hobby
+    branch: main
+    dockerfilePath: ./Dockerfile.frontend
+    dockerContext: .
+    buildFilter:
+      paths:
+        - apps/frontend/**
+        - packages/shared-types/**
+        - Dockerfile.frontend
+        - package.json
+        - bun.lock
+        - nx.json
+        - tsconfig.base.json
+        - tsconfig.json
+      ignoredPaths:
+        - '**/*.md'
+        - '**/README.md'
+        - docs/**
+        - '**/*.test.ts'
+        - '**/*.spec.ts'
+        - .github/**
+        - '**/.gitignore'
+        - '**/LICENSE'
+
+    # Environment variables for build-time
+    envVars:
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
+      # Frontend will make API requests to the backend service
+      - key: VITE_API_URL
+        value: https://cursorrulecraft-api.onrender.com/api
+
+    # Build arguments
     dockerBuildArgs:
       - key: VITE_API_URL
-        value: /api
+        value: https://cursorrulecraft-api.onrender.com/api
       - key: VITE_CLERK_PUBLISHABLE_KEY
         fromEnvVar: VITE_CLERK_PUBLISHABLE_KEY
-
-    # Health check configuration - disabled to allow TCP checks
-    # Render will use TCP port checks instead which is more reliable for initial deploy
-    # healthCheckPath: /health
 
     # Auto-deploy on push
     autoDeploy: true
