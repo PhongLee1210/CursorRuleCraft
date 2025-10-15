@@ -61,11 +61,14 @@ ENV NODE_ENV=production
 # Copy built backend (TypeScript compiles to apps/backend/dist/)
 COPY --from=builder /app/apps/backend/dist ./
 
+# Copy shared-types source (needed for module-alias at runtime)
+COPY --from=builder /app/packages/shared-types ./packages/shared-types
+
 # Install only production dependencies
-# Remove workspace: protocol dependencies (already bundled in dist)
+# Remove workspace: protocol dependency (but keep module alias)
 COPY --from=builder /app/apps/backend/package.json ./package.json
 RUN apk add --no-cache jq && \
-    jq 'del(.dependencies["@cursorrulecraft/shared-types"]) | del(._moduleAliases["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
     mv package.json.tmp package.json && \
     npm install --omit=dev
 
@@ -109,11 +112,14 @@ ENV NODE_ENV=production
 # Copy built backend (TypeScript compiles to apps/backend/dist/)
 COPY --from=builder /app/apps/backend/dist ./backend
 
+# Copy shared-types source (needed for module-alias at runtime)
+COPY --from=builder /app/packages/shared-types ./packages/shared-types
+
 # Install backend production dependencies
-# Remove workspace: protocol dependencies (already bundled in dist)
+# Remove workspace: protocol dependency (but keep module alias)
 COPY --from=builder /app/apps/backend/package.json ./backend/package.json
 RUN apk add --no-cache jq && \
-    jq 'del(.dependencies["@cursorrulecraft/shared-types"]) | del(._moduleAliases["@cursorrulecraft/shared-types"])' ./backend/package.json > ./backend/package.json.tmp && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"])' ./backend/package.json > ./backend/package.json.tmp && \
     mv ./backend/package.json.tmp ./backend/package.json && \
     cd backend && npm install --omit=dev
 
