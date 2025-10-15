@@ -64,7 +64,9 @@ COPY --from=builder /app/apps/backend/dist ./
 # Install only production dependencies
 # Remove workspace: protocol dependencies (already bundled in dist)
 COPY --from=builder /app/apps/backend/package.json ./package.json
-RUN sed -i '/"@cursorrulecraft\/shared-types":/d' package.json && \
+RUN apk add --no-cache jq && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"]) | del(._moduleAliases["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
+    mv package.json.tmp package.json && \
     npm install --omit=dev
 
 EXPOSE 4000
@@ -110,7 +112,9 @@ COPY --from=builder /app/apps/backend/dist ./backend
 # Install backend production dependencies
 # Remove workspace: protocol dependencies (already bundled in dist)
 COPY --from=builder /app/apps/backend/package.json ./backend/package.json
-RUN sed -i '/"@cursorrulecraft\/shared-types":/d' ./backend/package.json && \
+RUN apk add --no-cache jq && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"]) | del(._moduleAliases["@cursorrulecraft/shared-types"])' ./backend/package.json > ./backend/package.json.tmp && \
+    mv ./backend/package.json.tmp ./backend/package.json && \
     cd backend && npm install --omit=dev
 
 # Copy built frontend
