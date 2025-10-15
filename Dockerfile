@@ -136,8 +136,8 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
+# Let Render handle health checks via render.yaml configuration
+# No Docker HEALTHCHECK needed
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
