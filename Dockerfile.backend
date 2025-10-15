@@ -41,9 +41,9 @@ COPY --from=base /app/packages/shared-types ./packages/shared-types
 # Copy package.json and install production dependencies
 COPY --from=base /app/apps/backend/package.json ./package.json
 
-# Remove workspace dependency using jq
+# Update package.json: remove workspace dependency and fix module-alias paths for production
 RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/* && \
-    jq 'del(.dependencies["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"]) | ._moduleAliases["@"] = "dist/apps/backend/src"' package.json > package.json.tmp && \
     mv package.json.tmp package.json && \
     npm install --omit=dev
 
