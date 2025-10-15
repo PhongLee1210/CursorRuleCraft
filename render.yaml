@@ -81,8 +81,8 @@ services:
     # Auto-deploy on push
     autoDeploy: true
 
-  # Frontend Static Site
-  - type: static_site
+  # Frontend Static Site (served via nginx in Docker)
+  - type: web
     name: cursorrulecraft
     runtime: docker
     region: singapore
