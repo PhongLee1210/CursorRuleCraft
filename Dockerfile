@@ -129,10 +129,10 @@ COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
 # Copy Nginx configuration for combined service
 COPY apps/frontend/nginx.combined.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 10000
+EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:10000/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
 
 CMD ["sh", "-c", "node backend/apps/backend/src/main.js & exec nginx -g 'daemon off;'"]
 
