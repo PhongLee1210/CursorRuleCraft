@@ -88,8 +88,9 @@ services:
       - key: VITE_CLERK_PUBLISHABLE_KEY
         fromEnvVar: VITE_CLERK_PUBLISHABLE_KEY
 
-    # Health check configuration
-    healthCheckPath: /health
+    # Health check configuration - disabled to allow TCP checks
+    # Render will use TCP port checks instead which is more reliable for initial deploy
+    # healthCheckPath: /health
 
     # Auto-deploy on push
     autoDeploy: true
