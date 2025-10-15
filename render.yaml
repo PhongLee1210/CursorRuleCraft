@@ -110,20 +110,12 @@ services:
         - '**/.gitignore'
         - '**/LICENSE'
 
-    # Environment variables for build-time
+    # Environment variables (available during build and runtime)
     envVars:
       - key: VITE_CLERK_PUBLISHABLE_KEY
         sync: false
-      # Frontend will make API requests to the backend service
       - key: VITE_API_URL
         value: https://cursorrulecraft-api.onrender.com/api
-
-    # Build arguments
-    dockerBuildArgs:
-      - key: VITE_API_URL
-        value: https://cursorrulecraft-api.onrender.com/api
-      - key: VITE_CLERK_PUBLISHABLE_KEY
-        fromEnvVar: VITE_CLERK_PUBLISHABLE_KEY
 
     # Auto-deploy on push
     autoDeploy: true
