@@ -134,5 +134,5 @@ EXPOSE 10000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:10000/health || exit 1
 
-CMD ["sh", "-c", "node backend/apps/backend/src/main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "node backend/apps/backend/src/main.js & exec nginx -g 'daemon off;'"]
 
