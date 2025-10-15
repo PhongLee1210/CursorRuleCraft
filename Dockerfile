@@ -67,7 +67,7 @@ COPY --from=builder /app/packages/shared-types ./packages/shared-types
 # Install only production dependencies
 # Remove workspace: protocol dependency (but keep module alias)
 COPY --from=builder /app/apps/backend/package.json ./package.json
-RUN apk add --no-cache jq && \
+RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/* && \
     jq 'del(.dependencies["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
     mv package.json.tmp package.json && \
     npm install --omit=dev
@@ -129,10 +129,10 @@ COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
 # Copy Nginx configuration for combined service
 COPY apps/frontend/nginx.combined.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 10000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:10000/health || exit 1
 
-CMD ["sh", "-c", "cd /app/backend && node apps/backend/src/main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "node backend/apps/backend/src/main.js & for i in $(seq 1 30); do wget --spider -q http://localhost:4000/api/health 2>/dev/null && break || sleep 1; done && exec nginx -g 'daemon off;'"]
 

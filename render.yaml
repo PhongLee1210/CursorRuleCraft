@@ -11,13 +11,24 @@ services:
     dockerTarget: combined
     buildFilter:
       paths:
-        - apps/**
-        - packages/**
+        - apps/frontend/**
+        - apps/backend/**
+        - packages/shared-types/**
         - Dockerfile
         - package.json
         - bun.lock
         - nx.json
-        - tsconfig*.json
+        - tsconfig.base.json
+        - tsconfig.json
+      ignoredPaths:
+        - '**/*.md'
+        - '**/README.md'
+        - docs/**
+        - '**/*.test.ts'
+        - '**/*.spec.ts'
+        - .github/**
+        - '**/.gitignore'
+        - '**/LICENSE'
     envVars:
       - key: NODE_ENV
         value: production
