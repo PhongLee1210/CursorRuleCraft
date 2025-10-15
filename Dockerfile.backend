@@ -32,11 +32,11 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built output
+# Copy built output (includes compiled shared-types)
 COPY --from=base /app/apps/backend/dist ./dist
 
-# Copy shared-types for module-alias resolution
-COPY --from=base /app/packages/shared-types ./packages/shared-types
+# Copy compiled shared-types from dist folder
+COPY --from=base /app/dist/packages/shared-types ./packages/shared-types
 
 # Copy package.json and install production dependencies
 COPY --from=base /app/apps/backend/package.json ./package.json
