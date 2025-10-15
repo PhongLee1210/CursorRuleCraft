@@ -4,7 +4,7 @@ services:
     name: cursorrulecraft-api
     runtime: docker
     region: singapore
-    plan: hobby # Upgrade from hobby for better performance
+    plan: free # Upgrade from hobby for better performance
     branch: main
     dockerfilePath: ./Dockerfile.backend
     dockerContext: .
@@ -86,7 +86,7 @@ services:
     name: cursorrulecraft
     runtime: docker
     region: singapore
-    plan: hobby
+    plan: free
     branch: main
     dockerfilePath: ./Dockerfile.frontend
     dockerContext: .
