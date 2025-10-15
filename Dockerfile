@@ -77,7 +77,7 @@ EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:4000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-CMD ["node", "apps/backend/src/main.js"]
+CMD ["node", "main.js"]
 
 # ============================================
 # Stage 4: Frontend Runtime (Nginx)
@@ -113,7 +113,8 @@ ENV NODE_ENV=production
 COPY --from=builder /app/apps/backend/dist ./backend
 
 # Copy shared-types source (needed for module-alias at runtime)
-COPY --from=builder /app/packages/shared-types ./packages/shared-types
+# Must be relative to backend's package.json location
+COPY --from=builder /app/packages/shared-types ./backend/packages/shared-types
 
 # Install backend production dependencies
 # Remove workspace: protocol dependency (but keep module alias)
@@ -134,5 +135,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
 
-CMD ["sh", "-c", "node backend/apps/backend/src/main.js & exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "node backend/main.js & exec nginx -g 'daemon off;'"]
 
