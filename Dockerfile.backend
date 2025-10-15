@@ -13,6 +13,11 @@ COPY tsconfig.base.json tsconfig.json nx.json ./
 COPY apps/backend ./apps/backend
 COPY packages/shared-types ./packages/shared-types
 
+# Remove workspace dependency from package.json before npm install
+RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/* && \
+    jq 'del(.dependencies["@cursorrulecraft/shared-types"])' apps/backend/package.json > apps/backend/package.json.tmp && \
+    mv apps/backend/package.json.tmp apps/backend/package.json
+
 # Install dependencies
 RUN npm install
 
