@@ -56,12 +56,8 @@ services:
         sync: false
       - key: GITHUB_APP_PRIVATE_KEY_BASE64
         sync: false
-      - key: GITHUB_APP_CLIENT_ID
-        sync: false
-      - key: GITHUB_APP_CLIENT_SECRET
-        sync: false
-      - key: GITHUB_APP_WEBHOOK_SECRET
-        sync: false
+      
+      # GitHub OAuth (from GitHub App settings)
       - key: GITHUB_CLIENT_ID
         sync: false
       - key: GITHUB_CLIENT_SECRET
