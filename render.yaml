@@ -48,15 +48,13 @@ services:
         sync: false
       - key: CLERK_SECRET_KEY
         sync: false
-      - key: CLERK_WEBHOOK_SECRET
-        sync: false
 
       # GitHub App Configuration
       - key: GITHUB_APP_ID
         sync: false
       - key: GITHUB_APP_PRIVATE_KEY_BASE64
         sync: false
-      
+
       # GitHub OAuth (from GitHub App settings)
       - key: GITHUB_CLIENT_ID
         sync: false
