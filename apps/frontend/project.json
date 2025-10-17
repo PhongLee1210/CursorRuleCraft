@@ -56,12 +56,10 @@
     },
     "prune": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist"],
+      "outputs": ["{workspaceRoot}/dist/apps/frontend"],
       "options": {
         "commands": [
-          "rm -rf dist/apps/frontend",
-          "mkdir -p dist/apps/frontend",
-          "cp -r apps/frontend/dist/* dist/apps/frontend/ || cp -r dist/apps/frontend/* dist/apps/frontend/"
+          "echo 'Frontend build already in dist/apps/frontend/'"
         ],
         "parallel": false
       },
