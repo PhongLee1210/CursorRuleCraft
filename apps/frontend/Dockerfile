@@ -1,16 +1,57 @@
-# Frontend Dockerfile for Nx monorepo
-# Build the docker image with `npx nx docker:build frontend`.
+# Multi-stage Dockerfile for React Frontend
+# This file is self-contained and includes the build process
+# Render will run this directly without external build commands
 #
-# Run the container with `docker run -p 80:80 apps-frontend`.
-#
+# ============================================
+# Stage 1: Base Dependencies
+# ============================================
+FROM oven/bun:1 AS base
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json bun.lock* ./
+COPY apps/frontend/package.json ./apps/frontend/
+COPY packages/shared-types/package.json ./packages/shared-types/
+
+# Copy NX configuration
+COPY nx.json tsconfig.base.json tsconfig.json ./
+
+# Install dependencies
+RUN bun install --frozen-lockfile
+
+# ============================================
+# Stage 2: Build
+# ============================================
+FROM base AS builder
+
+WORKDIR /app
+
+# Build arguments for Vite
+ARG VITE_API_URL=/api
+ARG VITE_CLERK_PUBLISHABLE_KEY
+
+# Set as environment variables for Vite build
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
+
+# Copy source code
+COPY apps/frontend ./apps/frontend
+COPY packages/shared-types ./packages/shared-types
+
+# Build frontend
+RUN cd apps/frontend && bun run build
+
+# ============================================
+# Stage 3: Production Runtime (Nginx)
+# ============================================
 FROM nginx:alpine
 
 # Copy Nginx configuration
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built frontend from workspace dist folder
-# The prune task prepares this structure at workspace root
-COPY dist/apps/frontend /usr/share/nginx/html
+# Copy built frontend from builder
+COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80

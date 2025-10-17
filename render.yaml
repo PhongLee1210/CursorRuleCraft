@@ -83,9 +83,15 @@ services:
     region: singapore
     plan: free
     branch: main
-    # Using frontend Dockerfile (following same pattern as backend)
+    # Using frontend Dockerfile (self-contained multi-stage build)
     dockerfilePath: ./apps/frontend/Dockerfile
     dockerContext: .
+    # Pass build args for Vite
+    dockerBuildArgs:
+      - name: VITE_API_URL
+        value: https://cursorrulecraft-api.onrender.com/api
+      - name: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
     buildFilter:
       paths:
         - apps/frontend/**
@@ -105,13 +111,6 @@ services:
         - .github/**
         - '**/.gitignore'
         - '**/LICENSE'
-
-    # Environment variables (available during build and runtime)
-    envVars:
-      - key: VITE_CLERK_PUBLISHABLE_KEY
-        sync: false
-      - key: VITE_API_URL
-        value: https://cursorrulecraft-api.onrender.com/api
 
     # Auto-deploy on push
     autoDeploy: true
