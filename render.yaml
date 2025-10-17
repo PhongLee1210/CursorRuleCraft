@@ -13,7 +13,7 @@ services:
       paths:
         - apps/backend/**
         - packages/shared-types/**
-        - Dockerfile
+        - apps/backend/Dockerfile
         - package.json
         - bun.lock
         - nx.json
@@ -83,15 +83,14 @@ services:
     region: singapore
     plan: free
     branch: main
-    dockerfilePath: ./Dockerfile
+    # Using frontend Dockerfile (following same pattern as backend)
+    dockerfilePath: ./apps/frontend/Dockerfile
     dockerContext: .
-    # Build only the frontend stage from multi-stage Dockerfile
-    dockerBuildTarget: frontend
     buildFilter:
       paths:
         - apps/frontend/**
-        - packages/shared-types/**
-        - Dockerfile
+        - apps/frontend/Dockerfile
+        - apps/frontend/nginx.conf
         - package.json
         - bun.lock
         - nx.json

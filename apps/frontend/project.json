@@ -53,6 +53,34 @@
         "command": "lingui compile",
         "cwd": "apps/frontend"
       }
+    },
+    "prune": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist"],
+      "options": {
+        "commands": [
+          "rm -rf dist/apps/frontend",
+          "mkdir -p dist/apps/frontend",
+          "cp -r apps/frontend/dist/* dist/apps/frontend/ || cp -r dist/apps/frontend/* dist/apps/frontend/"
+        ],
+        "parallel": false
+      },
+      "dependsOn": ["build"]
+    },
+    "docker:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -f apps/frontend/Dockerfile -t apps-frontend .",
+        "cwd": "{workspaceRoot}"
+      },
+      "dependsOn": ["build", "prune"]
+    },
+    "docker:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker run -p 80:80 apps-frontend"
+      },
+      "dependsOn": ["docker:build"]
     }
   },
   "tags": ["type:app", "scope:frontend"]
