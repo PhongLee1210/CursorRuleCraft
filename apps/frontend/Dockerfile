@@ -50,8 +50,8 @@ FROM nginx:alpine
 # Copy Nginx configuration
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built frontend from builder
-COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
+# Copy built frontend from builder (Vite outputs to ../../dist/apps/frontend)
+COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
