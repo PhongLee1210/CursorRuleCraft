@@ -82,7 +82,7 @@ jobs:
 
       - name: Type check
         run: bun run type-check
-        continue-on-error: true # Temporarily allow failures due to dependency issues
+        continue-on-error: false
 
       - name: Run tests
         run: bun run test
