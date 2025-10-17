@@ -56,10 +56,12 @@
       "dependencies": {
         "@clerk/backend": "^2.17.2",
         "@cursorrulecraft/shared-types": "workspace:*",
+        "@nestjs/axios": "^4.0.1",
         "@nestjs/common": "^11.1.6",
         "@nestjs/config": "^4.0.2",
         "@nestjs/core": "^11.1.6",
         "@nestjs/platform-express": "^11.1.6",
+        "@nestjs/terminus": "^11.0.0",
         "@octokit/auth-app": "^8.1.1",
         "@octokit/rest": "^22.0.0",
         "@supabase/supabase-js": "^2.74.0",
