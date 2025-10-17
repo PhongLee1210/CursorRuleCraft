@@ -117,13 +117,13 @@ jobs:
             apps/backend/dist
             apps/frontend/dist
           retention-days: 7
-      
+
       # Optional: Build Docker images to verify they work
       - name: Build backend Docker image
         run: bunx nx docker:build backend
         continue-on-error: true
-        
-      - name: Build frontend Docker image  
+
+      - name: Build frontend Docker image
         run: bunx nx docker:build frontend
         continue-on-error: true
 
