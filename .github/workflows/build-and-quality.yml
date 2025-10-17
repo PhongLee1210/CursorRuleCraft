@@ -88,20 +88,17 @@ jobs:
         run: bun run test
         continue-on-error: true
 
-      - name: Build all projects
-        run: bun run build
-        env:
-          NODE_ENV: production
-
       - name: Build backend
-        run: bun run build:backend
+        run: bunx nx build backend
         env:
           NODE_ENV: production
 
       - name: Build frontend
-        run: bun run build:frontend
+        run: bunx nx build frontend
         env:
           NODE_ENV: production
+          VITE_API_URL: /api
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder' }}
 
       - name: Check build artifacts
         run: |
@@ -109,7 +106,7 @@ jobs:
           ls -la apps/backend/dist || echo "Backend dist not found"
 
           echo "Checking frontend build artifacts..."
-          ls -la dist/apps/frontend || echo "Frontend dist not found"
+          ls -la apps/frontend/dist || echo "Frontend dist not found"
 
       - name: Upload build artifacts
         if: success()
@@ -118,8 +115,17 @@ jobs:
           name: build-artifacts-${{ github.sha }}
           path: |
             apps/backend/dist
-            dist/apps/frontend
+            apps/frontend/dist
           retention-days: 7
+      
+      # Optional: Build Docker images to verify they work
+      - name: Build backend Docker image
+        run: bunx nx docker:build backend
+        continue-on-error: true
+        
+      - name: Build frontend Docker image  
+        run: bunx nx docker:build frontend
+        continue-on-error: true
 
   # Optional: Run affected projects only for PRs
   affected:
