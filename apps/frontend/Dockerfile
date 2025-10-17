@@ -18,7 +18,7 @@ COPY packages/shared-types/package.json ./packages/shared-types/
 COPY nx.json tsconfig.base.json tsconfig.json ./
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # ============================================
 # Stage 2: Build
