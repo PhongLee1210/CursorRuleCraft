@@ -58,9 +58,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
       "options": {
-        "commands": [
-          "echo 'Frontend build already in dist/apps/frontend/'"
-        ],
+        "commands": ["echo 'Frontend build already in dist/apps/frontend/'"],
         "parallel": false
       },
       "dependsOn": ["build"]
