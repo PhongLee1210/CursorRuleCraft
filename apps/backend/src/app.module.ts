@@ -1,6 +1,8 @@
+import { AiAgentModule } from '@/ai-agent/ai-agent.module';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { ClerkAuthGuard } from '@/auth/clerk-auth.guard';
+import { HealthModule } from '@/health/health.module';
 import { RepositoriesModule } from '@/repositories/repositories.module';
 import { SupabaseModule } from '@/supabase/supabase.module';
 import { WorkspacesModule } from '@/workspaces/workspaces.module';
@@ -18,9 +20,11 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
       envFilePath: '.env', // Nx runs from workspace root, so this points to root .env
       ignoreEnvFile: false,
     }),
+    HealthModule,
     SupabaseModule,
     WorkspacesModule,
     RepositoriesModule,
+    AiAgentModule,
   ],
   controllers: [AppController],
   providers: [

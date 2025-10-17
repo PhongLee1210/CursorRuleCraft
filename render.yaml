@@ -6,13 +6,14 @@ services:
     region: singapore
     plan: free # Upgrade from hobby for better performance
     branch: main
-    dockerfilePath: ./Dockerfile.backend
+    # Using Nx-generated Dockerfile (with @nx/docker plugin)
+    dockerfilePath: ./apps/backend/Dockerfile
     dockerContext: .
     buildFilter:
       paths:
         - apps/backend/**
         - packages/shared-types/**
-        - Dockerfile.backend
+        - Dockerfile
         - package.json
         - bun.lock
         - nx.json
@@ -82,13 +83,15 @@ services:
     region: singapore
     plan: free
     branch: main
-    dockerfilePath: ./Dockerfile.frontend
+    dockerfilePath: ./Dockerfile
     dockerContext: .
+    # Build only the frontend stage from multi-stage Dockerfile
+    dockerBuildTarget: frontend
     buildFilter:
       paths:
         - apps/frontend/**
         - packages/shared-types/**
-        - Dockerfile.frontend
+        - Dockerfile
         - package.json
         - bun.lock
         - nx.json

@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/backend/src",
+  "tags": ["type:app", "scope:backend"],
   "targets": {
     "dev": {
       "executor": "nx:run-commands",
@@ -49,7 +50,37 @@
         "command": "tsc --noEmit",
         "cwd": "apps/backend"
       }
+    },
+    "prune": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist"],
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "mkdir -p dist/apps/backend/dist",
+          "mkdir -p dist/packages/shared-types",
+          "cp -r apps/backend/dist/* dist/apps/backend/dist/",
+          "cp -r packages/shared-types dist/packages/",
+          "cp apps/backend/package.json dist/apps/backend/"
+        ],
+        "parallel": false
+      },
+      "dependsOn": ["build"]
+    },
+    "docker:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -f apps/backend/Dockerfile -t apps-backend .",
+        "cwd": "{workspaceRoot}"
+      },
+      "dependsOn": ["build", "prune"]
+    },
+    "docker:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker run -p 4000:4000 --env-file .env apps-backend"
+      },
+      "dependsOn": ["docker:build"]
     }
-  },
-  "tags": ["type:app", "scope:backend"]
+  }
 }

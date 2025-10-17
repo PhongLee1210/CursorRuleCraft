@@ -48,6 +48,7 @@
     "@lingui/cli": "^5.5.0",
     "@nestjs/cli": "^11.0.10",
     "@nestjs/schematics": "^11.0.8",
+    "@nx/docker": "21.6.4",
     "@nx/js": "^21.6.4",
     "@nx/nest": "^21.6.4",
     "@nx/vite": "^21.6.4",
@@ -79,5 +80,6 @@
     "vite": "^7.1.9",
     "webpack": "^5.102.1",
     "webpack-node-externals": "^3.0.0"
-  }
+  },
+  "dependencies": {}
 }
