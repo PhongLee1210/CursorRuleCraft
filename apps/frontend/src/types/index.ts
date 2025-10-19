@@ -29,6 +29,7 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
+export * from './ai-messages';
 export * from './cursor-rules';
 export * from './repository';
 export * from './workspace';

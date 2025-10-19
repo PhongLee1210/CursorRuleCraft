@@ -10,21 +10,26 @@ erDiagram
     %% UNIQUE CONSTRAINTS (not shown in diagram):
     %% - git_integrations: UNIQUE(user_id, provider)
     %% - repositories: UNIQUE(workspace_id, provider_repo_id)
+    %% - user_ai_preferences: PRIMARY KEY(user_id)
 
     workspaces ||--o{ workspace_members : "has"
     workspaces ||--o{ repositories : "contains"
     workspaces ||--o{ repository_ai_sessions : "has"
     workspaces ||--o{ cursor_rules : "has"
+    workspaces ||--o{ ai_usage_statistics : "tracks usage"
 
     git_integrations ||--o{ repositories : "connects"
 
     repositories ||--o| repository_ai_sessions : "has one active"
     repositories ||--o{ cursor_rules : "has many"
     repositories ||--o{ workspace_rule_snapshots : "has snapshots"
+    repositories ||--o{ ai_usage_statistics : "tracks usage"
 
     repository_ai_sessions ||--o{ ai_chat_messages : "contains"
+    repository_ai_sessions ||--o{ ai_usage_statistics : "tracks usage"
 
     ai_chat_messages ||--o| cursor_rules : "generates"
+    ai_chat_messages ||--o{ ai_usage_statistics : "tracks usage"
 
     cursor_rules ||--o| cursor_rules : "versions"
     cursor_rules ||--o{ rule_versions : "has history (optional)"
@@ -133,6 +138,36 @@ erDiagram
         text description
         text change_type
         jsonb rules_snapshot "Complete state"
+        timestamptz created_at
+    }
+
+    user_ai_preferences {
+        text user_id PK "Clerk user ID from JWT"
+        text default_provider "groq, openai, etc"
+        text default_model
+        numeric default_temperature
+        int default_max_tokens
+        bigint total_tokens_used
+        bigint total_requests_count
+        timestamptz last_used_at
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    ai_usage_statistics {
+        uuid id PK
+        text user_id "Clerk user ID from JWT"
+        uuid workspace_id FK
+        uuid repository_id FK
+        uuid session_id FK
+        uuid message_id FK
+        text provider "groq, openai, etc"
+        text model "model name"
+        int prompt_tokens
+        int completion_tokens
+        int total_tokens
+        numeric estimated_cost "in USD"
+        int generation_time_ms
         timestamptz created_at
     }
 ```

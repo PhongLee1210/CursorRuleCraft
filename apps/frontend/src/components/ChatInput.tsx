@@ -1,4 +1,5 @@
 import { MentionedFileBadge, QuickActionButton, SuggestionDropdown } from '@/components/chat';
+import { RepoBanner } from '@/components/RepoBanner';
 import { cn } from '@/lib/utils';
 import { useDroppable } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
@@ -230,86 +231,90 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
 
         {/* Main Input Container */}
         <div className="relative w-full space-y-3" ref={dropdownRef}>
-          {/* Combined Input and Suggestions Container */}
+          {/* Combined Input and Suggestions Container with Repo Banner */}
           <div className="relative">
-            {/* Input Box */}
-            <div
-              onClick={handleWrapperClick}
-              className={cn(
-                'border-border/60 bg-background/80 relative flex w-full flex-col backdrop-blur-sm',
-                'transition-all duration-200 ease-out',
-                shouldShowSuggestions ? 'rounded-t-2xl border' : 'rounded-2xl border',
-                'cursor-text',
-                isOver && 'border-primary bg-primary/5 ring-primary/20 ring-2'
-              )}
-            >
-              {/* Mentioned Files */}
-              {mentionedFiles.length > 0 && (
-                <div className="flex flex-wrap gap-2 px-4 pt-3">
-                  {mentionedFiles.map((file) => (
-                    <MentionedFileBadge
-                      key={file.path}
-                      name={file.name}
-                      path={file.path}
-                      type={file.type}
-                      onRemove={onRemoveMention}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Textarea */}
+            <RepoBanner className="absolute inset-x-2 bottom-full z-0 translate-y-1 pb-2" />
+            <div className="relative">
+              {/* Input Box */}
               <div
+                onClick={handleWrapperClick}
                 className={cn(
-                  'relative min-h-[44px] px-4 pb-2',
-                  mentionedFiles.length > 0 ? 'pt-2' : 'pt-3'
+                  'border-border/60 bg-background relative z-10 flex w-full flex-col shadow-md',
+                  'transition-all duration-200 ease-out',
+                  shouldShowSuggestions ? 'rounded-t-2xl border' : 'rounded-2xl border',
+                  'cursor-text',
+                  isOver &&
+                    'before:border-primary before:absolute before:inset-0 before:rounded-2xl before:border-2 before:border-dashed'
                 )}
               >
-                <textarea
-                  ref={mergeRefs(ref, textareaRef)}
-                  value={value}
-                  onChange={handleTextareaChange}
-                  onKeyDown={handleKeyPress}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  placeholder={placeholder}
-                  disabled={disabled || isLoading}
-                  rows={1}
-                  className={cn(
-                    'placeholder:text-muted-foreground/60 selection:bg-primary/20 text-foreground relative w-full resize-none border-none bg-transparent text-sm font-normal leading-5 outline-none',
-                    'overflow-hidden !p-0 transition-all duration-200'
-                  )}
-                />
-              </div>
+                {/* Mentioned Files */}
+                {mentionedFiles.length > 0 && (
+                  <div className="flex flex-wrap gap-2 px-4 pt-3">
+                    {mentionedFiles.map((file) => (
+                      <MentionedFileBadge
+                        key={file.path}
+                        name={file.name}
+                        path={file.path}
+                        type={file.type}
+                        onRemove={onRemoveMention}
+                      />
+                    ))}
+                  </div>
+                )}
 
-              {/* Action Bar */}
-              <div className="flex items-center justify-end px-3 pb-3">
-                {/* Send Button */}
-                <button
-                  onClick={onSend}
-                  disabled={!value.trim() || isLoading}
+                {/* Textarea */}
+                <div
                   className={cn(
-                    'bg-primary hover:bg-primary/90 text-primary-foreground flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200',
-                    'disabled:cursor-not-allowed disabled:opacity-40'
+                    'relative min-h-[44px] px-4 pb-2',
+                    mentionedFiles.length > 0 ? 'pt-2' : 'pt-3'
                   )}
-                  aria-label={t`Send message`}
                 >
-                  {isLoading ? (
-                    <SpinnerGapIcon size={16} className="animate-spin" />
-                  ) : (
-                    <PaperPlaneRightIcon size={16} weight="fill" />
-                  )}
-                </button>
-              </div>
-            </div>
+                  <textarea
+                    ref={mergeRefs(ref, textareaRef)}
+                    value={value}
+                    onChange={handleTextareaChange}
+                    onKeyDown={handleKeyPress}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder={placeholder}
+                    disabled={disabled || isLoading}
+                    rows={1}
+                    className={cn(
+                      'placeholder:text-muted-foreground/60 selection:bg-primary/20 text-foreground relative w-full resize-none border-none bg-transparent text-sm font-normal leading-5 outline-none',
+                      'overflow-hidden !p-0 transition-all duration-200'
+                    )}
+                  />
+                </div>
 
-            {/* Suggestions Dropdown */}
-            <SuggestionDropdown
-              suggestions={filteredSuggestions}
-              selectedIndex={selectedIndex}
-              isVisible={shouldShowSuggestions}
-              onSelect={handleSelectSuggestion}
-            />
+                {/* Action Bar */}
+                <div className="flex items-center justify-end px-3 pb-3">
+                  {/* Send Button */}
+                  <button
+                    onClick={onSend}
+                    disabled={!value.trim() || isLoading}
+                    className={cn(
+                      'bg-primary hover:bg-primary/90 text-primary-foreground flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200',
+                      'disabled:cursor-not-allowed disabled:opacity-40'
+                    )}
+                    aria-label={t`Send message`}
+                  >
+                    {isLoading ? (
+                      <SpinnerGapIcon size={16} className="animate-spin" />
+                    ) : (
+                      <PaperPlaneRightIcon size={16} weight="fill" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Suggestions Dropdown */}
+              <SuggestionDropdown
+                suggestions={filteredSuggestions}
+                selectedIndex={selectedIndex}
+                isVisible={shouldShowSuggestions}
+                onSelect={handleSelectSuggestion}
+              />
+            </div>
           </div>
 
           {/* Quick Actions */}

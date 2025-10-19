@@ -1,3 +1,4 @@
+import { AIModule } from '@/ai/ai.module';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { ClerkAuthGuard } from '@/auth/clerk-auth.guard';
@@ -23,6 +24,7 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
     SupabaseModule,
     WorkspacesModule,
     RepositoriesModule,
+    AIModule,
   ],
   controllers: [AppController],
   providers: [
