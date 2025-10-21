@@ -53,7 +53,7 @@ export const RepositoryHeader = memo(
 
     // Render
     return (
-      <header className="border-border flex items-center justify-between border-b px-6 py-4">
+      <header className="border-border flex items-center justify-between border-b px-6 py-4 pl-2">
         <div className="flex items-center gap-4">
           <Button onClick={onBack} variant="ghost" size="sm">
             <ArrowLeftIcon size={20} />

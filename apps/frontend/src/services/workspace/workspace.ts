@@ -1,4 +1,5 @@
-import type { ApiClient } from '@/lib/api-client';
+import { ApiClient } from '@/lib/api-client';
+import { normalizeServiceError } from '@/lib/utils';
 import {
   mapToWorkspaceDetailDto,
   mapToWorkspaceDto,
@@ -13,7 +14,6 @@ import type {
   WorkspaceRole,
   WorkspaceServiceResult,
 } from '@/types/workspace';
-
 /**
  * Create a new workspace
  */
@@ -38,11 +38,12 @@ export async function createWorkspace(
       data: mapToWorkspaceDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error creating workspace:', error);
     return {
       data: null,
-      error: error as any,
+      error,
     };
   }
 }
@@ -70,11 +71,11 @@ export async function getUserWorkspaces(
       data: workspaces,
       error: null,
     };
-  } catch (error) {
-    console.error('[WorkspaceService] Unexpected error fetching user workspaces:', error);
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -102,11 +103,12 @@ export async function getOwnedWorkspaces(
       data: workspaces,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error fetching owned workspaces:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -133,11 +135,12 @@ export async function getWorkspaceById(
       data: mapToWorkspaceDetailDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error fetching workspace:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -165,11 +168,12 @@ export async function updateWorkspace(
       data: mapToWorkspaceDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error updating workspace:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -196,11 +200,12 @@ export async function deleteWorkspace(
       data: true,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error deleting workspace:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -229,11 +234,12 @@ export async function getWorkspaceMembers(
       data: members,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error fetching workspace members:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -265,11 +271,12 @@ export async function addWorkspaceMember(
       data: mapToWorkspaceMemberDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error adding workspace member:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -299,11 +306,12 @@ export async function removeWorkspaceMember(
       data: true,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error removing workspace member:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -335,11 +343,12 @@ export async function updateWorkspaceMemberRole(
       data: mapToWorkspaceMemberDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error updating member role:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -368,11 +377,12 @@ export async function getUserRoleInWorkspace(
       data: response.data!.data.role,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[WorkspaceService] Unexpected error fetching user role:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }

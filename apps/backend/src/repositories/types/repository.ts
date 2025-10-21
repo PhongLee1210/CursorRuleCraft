@@ -1,4 +1,4 @@
-import { GitProvider } from '@cursorrulecraft/shared-types';
+import { GitProvider, GitProviderType } from '@cursorrulecraft/shared-types';
 
 // Re-export GitProvider for convenience
 export { GitProvider };
@@ -14,7 +14,7 @@ export interface Repository {
   full_name: string;
   description?: string;
   url: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   provider_repo_id: string;
   default_branch: string;
   is_private: boolean;
@@ -39,7 +39,7 @@ export interface AddRepositoryDto {
   full_name: string;
   description?: string;
   url: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   provider_repo_id: string;
   default_branch: string;
   is_private: boolean;

@@ -6,7 +6,6 @@ import { t } from '@lingui/macro';
 import {
   CodeIcon,
   CommandIcon,
-  MagicWandIcon,
   PaperPlaneRightIcon,
   SpinnerGapIcon,
   TerminalIcon,
@@ -52,7 +51,7 @@ interface ChatInputProps {
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
-  onGenerateRule?: () => void;
+  hasMessages?: boolean;
   placeholder?: string;
   disabled?: boolean;
   isLoading?: boolean;
@@ -69,7 +68,7 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
       value,
       onChange,
       onSend,
-      onGenerateRule,
+      hasMessages = false,
       placeholder = `Generate cursor rules...`,
       disabled = false,
       isLoading = false,
@@ -106,11 +105,14 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     );
 
     const shouldShowSuggestions = useMemo(
-      () => showSuggestions && !value && filteredSuggestions.length > 0,
-      [showSuggestions, value, filteredSuggestions.length]
+      () => showSuggestions && !value && filteredSuggestions.length > 0 && !hasMessages,
+      [showSuggestions, value, filteredSuggestions.length, hasMessages]
     );
 
-    const shouldShowQuickActions = useMemo(() => !isFocused && !value, [isFocused, value]);
+    const shouldShowQuickActions = useMemo(
+      () => (!isFocused && !value) || hasMessages,
+      [isFocused, value, hasMessages]
+    );
 
     // Effects
     useEffect(() => {
@@ -320,7 +322,7 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
           {/* Quick Actions */}
           <div
             className={cn(
-              'flex flex-wrap items-center justify-center gap-2 transition-all duration-150',
+              'flex flex-wrap items-center justify-center gap-2 transition-all delay-150',
               shouldShowQuickActions
                 ? 'translate-y-0 opacity-100'
                 : 'pointer-events-none -translate-y-2 opacity-0'
@@ -351,14 +353,14 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
               disabled={isLoading}
             />
 
-            {onGenerateRule && (
+            {/* {onGenerateRule && (
               <QuickActionButton
                 icon={<MagicWandIcon size={14} />}
                 label={t`User Rules`}
                 onClick={onGenerateRule}
                 disabled={isLoading}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>

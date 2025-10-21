@@ -28,7 +28,7 @@ FROM base AS builder
 WORKDIR /app
 
 # Build arguments for Vite
-ARG VITE_API_URL=/api
+ARG VITE_API_URL
 ARG VITE_CLERK_PUBLISHABLE_KEY
 
 # Set as environment variables for Vite build

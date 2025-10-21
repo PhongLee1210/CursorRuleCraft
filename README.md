@@ -355,7 +355,6 @@ SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
 CLERK_SECRET_KEY=sk_live_your_key
 FRONTEND_URL=https://your-app.onrender.com
-ALLOWED_ORIGINS=https://your-app.onrender.com
 ```
 
 **Test Locally:**

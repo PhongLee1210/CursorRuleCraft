@@ -62,7 +62,6 @@ services:
       GITHUB_REDIRECT_URI: ${GITHUB_REDIRECT_URI:-http://localhost/api/auth/github/callback}
 
       # CORS
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
     # Only depend on postgres if you're using it (comment out if using Supabase cloud)
     # depends_on:
@@ -145,7 +144,6 @@ services:
   #     GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
   #     GITHUB_REDIRECT_URI: ${GITHUB_REDIRECT_URI:-http://localhost:8080/api/auth/github/callback}
   #     FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
-  #     ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
   #   networks:
   #     - cursorrulecraft
   #   healthcheck:

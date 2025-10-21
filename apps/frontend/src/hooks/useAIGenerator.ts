@@ -3,14 +3,11 @@
  * Provides an interface for using the mock AI generator service
  */
 
-import { AIGeneratorMockService } from '@/services/ai-generator-mock.service';
 import type {
   AIGenerateRequest,
   AIGenerateResponse,
   AIMessage,
   AIStreamChunk,
-  MessageCode,
-  MessageFile,
 } from '@/types/ai-messages';
 import { useCallback, useState } from 'react';
 
@@ -27,14 +24,7 @@ interface UseAIGeneratorReturn {
     request: AIGenerateRequest,
     onChunk: (chunk: AIStreamChunk) => void
   ) => Promise<void>;
-  generateCursorSuggestion: (context: {
-    currentFile: string;
-    cursorLine: number;
-    cursorColumn: number;
-    beforeCursor: string;
-    afterCursor: string;
-  }) => Promise<MessageCode>;
-  generateMultiFile: (prompt: string) => Promise<MessageFile[]>;
+
   reset: () => void;
 }
 
@@ -53,7 +43,17 @@ export function useAIGenerator(): UseAIGeneratorReturn {
     setError(null);
 
     try {
-      const result = await AIGeneratorMockService.generate(request);
+      const result = {
+        id: '1',
+        messages: [],
+        model: 'gpt-4o',
+        provider: 'openai',
+        usage: {
+          promptTokens: 0,
+          completionTokens: 0,
+          totalTokens: 0,
+        },
+      };
       setResponse(result);
       setMessages(result.messages);
       return result;
@@ -74,8 +74,21 @@ export function useAIGenerator(): UseAIGeneratorReturn {
       try {
         const chunks: AIMessage[] = [];
 
-        for await (const chunk of AIGeneratorMockService.generateStream(request)) {
-          onChunk(chunk);
+        for await (const chunk of [
+          {
+            id: '1',
+            type: 'delta',
+            message: {
+              role: 'assistant',
+              content: 'Hello, how can I help you today?',
+            },
+          },
+        ]) {
+          onChunk({
+            id: chunk.id,
+            type: chunk.type as 'delta' | 'start' | 'complete' | 'error',
+            message: chunk.message as AIMessage,
+          });
 
           if (chunk.type === 'delta' && chunk.message) {
             chunks.push(chunk.message as AIMessage);
@@ -106,7 +119,14 @@ export function useAIGenerator(): UseAIGeneratorReturn {
       setError(null);
 
       try {
-        const result = await AIGeneratorMockService.generateCursorSuggestion(context);
+        const result = {
+          id: '1',
+          type: 'cursor_suggestion',
+          message: {
+            role: 'assistant',
+            content: 'Hello, how can I help you today?',
+          },
+        };
         return result;
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -124,7 +144,13 @@ export function useAIGenerator(): UseAIGeneratorReturn {
     setError(null);
 
     try {
-      const files = await AIGeneratorMockService.generateMultiFile(prompt);
+      const files = [
+        {
+          id: '1',
+          name: 'file.ts',
+          content: 'console.log("Hello, world!");',
+        },
+      ];
       return files;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -151,8 +177,6 @@ export function useAIGenerator(): UseAIGeneratorReturn {
     messages,
     generate,
     generateStream,
-    generateCursorSuggestion,
-    generateMultiFile,
     reset,
   };
 }

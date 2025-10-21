@@ -1,9 +1,11 @@
-import { GeneratedRuleCard, MessageBubble } from '@/components/chat';
+import { MessageBubble } from '@/components/chat';
 import { ChatInput, type MentionedFile } from '@/components/ChatInput';
+import { cn } from '@/lib/utils';
 import type { RuleType } from '@/types/cursor-rules';
 import type { Repository } from '@/types/repository';
-import { t } from '@lingui/macro';
-import { SpinnerGapIcon } from '@phosphor-icons/react';
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
+
 import {
   forwardRef,
   useCallback,
@@ -20,7 +22,7 @@ interface GeneratedRuleDraft {
   content: string;
 }
 
-interface Message {
+interface _Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
@@ -40,24 +42,39 @@ export interface AIChatPanelRef {
 }
 
 export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
-  ({ repository, selectedFile, onClearFileSelection }, ref) => {
+  ({ repository: _repository, selectedFile, onClearFileSelection }, ref) => {
     // Refs
-    const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
-
     // State
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [mentionedFiles, setMentionedFiles] = useState<MentionedFile[]>([]);
+    const [input, setInput] = useState<string>('');
+
+    // Use ai-sdk useChat hook for proper streaming
+    const {
+      messages,
+      status: _status,
+      sendMessage,
+    } = useChat({
+      transport: new DefaultChatTransport({
+        prepareSendMessagesRequest: ({ id, messages }) => {
+          return {
+            api: '/api/ai/chat',
+            body: {
+              id,
+              messages,
+            },
+          };
+        },
+      }),
+    });
 
     // Computed Values
     const hasMessages = useMemo(() => messages.length > 0, [messages.length]);
 
     // Effects
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    // useEffect(() => {
+    //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // }, [messages]);
 
     useEffect(() => {
       if (selectedFile) {
@@ -67,98 +84,16 @@ export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
     }, [selectedFile]);
 
     // Event Handlers
-    const handleSend = useCallback(async () => {
-      if (!input.trim() || isLoading) return;
-
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        role: 'user',
-        content: input.trim(),
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-      setInput('');
-      setIsLoading(true);
-
-      try {
-        // TODO: Integrate with actual AI service
-        // Simulated response for now
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: `I understand you're asking about "${input.trim()}". Based on the repository structure and code analysis, here's what I found...\n\nThis is a simulated response. In production, this would connect to an AI service that has access to your repository's codebase.`,
-          timestamp: new Date(),
-        };
-
-        setMessages((prev) => [...prev, assistantMessage]);
-      } catch (error) {
-        console.error('Failed to send message:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }, [input, isLoading]);
-
-    const handleGenerateRule = useCallback(async () => {
-      setIsLoading(true);
-
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        role: 'user',
-        content: t`Generate a comprehensive project rule based on the repository structure and code patterns.`,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-
-      try {
-        // TODO: Integrate with actual AI service
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: t`I've analyzed your repository and generated a comprehensive project rule. You can copy it and add it to your Cursor project rules.`,
-          timestamp: new Date(),
-          generatedRule: {
-            type: 'PROJECT_RULE',
-            fileName: `${repository.name.toLowerCase().replace(/\s+/g, '-')}-project-rules`,
-            content: `# ${repository.name} Project Rules
-
-## Overview
-This project uses ${repository.language || 'multiple languages'} and follows specific patterns and conventions.
-
-## Code Style
-- Follow consistent naming conventions
-- Use TypeScript for type safety
-- Implement proper error handling
-
-## Architecture
-- Maintain modular structure
-- Separate concerns appropriately
-- Use dependency injection where applicable
-
-## Testing
-- Write unit tests for all business logic
-- Maintain test coverage above 80%
-- Use integration tests for critical paths
-
-## Documentation
-- Document all public APIs
-- Keep README up to date
-- Add inline comments for complex logic`,
-          },
-        };
-
-        setMessages((prev) => [...prev, assistantMessage]);
-      } catch (error) {
-        console.error('Failed to generate rule:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }, [repository]);
+    const handleSend = useCallback(
+      (e?: React.FormEvent) => {
+        e?.preventDefault();
+        if (!input.trim()) return;
+        sendMessage({ text: input });
+        setInput('');
+        // useChat handles streaming automatically
+      },
+      [input]
+    );
 
     const handleRemoveMention = useCallback((path: string) => {
       setMentionedFiles((prev) => prev.filter((f) => f.path !== path));
@@ -179,9 +114,10 @@ This project uses ${repository.language || 'multiple languages'} and follows spe
     );
 
     const resetSession = useCallback(() => {
-      setMessages([]);
-      setInput('');
+      // Note: useChat doesn't have a built-in reset, so we'll need to reload the page
+      // or implement custom reset logic. For now, we'll just clear mentioned files
       setMentionedFiles([]);
+      setInput('');
     }, []);
 
     // Expose methods to parent via ref
@@ -192,73 +128,75 @@ This project uses ${repository.language || 'multiple languages'} and follows spe
 
     // Render
     return (
-      <div className="flex h-full flex-col">
-        {hasMessages ? (
-          <>
-            {/* Messages */}
-            <div className="scrollbar-subtle flex-1 overflow-y-auto p-4">
-              <div className="mx-auto max-w-3xl space-y-4">
-                {messages.map((message) => (
-                  <MessageBubble key={message.id} role={message.role} content={message.content}>
-                    {message.generatedRule && (
-                      <GeneratedRuleCard
-                        title={message.generatedRule.fileName}
-                        content={message.generatedRule.content}
-                        messageId={message.id}
-                      />
-                    )}
-                  </MessageBubble>
-                ))}
+      <div className="relative flex h-full flex-col">
+        {/* Messages Area */}
+        {hasMessages && (
+          <div className="scrollbar-hide flex-1 overflow-y-auto p-4">
+            <div className="mx-auto max-w-3xl space-y-4">
+              {messages.map((message, index) => {
+                // Handle user messages
+                if (message.role === 'user') {
+                  return (
+                    <MessageBubble
+                      key={message.id || `msg-${index}`}
+                      role="user"
+                      content={message.parts?.[0]?.type === 'text' ? message.parts[0].text : ''}
+                    />
+                  );
+                }
 
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-secondary rounded-lg px-4 py-3">
-                      <SpinnerGapIcon size={20} className="text-primary animate-spin" />
-                    </div>
-                  </div>
-                )}
+                // Handle assistant messages
+                if (message.role === 'assistant') {
+                  // Handle streaming parts for assistant messages
+                  if (Array.isArray(message.parts)) {
+                    return message.parts.map((part, i) => {
+                      if (part.type === 'text') {
+                        return (
+                          <MessageBubble
+                            key={`${message.id}-part-${i}`}
+                            role="assistant"
+                            content={part.text}
+                          />
+                        );
+                      }
+                      return null;
+                    });
+                  }
 
-                <div ref={messagesEndRef} />
-              </div>
-            </div>
+                  // Fallback for normal assistant message content
+                  return (
+                    <MessageBubble key={message.id || `msg-${index}`} role="assistant" content="" />
+                  );
+                }
 
-            {/* Input Area - Fixed at bottom */}
-            <div className="border-border animate-in slide-in-from-bottom-4 border-t p-6 duration-500">
-              <div className="mx-auto max-w-3xl">
-                <ChatInput
-                  ref={inputRef}
-                  value={input}
-                  onChange={setInput}
-                  onSend={handleSend}
-                  onGenerateRule={handleGenerateRule}
-                  isLoading={isLoading}
-                  selectedFile={selectedFile}
-                  onClearFileSelection={onClearFileSelection}
-                  mentionedFiles={mentionedFiles}
-                  onRemoveMention={handleRemoveMention}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          /* Empty State - Centered Input */
-          <div className="flex h-full items-center justify-center p-6">
-            <div className="w-full max-w-3xl">
-              <ChatInput
-                ref={inputRef}
-                value={input}
-                onChange={setInput}
-                onSend={handleSend}
-                onGenerateRule={handleGenerateRule}
-                isLoading={isLoading}
-                selectedFile={selectedFile}
-                onClearFileSelection={onClearFileSelection}
-                mentionedFiles={mentionedFiles}
-                onRemoveMention={handleRemoveMention}
-              />
+                return null;
+              })}
             </div>
           </div>
         )}
+
+        {/* Chat Input - Always positioned at bottom */}
+        <div
+          className={cn(
+            'bg-background/95 supports-[backdrop-filter]:bg-background/60 absolute inset-x-0 backdrop-blur',
+            'transition-all ease-out',
+            hasMessages ? 'bottom-0' : 'inset-y-1/3'
+          )}
+        >
+          <div className="mx-auto max-w-3xl p-4">
+            <ChatInput
+              ref={inputRef}
+              value={input}
+              onChange={setInput}
+              onSend={handleSend}
+              hasMessages={hasMessages}
+              selectedFile={selectedFile}
+              onClearFileSelection={onClearFileSelection}
+              mentionedFiles={mentionedFiles}
+              onRemoveMention={handleRemoveMention}
+            />
+          </div>
+        </div>
       </div>
     );
   }

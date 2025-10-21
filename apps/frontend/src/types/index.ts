@@ -29,6 +29,17 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
+export enum KindState {
+  LOADING = 'loading',
+  SUCCESSFUL = 'successful',
+  ERROR = 'error',
+}
+
+export type State =
+  | { kind: KindState.LOADING }
+  | { kind: KindState.SUCCESSFUL; data: unknown }
+  | { kind: KindState.ERROR; message: string };
+
 export * from './ai-messages';
 export * from './cursor-rules';
 export * from './repository';

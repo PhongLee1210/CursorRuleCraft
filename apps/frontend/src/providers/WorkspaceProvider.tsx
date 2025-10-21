@@ -7,6 +7,8 @@ import { LoadingBanner } from '@/components/LoadingBanner';
 
 import { useWorkspaceService } from '@/hooks/useWorkspaceService';
 import { useWorkspaceStore } from '@/stores/workspace';
+import type { Workspace } from '@/types/workspace';
+import { useLocalStorage } from 'usehooks-ts';
 
 // Constants
 const MAX_RETRY_ATTEMPTS = 3;
@@ -15,6 +17,16 @@ const MAX_RETRY_DELAY = 10000;
 const TOKEN_READY_DELAY = 300;
 const REDIRECT_DELAY = 3000; // Delay before redirecting to login page
 const RETRYABLE_STATUS_CODES = [0, 500, 503];
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+/**
+ * Cached workspace data structure
+ */
+interface CachedWorkspaceData {
+  workspaces: Workspace[];
+  timestamp: number;
+  userId: string;
+}
 
 /**
  * Workspace Initialization Provider
@@ -28,15 +40,19 @@ const RETRYABLE_STATUS_CODES = [0, 500, 503];
  * - Manual retry option for users
  * - Differentiates between retryable and non-retryable errors
  * - Updates Zustand store with fetched workspaces
+ * - Caches workspace data in localStorage to avoid unnecessary API calls
+ * - Cache invalidation based on user and time (5-minute expiry)
  *
  * Flow:
  * 1. User signs in via Clerk
  * 2. Wait for Clerk session to be ready
- * 3. Fetch user's workspaces from backend (with retry)
- * 4. Backend auto-creates "My Workspace" if user has none
- * 5. Update the Zustand store with fetched workspaces
- * 6. Store automatically sets first workspace as current if none selected
- * 7. If errors occur, show user-friendly error message with retry option
+ * 3. Check localStorage cache for valid workspace data (user + time check)
+ * 4. If cache valid: Use cached data immediately, update Zustand store
+ * 5. If cache invalid/missing: Fetch from backend (with retry)
+ * 6. Backend auto-creates "My Workspace" if user has none
+ * 7. Update Zustand store and localStorage cache with fetched data
+ * 8. Store automatically sets first workspace as current if none selected
+ * 9. If errors occur, show user-friendly error message with retry option
  *
  * Note: This provider does NOT sync user data to Supabase.
  * User data remains in Clerk as the single source of truth.
@@ -48,6 +64,12 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
 
   // State
   const [isClearingAuth, setIsClearingAuth] = useState(false);
+
+  // Local Storage for workspace cache
+  const [cachedWorkspaceData, setCachedWorkspaceData] = useLocalStorage<CachedWorkspaceData | null>(
+    'workspace-cache',
+    null
+  );
 
   // External Hooks
   const { user, isSignedIn, isLoaded: isUserLoaded } = useUser();
@@ -66,12 +88,63 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
 
   // Event Handlers & Functions
   /**
+   * Check if cached data is valid for the current user and not expired
+   */
+  const isCacheValid = useCallback((cache: CachedWorkspaceData | null, userId: string): boolean => {
+    if (!cache) return false;
+    if (cache.userId !== userId) return false;
+    if (Date.now() - cache.timestamp > CACHE_DURATION) return false;
+    return true;
+  }, []);
+
+  /**
+   * Load workspaces from cache if valid
+   */
+  const loadFromCache = useCallback(
+    (userId: string): Workspace[] | null => {
+      if (isCacheValid(cachedWorkspaceData, userId) && cachedWorkspaceData) {
+        console.log('[WorkspaceInit] Loading workspaces from cache');
+        return cachedWorkspaceData.workspaces;
+      }
+      return null;
+    },
+    [cachedWorkspaceData, isCacheValid]
+  );
+
+  /**
+   * Save workspaces to cache
+   */
+  const saveToCache = useCallback(
+    (workspaces: Workspace[], userId: string) => {
+      const cacheData: CachedWorkspaceData = {
+        workspaces,
+        timestamp: Date.now(),
+        userId,
+      };
+      setCachedWorkspaceData(cacheData);
+      console.log('[WorkspaceInit] Saved workspaces to cache');
+    },
+    [setCachedWorkspaceData]
+  );
+
+  /**
+   * Clear workspace cache (useful for sign out)
+   */
+  const clearCache = useCallback(() => {
+    setCachedWorkspaceData(null);
+    console.log('[WorkspaceInit] Cleared workspace cache');
+  }, [setCachedWorkspaceData]);
+
+  /**
    * Sign out and redirect to login page with saved location
    */
   const clearAuthAndRedirect = useCallback(async () => {
     try {
       setIsClearingAuth(true);
       console.log('[WorkspaceInit] Signing out and redirecting to login with saved location...');
+
+      // Clear workspace cache before signing out
+      clearCache();
 
       await signOut();
 
@@ -86,10 +159,10 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
     } finally {
       setIsClearingAuth(false);
     }
-  }, [navigate, location]);
+  }, [navigate, location, clearCache]);
 
   /**
-   * Initialize workspace with retry logic
+   * Initialize workspace with retry logic and localStorage caching
    */
   const initializeWorkspace = useCallback(
     async (retryDelay = 0) => {
@@ -113,9 +186,32 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
           return;
         }
 
+        const primaryEmail = user?.primaryEmailAddress?.emailAddress;
+        if (!primaryEmail) {
+          console.error('[WorkspaceInit] No primary email available');
+          setInitError({
+            type: 'fetch_failed',
+            message: 'User email is not available. Please try signing in again.',
+            retryable: true,
+          });
+          setInitializing(false);
+          return;
+        }
+
         console.log('[WorkspaceInit] Starting workspace initialization...');
 
-        // Fetch user workspaces
+        // Try to load from cache first
+        const cachedWorkspaces = loadFromCache(primaryEmail);
+        if (cachedWorkspaces) {
+          console.log('[WorkspaceInit] Using cached workspaces, updating store...');
+          setWorkspaces(cachedWorkspaces);
+          setInitializing(false);
+          return;
+        }
+
+        console.log('[WorkspaceInit] Cache miss or invalid, fetching from server...');
+
+        // Fetch user workspaces from server
         const workspacesResult = await workspaceService.getUserWorkspaces();
 
         if (workspacesResult.error) {
@@ -169,11 +265,12 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
         setInitError(null);
         setInitializing(false);
 
-        // Update the store with fetched workspaces
+        // Update the store with fetched workspaces and save to cache
         if (workspacesResult.data) {
           setWorkspaces(workspacesResult.data);
+          saveToCache(workspacesResult.data, primaryEmail);
           console.log(
-            `[WorkspaceInit] Workspace initialization successful. Found ${workspacesResult.data.length} workspace(s), updated store`
+            `[WorkspaceInit] Workspace initialization successful. Found ${workspacesResult.data.length} workspace(s), updated store and cache`
           );
         } else {
           console.log('[WorkspaceInit] Workspace initialization successful but no data returned');
@@ -194,7 +291,17 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
         setTimeout(() => clearAuthAndRedirect(), REDIRECT_DELAY);
       }
     },
-    [getToken, workspaceService, setWorkspaces, setInitializing, setInitError, clearAuthAndRedirect]
+    [
+      getToken,
+      user,
+      workspaceService,
+      setWorkspaces,
+      setInitializing,
+      setInitError,
+      loadFromCache,
+      saveToCache,
+      clearAuthAndRedirect,
+    ]
   );
 
   // Side Effects
@@ -211,6 +318,8 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
       workspaceInitializedRef.current = false;
       setInitError(null);
       setInitializing(false);
+      // Clear cache when user signs out
+      clearCache();
       return;
     }
 
@@ -227,7 +336,7 @@ export function WorkspaceProvider({ children }: React.PropsWithChildren) {
       // Small delay to ensure token is available
       setTimeout(() => initializeWorkspace(), TOKEN_READY_DELAY);
     }
-  }, [isUserLoaded, isAuthLoaded, isSignedIn, user, initializeWorkspace]);
+  }, [isUserLoaded, isAuthLoaded, isSignedIn, user, initializeWorkspace, clearCache]);
 
   // Early Returns - Error State (Blocks UI completely)
   if (initError && !isInitializing) {

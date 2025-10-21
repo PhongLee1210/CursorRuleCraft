@@ -448,14 +448,18 @@ export class RepositoriesController {
       const [owner, repo] = repository.full_name.split('/');
 
       // Fetch file tree from GitHub
-      const fileTree = await this.gitIntegrationService.fetchGitHubFileTree(
+      const { data, error, statusCode } = await this.gitIntegrationService.fetchGitHubFileTree(
         integration.access_token,
         owner,
         repo,
         branch || repository.default_branch
       );
 
-      return { data: fileTree };
+      if (error) {
+        throw new HttpException(error, statusCode ? statusCode : HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+
+      return data;
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

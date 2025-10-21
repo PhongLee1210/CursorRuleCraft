@@ -10,11 +10,12 @@
 /**
  * Git provider types
  */
-export enum GitProvider {
-  GITHUB = 'GITHUB',
-  GITLAB = 'GITLAB',
-  BITBUCKET = 'BITBUCKET',
-}
+export const GitProvider = {
+  GITHUB: 'GITHUB',
+  GITLAB: 'GITLAB',
+  BITBUCKET: 'BITBUCKET',
+} as const;
+export type GitProviderType = (typeof GitProvider)[keyof typeof GitProvider];
 
 // ============================================================================
 // API Response Wrappers

@@ -6,14 +6,15 @@ import { useEffect, useMemo, useRef } from 'react';
  * API Error with additional context
  */
 export class ApiError extends Error {
-  statusCode?: number;
-  response?: any;
+  public statusCode: number;
+  public details?: any;
 
-  constructor(message: string, statusCode?: number, response?: any) {
+  constructor(message: string, statusCode = 500, details?: any) {
     super(message);
     this.name = 'ApiError';
     this.statusCode = statusCode;
-    this.response = response;
+    this.details = details;
+    Object.setPrototypeOf(this, ApiError.prototype); // Fix instanceof checks
   }
 }
 
@@ -29,7 +30,7 @@ export interface ApiResponse<T = any> {
 /**
  * HTTP client configuration
  */
-// eslint-disable-next-line no-undef
+
 interface RequestConfig extends RequestInit {
   params?: Record<string, string | number | boolean>;
 }

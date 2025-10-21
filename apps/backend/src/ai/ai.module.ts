@@ -1,6 +1,7 @@
 import { AIPreferencesService } from '@/ai/ai-preferences.service';
 import { AIController } from '@/ai/ai.controller';
 import { AIService } from '@/ai/ai.service';
+import { PromptTemplateService } from '@/ai/prompt-template.service';
 import { SupabaseModule } from '@/supabase/supabase.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -40,7 +41,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule, SupabaseModule],
   controllers: [AIController],
-  providers: [AIService, AIPreferencesService],
-  exports: [AIService, AIPreferencesService],
+  providers: [AIService, AIPreferencesService, PromptTemplateService],
+  exports: [AIService, AIPreferencesService, PromptTemplateService],
 })
 export class AIModule {}

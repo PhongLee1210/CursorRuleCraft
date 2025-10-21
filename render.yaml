@@ -67,8 +67,6 @@ services:
         value: https://cursorrulecraft.onrender.com/api/auth/github/callback
       - key: FRONTEND_URL
         value: https://cursorrulecraft.onrender.com
-      - key: ALLOWED_ORIGINS
-        value: https://cursorrulecraft.onrender.com
 
     # Health check on /api/health endpoint
     healthCheckPath: /api/health

@@ -4,6 +4,8 @@ import { twMerge } from 'tailwind-merge';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
+import { ApiError } from './api-client';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -21,6 +23,17 @@ export const sortByDate = <T>(a: T, b: T, key: keyof T, desc = true) => {
   if (desc) return dayjs(a[key] as Date).isBefore(dayjs(b[key] as Date)) ? 1 : -1;
   else return dayjs(a[key] as Date).isBefore(dayjs(b[key] as Date)) ? -1 : 1;
 };
+
+export function normalizeServiceError(error: unknown, defaultStatus = 500): ApiError {
+  if (error instanceof ApiError) {
+    return error;
+  }
+  if (error instanceof Error) {
+    return new ApiError(error.message, defaultStatus);
+  }
+  // unknown non-Error, string/number/etc
+  return new ApiError(`Unknown error: ${String(error)}`, defaultStatus);
+}
 
 /**
  * Sample cursor rule templates

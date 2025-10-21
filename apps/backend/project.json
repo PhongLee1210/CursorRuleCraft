@@ -13,13 +13,7 @@
         "color": true
       }
     },
-    "dev:tsx": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "bun run dev:tsx",
-        "cwd": "apps/backend"
-      }
-    },
+
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],

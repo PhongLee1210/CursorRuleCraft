@@ -1,4 +1,5 @@
-import type { ApiClient } from '@/lib/api-client';
+import { type ApiClient } from '@/lib/api-client';
+import { normalizeServiceError } from '@/lib/utils';
 import {
   mapToAddRepositoryPayload,
   mapToRepositoryDto,
@@ -37,11 +38,12 @@ export async function getWorkspaceRepositories(
       data: repositories,
       error: null,
     };
-  } catch (error) {
-    console.error('[RepositoryService] Unexpected error fetching repositories:', error);
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
+    console.error('[WorkspaceService] Unexpected error fetching user workspaces:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -68,11 +70,12 @@ export async function getRepositoryById(
       data: mapToRepositoryDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error fetching repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -100,11 +103,12 @@ export async function addRepository(
       data: mapToRepositoryDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error adding repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -133,11 +137,12 @@ export async function updateRepository(
       data: mapToRepositoryDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error updating repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -164,11 +169,12 @@ export async function deleteRepository(
       data: true,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error deleting repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -195,11 +201,12 @@ export async function syncRepository(
       data: mapToRepositoryDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error syncing repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -252,11 +259,12 @@ export async function getAvailableGitHubRepositories(
       data: response.data!.data,
       error: null,
     };
-  } catch (error) {
+  } catch (caught) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error fetching GitHub repositories:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -289,11 +297,12 @@ export async function connectGitHubRepository(
       data: mapToRepositoryDto(response.data!.data),
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error connecting GitHub repository:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -301,13 +310,21 @@ export async function connectGitHubRepository(
 /**
  * Get repository file tree
  */
+
+export interface IFileTreeNode {
+  name: string;
+  path: string;
+  type: 'directory' | 'file';
+  children?: IFileTreeNode[];
+}
+
 export async function getRepositoryFileTree(
   apiClient: ApiClient,
   repositoryId: string,
   branch?: string
-): Promise<RepositoryServiceResult<any[]>> {
+): Promise<RepositoryServiceResult<IFileTreeNode[]>> {
   try {
-    const response = await apiClient.get<{ data: any[] }>(`/repositories/${repositoryId}/tree`, {
+    const response = await apiClient.get<IFileTreeNode[]>(`/repositories/${repositoryId}/tree`, {
       params: branch ? { branch } : undefined,
     });
 
@@ -320,14 +337,15 @@ export async function getRepositoryFileTree(
     }
 
     return {
-      data: response.data!.data,
+      data: response.data,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error fetching file tree:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -364,11 +382,12 @@ export async function getRepositoryFileContent(
       data: response.data!.data,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[RepositoryService] Unexpected error fetching file content:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }

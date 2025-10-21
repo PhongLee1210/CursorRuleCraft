@@ -7,7 +7,7 @@ import {
 import { AIProvider, type ModelOptions } from '@/ai/types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { generateText, streamText } from 'ai';
+import { generateText, streamText, type ModelMessage } from 'ai';
 
 /**
  * AI Service
@@ -80,12 +80,16 @@ export class AIService {
   }
 
   /**
-   * Stream text generation using the AI model
+   * Stream text generation using the AI model with conversation context
    *
    * @example
    * ```ts
    * const stream = await aiService.generateStream({
-   *   prompt: 'Explain quantum computing',
+   *   messages: [
+   *     { role: 'user', content: 'Hello!' },
+   *     { role: 'assistant', content: 'Hi there!' }
+   *   ],
+   *   system: 'You are a helpful assistant',
    *   model: 'llama-3.3-70b-versatile'
    * });
    *
@@ -95,19 +99,21 @@ export class AIService {
    * ```
    */
   async generateStream(options: {
-    prompt: string;
+    messages: ModelMessage[];
+    system?: string;
     model?: string;
     provider?: AIProvider;
     temperature?: number;
     maxTokens?: number;
   }) {
-    const { prompt, model, provider, temperature, maxTokens } = options;
+    const { messages, system, model, provider, temperature, maxTokens } = options;
 
     const aiModel = this.createModel({ model, provider });
 
     return streamText({
       model: aiModel,
-      prompt,
+      messages,
+      system,
       temperature,
       ...(maxTokens && { maxTokens }),
     });

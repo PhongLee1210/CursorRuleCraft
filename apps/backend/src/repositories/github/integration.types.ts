@@ -1,4 +1,4 @@
-import { GitProvider } from '@/repositories/types/repository';
+import type { GitProviderType } from '@cursorrulecraft/shared-types';
 
 /**
  * Git Integration entity from database
@@ -6,7 +6,7 @@ import { GitProvider } from '@/repositories/types/repository';
 export interface GitIntegration {
   id: string;
   user_id: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   provider_user_id: string;
   provider_username: string;
   access_token: string;
@@ -26,7 +26,7 @@ export interface GitIntegration {
  */
 export interface CreateGitIntegrationDto {
   user_id: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   provider_user_id: string;
   provider_username: string;
   access_token: string;

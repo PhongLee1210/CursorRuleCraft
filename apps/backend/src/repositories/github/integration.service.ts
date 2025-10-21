@@ -1,7 +1,7 @@
 import { SupabaseService } from '@/supabase/supabase.service';
+import { GitProviderType } from '@cursorrulecraft/shared-types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GitProvider } from '../types/repository';
 import { GitHubAppService } from './github-app.service';
 import { CreateGitIntegrationDto, GitHubRepository, GitIntegration } from './integration.types';
 
@@ -105,7 +105,7 @@ export class IntegrationService {
   async getUserGitIntegration(
     clerkToken: string,
     userId: string,
-    provider: GitProvider
+    provider: GitProviderType
   ): Promise<GitIntegration | null> {
     // Validate inputs
     if (!userId) {
@@ -533,7 +533,7 @@ export class IntegrationService {
     owner: string,
     repo: string,
     branch?: string
-  ): Promise<any> {
+  ): Promise<{ statusCode: number; data?: any; error?: string }> {
     try {
       // First, get the default branch if not provided
       let branchToUse = branch;
@@ -554,19 +554,22 @@ export class IntegrationService {
         }
       );
 
+      const statusCode = response.status;
+      const body = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`GitHub API error: ${error.message || response.statusText}`);
+        return {
+          statusCode,
+          error: `Failed to fetch GitHub file tree: ${body.message}`,
+        };
       }
 
-      const data = await response.json();
-
-      // Transform flat tree into hierarchical structure
-      return this.buildFileTree(data.tree);
+      return {
+        statusCode,
+        data: this.buildFileTree(body.tree),
+      };
     } catch (error) {
-      throw new Error(
-        `Failed to fetch GitHub file tree: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(`${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

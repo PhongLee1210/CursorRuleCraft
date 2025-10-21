@@ -14,10 +14,8 @@ export const SuggestionDropdown = memo<SuggestionDropdownProps>(
       <div
         className={cn(
           'border-border/60 bg-background/80 absolute left-0 right-0 z-50 origin-top overflow-hidden rounded-b-2xl backdrop-blur-sm',
-          'border-x border-b transition-all duration-200 ease-out',
-          isVisible
-            ? 'scale-y-100 opacity-100 delay-100'
-            : 'pointer-events-none scale-y-95 opacity-0'
+          'border-x border-b transition-all delay-100 duration-200 ease-out',
+          isVisible ? 'scale-y-100 opacity-100' : 'pointer-events-none scale-y-95 opacity-0'
         )}
         style={{
           top: '100%',

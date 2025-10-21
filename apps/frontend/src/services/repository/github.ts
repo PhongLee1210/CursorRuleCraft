@@ -1,4 +1,5 @@
 import type { ApiClient } from '@/lib/api-client';
+import { normalizeServiceError } from '@/lib/utils';
 import type { RepositoryServiceResult } from '@/types/repository';
 
 /**
@@ -39,11 +40,12 @@ export async function getGitHubStatus(
       data: response.data!,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[GitHubService] Unexpected error fetching GitHub status:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -69,11 +71,12 @@ export async function initiateGitHubAuth(
       data: response.data!,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[GitHubService] Unexpected error initiating GitHub auth:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }
@@ -99,11 +102,12 @@ export async function disconnectGitHub(
       data: true,
       error: null,
     };
-  } catch (error) {
+  } catch (caught: unknown) {
+    const error = normalizeServiceError(caught);
     console.error('[GitHubService] Unexpected error disconnecting GitHub:', error);
     return {
       data: null,
-      error: error instanceof Error ? error : new Error('Unknown error occurred'),
+      error,
     };
   }
 }

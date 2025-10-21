@@ -1,5 +1,8 @@
+import { Button } from '@/components/Button';
+import { useGitHubAuth } from '@/hooks';
 import { useRepositoryService } from '@/hooks/useRepositoryService';
 import { cn } from '@/lib/utils';
+import { KindState, type State } from '@/types';
 import type { Repository } from '@/types/repository';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
@@ -11,6 +14,7 @@ import {
   FileIcon,
   FolderIcon,
   FolderOpenIcon,
+  GithubLogoIcon,
   SpinnerGapIcon,
 } from '@phosphor-icons/react';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
@@ -190,38 +194,42 @@ FileTreeNode.displayName = 'FileTreeNode';
 export const FileTreePanel = ({ repository }: FileTreePanelProps) => {
   // State
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isShowReconnectGithub, setIsShowReconnectGithub] = useState<boolean>(false);
+  const [state, setState] = useState<State | null>();
 
   // External Hooks
   const repositoryService = useRepositoryService();
+  const { isConnected, connectGitHub } = useGitHubAuth();
 
   // Effects
   useEffect(() => {
     const fetchFileTree = async () => {
-      setIsLoading(true);
-      setError(null);
-
+      setState({ kind: KindState.LOADING });
       try {
-        const result = await repositoryService.getRepositoryFileTree(repository.id);
-        if (result.error) {
-          throw result.error;
+        const { data, error } = await repositoryService.getRepositoryFileTree(repository.id);
+
+        if (error) {
+          if (error.statusCode === 401) {
+            setIsShowReconnectGithub(true);
+          }
+          throw error;
         }
-        // Sort the file tree to ensure directories come before files
-        const sortedTree = sortFileTree(result.data || []);
+        const sortedTree = sortFileTree(data || []);
         setFileTree(sortedTree);
+        setState({ kind: KindState.SUCCESSFUL, data: sortedTree });
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Failed to load file tree';
-        setError(message);
-      } finally {
-        setIsLoading(false);
+        setState({ kind: KindState.ERROR, message });
       }
     };
 
     void fetchFileTree();
-  }, [repository.id, repositoryService]);
+  }, [repository.id, isConnected]);
 
-  // Event Handlers
+  const handleReconnect = useCallback(() => {
+    connectGitHub();
+  }, [connectGitHub]);
+
   const handleToggle = useCallback((path: string) => {
     setFileTree((prev) => {
       const toggleNode = (nodes: FileNode[]): FileNode[] => {
@@ -239,8 +247,11 @@ export const FileTreePanel = ({ repository }: FileTreePanelProps) => {
     });
   }, []);
 
+  const loading = state?.kind === KindState.LOADING;
+  const error = state?.kind === KindState.ERROR;
+
   // Early Returns
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
         <SpinnerGapIcon size={32} className="text-primary animate-spin" />
@@ -251,7 +262,13 @@ export const FileTreePanel = ({ repository }: FileTreePanelProps) => {
   if (error) {
     return (
       <div className="p-4">
-        <p className="text-error text-sm">{error}</p>
+        <p className="text-error text-sm">{state.message}</p>
+        {isShowReconnectGithub && (
+          <Button onClick={handleReconnect} className="mt-2">
+            <GithubLogoIcon size={18} className="mr-2" />
+            {t`Reconnect GitHub`}
+          </Button>
+        )}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import { Separator } from '@/components/Separator';
 import { cn } from '@/lib/utils';
-import { GithubLogo } from '@phosphor-icons/react';
+import { GithubLogoIcon } from '@phosphor-icons/react';
 import { StarFilledIcon } from '@radix-ui/react-icons';
 
 const REPO_URL = 'https://github.com/PhongLee1210/CursorRuleCraft';
@@ -20,11 +20,11 @@ export function RepoBanner({ className }: RepoBannerProps) {
         'bg-background overflow-hidden rounded-t-2xl border border-b-0 px-3 py-1',
         'transform-y-1 group relative flex items-center gap-2',
         'before:pointer-events-none before:absolute before:inset-0 before:rounded-t-2xl dark:before:bg-[radial-gradient(circle_at_10%_-50%,rgba(255,255,255,0.1),transparent_10%)]',
-        'hover:border-primary/50 transition-colors duration-200',
+        'hover:border-primary/50 transition-colors',
         className
       )}
     >
-      <GithubLogo className="h-4 w-4" aria-hidden="true" weight="fill" />
+      <GithubLogoIcon className="h-4 w-4" aria-hidden="true" weight="fill" />
       <Separator
         orientation="vertical"
         className="h-6 bg-[hsl(var(--border))]"

@@ -1,10 +1,11 @@
-import { GitProvider } from '@cursorrulecraft/shared-types';
+import type { ApiError } from '@/lib/api-client';
+import { GitProvider, type GitProviderType } from '@cursorrulecraft/shared-types';
 
 /**
  * Repository types and interfaces for Git integrations
  */
 
-// Re-export GitProvider for convenience
+// Re-export  GitProvider, for convenience
 export { GitProvider };
 
 /**
@@ -17,7 +18,7 @@ export interface Repository {
   fullName: string; // e.g., "owner/repo"
   description?: string;
   url: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   defaultBranch: string;
   isPrivate: boolean;
   language?: string;
@@ -38,7 +39,7 @@ export interface AddRepositoryOptions {
   fullName: string;
   description?: string;
   url: string;
-  provider: GitProvider;
+  provider: GitProviderType;
   defaultBranch: string;
   isPrivate: boolean;
   language?: string;
@@ -69,9 +70,10 @@ export interface RepositorySyncStatus {
 /**
  * Result type for repository operations
  */
+
 export interface RepositoryServiceResult<T> {
   data: T | null;
-  error: Error | null;
+  error: ApiError | null;
 }
 
 /**
