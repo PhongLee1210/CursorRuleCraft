@@ -47,18 +47,24 @@ RUN cd apps/frontend && bun run build
 # ============================================
 FROM nginx:alpine
 
+# Build argument for port
+ARG PORT=80
+
+# Set environment variable
+ENV PORT=$PORT
+
 # Copy Nginx configuration
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built frontend from builder (Vite outputs to ../../dist/apps/frontend)
 COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Expose port from environment variable
+EXPOSE $PORT
 
 # Health check for frontend
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:80/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-80}/ || exit 1
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

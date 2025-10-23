@@ -90,6 +90,9 @@ services:
         value: https://cursorrulecraft-api.onrender.com/api
       - name: VITE_CLERK_PUBLISHABLE_KEY
         sync: false
+    envVars:
+      - key: PORT
+        value: 4000
     buildFilter:
       paths:
         - apps/frontend/**
