@@ -22,6 +22,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 export class SupabaseService {
   private supabaseUrl: string;
   private supabaseAnonKey: string;
+  private supabaseServiceRoleKey: string;
 
   constructor(private readonly configService: ConfigService) {
     console.log('[SupabaseService] Constructor called');
@@ -29,10 +30,17 @@ export class SupabaseService {
     // Read environment variables using ConfigService
     this.supabaseUrl = this.configService.get<string>('SUPABASE_URL');
     this.supabaseAnonKey = this.configService.get<string>('SUPABASE_ANON_KEY');
+    this.supabaseServiceRoleKey = this.configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!this.supabaseUrl || !this.supabaseAnonKey) {
       throw new Error(
         'Missing required Supabase configuration. Please ensure SUPABASE_URL and SUPABASE_ANON_KEY are set in your .env file.'
+      );
+    }
+
+    if (!this.supabaseServiceRoleKey) {
+      console.warn(
+        '⚠️ WARNING: SUPABASE_SERVICE_ROLE_KEY not found. Webhook functionality may not work properly.'
       );
     }
 
@@ -71,25 +79,44 @@ export class SupabaseService {
   }
 
   /**
-   * DEPRECATED: Get the admin Supabase client (bypasses RLS)
+   * Get a Supabase client with Service Role Key (bypasses RLS)
    *
-   * This method is kept for backwards compatibility but should be avoided.
-   * Instead, use getClientWithClerkToken() to respect RLS policies.
+   * This creates a client that bypasses Row Level Security policies.
+   * Use this sparingly and only for admin operations like webhook handlers.
    *
-   * For true admin operations, create a separate AdminSupabaseService.
+   * WARNING: This bypasses all RLS policies, so use with extreme caution!
+   *
+   * @returns SupabaseClient configured with service role key
    */
-  getClient(): SupabaseClient {
-    console.warn(
-      '⚠️ WARNING: getClient() is deprecated. Use getClientWithClerkToken() instead to respect RLS policies.'
-    );
+  getServiceRoleClient(): SupabaseClient {
+    if (!this.supabaseServiceRoleKey) {
+      throw new Error(
+        'SUPABASE_SERVICE_ROLE_KEY is required for service role operations. Please configure it in your .env file.'
+      );
+    }
 
-    // For now, return a client with anon key
-    // This will fail for operations that require authentication
-    return createClient(this.supabaseUrl, this.supabaseAnonKey, {
+    return createClient(this.supabaseUrl, this.supabaseServiceRoleKey, {
       auth: {
         autoRefreshToken: false,
         persistSession: false,
       },
     });
+  }
+
+  /**
+   * DEPRECATED: Get the admin Supabase client (bypasses RLS)
+   *
+   * This method is kept for backwards compatibility but should be avoided.
+   * Instead, use getClientWithClerkToken() to respect RLS policies.
+   *
+   * For true admin operations, use getServiceRoleClient() instead.
+   */
+  getClient(): SupabaseClient {
+    console.warn(
+      '⚠️ WARNING: getClient() is deprecated. Use getServiceRoleClient() for admin operations or getClientWithClerkToken() for user-scoped operations.'
+    );
+
+    // Return service role client for backwards compatibility
+    return this.getServiceRoleClient();
   }
 }

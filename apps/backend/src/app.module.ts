@@ -5,6 +5,7 @@ import { ClerkAuthGuard } from '@/auth/clerk-auth.guard';
 import { HealthModule } from '@/health/health.module';
 import { RepositoriesModule } from '@/repositories/repositories.module';
 import { SupabaseModule } from '@/supabase/supabase.module';
+import { WebhooksModule } from '@/webhooks/webhooks.module';
 import { WorkspacesModule } from '@/workspaces/workspaces.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,6 +23,7 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
     }),
     HealthModule,
     SupabaseModule,
+    WebhooksModule,
     WorkspacesModule,
     RepositoriesModule,
     AIModule,

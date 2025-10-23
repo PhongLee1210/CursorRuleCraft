@@ -3,11 +3,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
 import { useRepositories } from '@/hooks/useRepositories';
 import { useWorkspaceStore } from '@/stores/workspace';
 
+import { useLocalStorage } from '@/lib/useLocalStorage';
 import { t } from '@lingui/macro';
 import { ListIcon, SquaresFourIcon, WarningCircleIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { useLocalStorage } from 'usehooks-ts';
 
 import { GridView } from './_layouts/grid';
 import { ListView } from './_layouts/list';
@@ -15,9 +15,7 @@ import { ListView } from './_layouts/list';
 type Layout = 'grid' | 'list';
 
 export const RepositoriesPage = () => {
-  const [layout, setLayout] = useLocalStorage<Layout>('repositories-layout', 'grid', {
-    initializeWithValue: true,
-  });
+  const [layout, setLayout] = useLocalStorage<Layout>('repositories-layout', 'grid');
 
   const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
   const workspaces = useWorkspaceStore((state) => state.workspaces);

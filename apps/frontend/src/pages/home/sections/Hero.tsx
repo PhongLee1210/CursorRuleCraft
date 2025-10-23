@@ -38,7 +38,7 @@ export const HeroCTA = () => {
 
       <Button asChild size="lg" variant="link">
         <a
-          href="https://github.com/cursorrulecraft"
+          href="https://github.com/PhongLee1210/cursor-rules-craft"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
@@ -96,7 +96,7 @@ export const Decoration = {
       />
     </div>
   ),
-};
+} as const;
 
 export const HeroSection = () => (
   <section id="hero" className="relative">
@@ -114,7 +114,7 @@ export const HeroSection = () => (
           <Badge>{t`Beta Version`}</Badge>
 
           <a
-            href="https://github.com/cursorrulecraft"
+            href="https://github.com/PhongLee1210/cursor-rules-craft"
             className={cn(buttonVariants({ variant: 'link' }), 'space-x-2 text-left')}
           >
             <p>{t`What's new in the latest version`}</p>

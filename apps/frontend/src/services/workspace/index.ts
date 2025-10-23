@@ -1,7 +1,6 @@
 import type { ApiClient } from '@/lib/api-client';
 import {
   addWorkspaceMember,
-  createWorkspace,
   deleteWorkspace,
   getOwnedWorkspaces,
   getUserRoleInWorkspace,
@@ -15,7 +14,6 @@ import {
 
 export function createWorkspaceService(apiClient: ApiClient) {
   return {
-    createWorkspace: createWorkspace.bind(null, apiClient),
     getUserWorkspaces: getUserWorkspaces.bind(null, apiClient),
     getOwnedWorkspaces: getOwnedWorkspaces.bind(null, apiClient),
     getWorkspaceById: getWorkspaceById.bind(null, apiClient),

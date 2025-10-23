@@ -6,7 +6,6 @@ import {
   mapToWorkspaceMemberDto,
 } from '@/services/workspace/mapper';
 import type {
-  CreateWorkspaceOptions,
   UpdateWorkspaceOptions,
   Workspace,
   WorkspaceDetail,
@@ -14,39 +13,6 @@ import type {
   WorkspaceRole,
   WorkspaceServiceResult,
 } from '@/types/workspace';
-/**
- * Create a new workspace
- */
-export async function createWorkspace(
-  apiClient: ApiClient,
-  options: CreateWorkspaceOptions
-): Promise<WorkspaceServiceResult<Workspace>> {
-  try {
-    const response = await apiClient.post<{ data: any }>('/workspaces', {
-      name: options.name,
-    });
-
-    if (response.error) {
-      console.error('[WorkspaceService] Error creating workspace:', response.error);
-      return {
-        data: null,
-        error: response.error,
-      };
-    }
-
-    return {
-      data: mapToWorkspaceDto(response.data!.data),
-      error: null,
-    };
-  } catch (caught: unknown) {
-    const error = normalizeServiceError(caught);
-    console.error('[WorkspaceService] Unexpected error creating workspace:', error);
-    return {
-      data: null,
-      error,
-    };
-  }
-}
 
 /**
  * Get all workspaces for the current user

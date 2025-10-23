@@ -23,28 +23,6 @@ export class WorkspacesController {
   constructor(private readonly workspacesService: WorkspacesService) {}
 
   /**
-   * Create a new workspace
-   *
-   * Example request:
-   * POST /api/workspaces
-   * Headers: { Authorization: "Bearer <clerk-jwt-token>" }
-   * Body: { name: "My Workspace" }
-   */
-  @Post()
-  async createWorkspace(@ClerkToken() clerkToken: string, @Body('name') name: string) {
-    if (!name || name.trim().length === 0) {
-      throw new Error('Workspace name is required');
-    }
-
-    const workspace = await this.workspacesService.createWorkspace(clerkToken, name.trim());
-
-    return {
-      message: 'Successfully created workspace',
-      data: workspace,
-    };
-  }
-
-  /**
    * Get all workspaces for the current user
    *
    * Example request:

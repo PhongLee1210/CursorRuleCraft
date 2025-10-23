@@ -1,5 +1,6 @@
+import { useLocalStorage } from '@/lib/useLocalStorage';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
+import { useMediaQuery } from 'usehooks-ts';
 
 const COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
 

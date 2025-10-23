@@ -15,38 +15,6 @@ export class WorkspacesService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   /**
-   * Create a new workspace and add the owner as a member with OWNER role
-   */
-  async createWorkspace(clerkToken: string, name: string) {
-    const client = this.supabaseService.getClientWithClerkToken(clerkToken);
-
-    // Create the workspace (owner_id will be set automatically from JWT)
-    const { data: workspace, error: workspaceError } = await client
-      .from('workspaces')
-      .insert({ name })
-      .select()
-      .single();
-
-    if (workspaceError) {
-      throw new Error(`Failed to create workspace: ${workspaceError.message}`);
-    }
-
-    // Add owner as a member with OWNER role (user_id will be set automatically from JWT)
-    const { error: memberError } = await client.from('workspace_members').insert({
-      workspace_id: workspace.id,
-      role: 'OWNER',
-    });
-
-    if (memberError) {
-      // Rollback: delete the workspace if member insertion fails
-      await client.from('workspaces').delete().eq('id', workspace.id);
-      throw new Error(`Failed to add owner to workspace: ${memberError.message}`);
-    }
-
-    return workspace;
-  }
-
-  /**
    * Get workspace by ID
    * Note: Returns owner_id (Clerk user ID). Fetch user details from Clerk on frontend.
    */
@@ -87,24 +55,13 @@ export class WorkspacesService {
       throw new Error(`Failed to fetch user workspaces: ${memberError.message}`);
     }
 
-    // If user has no workspaces, create a default one
+    // If user has no workspaces, return empty array
+    // Workspaces are now created automatically via Clerk webhooks when users sign up
     if (!memberships || memberships.length === 0) {
-      console.log('[WorkspacesService] User has no workspaces, creating default workspace...');
-
-      try {
-        const defaultWorkspace = await this.createWorkspace(clerkToken, 'My Workspace');
-
-        return [
-          {
-            ...defaultWorkspace,
-            userRole: 'OWNER',
-          },
-        ];
-      } catch (createError) {
-        console.error('[WorkspacesService] Failed to auto-create default workspace:', createError);
-        // Return empty array if creation fails (don't block the user)
-        return [];
-      }
+      console.log(
+        '[WorkspacesService] User has no workspaces. Workspaces are created automatically via webhooks.'
+      );
+      return [];
     }
 
     // Get full workspace details
