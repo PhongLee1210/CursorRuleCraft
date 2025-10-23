@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "scripts": {
     "dev": "nest build --webpack --webpackPath webpack.config.js --watch",
     "build": "tsc",

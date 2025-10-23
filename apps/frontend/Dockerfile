@@ -53,8 +53,13 @@ ARG PORT=80
 # Set environment variable
 ENV PORT=$PORT
 
-# Copy Nginx configuration
-COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy Nginx configuration template
+COPY apps/frontend/nginx.conf.template /etc/nginx/conf.d/default.conf.template
+
+# Use envsubst to substitute environment variables in nginx config
+RUN apk add --no-cache gettext && \
+    envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
+    rm /etc/nginx/conf.d/default.conf.template
 
 # Copy built frontend from builder (Vite outputs to ../../dist/apps/frontend)
 COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
@@ -64,7 +69,7 @@ EXPOSE $PORT
 
 # Health check for frontend
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-80}/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/ || exit 1
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

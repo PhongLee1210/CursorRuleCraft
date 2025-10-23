@@ -97,7 +97,7 @@ services:
       paths:
         - apps/frontend/**
         - apps/frontend/Dockerfile
-        - apps/frontend/nginx.conf
+        - apps/frontend/nginx.conf.template
         - package.json
         - bun.lock
         - nx.json

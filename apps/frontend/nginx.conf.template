@@ -1,6 +1,6 @@
 # Nginx configuration for frontend
 server {
-    listen ${PORT:-80};
+    listen ${PORT};
     server_name localhost;
 
     root /usr/share/nginx/html;
