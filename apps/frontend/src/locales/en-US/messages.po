@@ -6,17 +6,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en-US\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/pages/cursor/rules/page.tsx:111
 msgid ".cursorrules"
 msgstr ".cursorrules"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:374
+msgid ".cursorrules already exists in this repository"
+msgstr ".cursorrules already exists in this repository"
 
 #. placeholder {0}: template.name
 #: src/pages/cursor/rules/page.tsx:78
 msgid "A comprehensive cursor rule template for {0}. This rule helps you maintain consistency and best practices in your project."
 msgstr "A comprehensive cursor rule template for {0}. This rule helps you maintain consistency and best practices in your project."
 
-#: src/pages/home/sections/Hero.tsx:129
+#: src/pages/home/sections/Hero.tsx:128
 msgid "A free and open-source cursor rules project builder"
 msgstr "A free and open-source cursor rules project builder"
 
@@ -32,6 +42,10 @@ msgstr "Add project-specific guidelines and conventions"
 msgid "Add to Cursor"
 msgstr "Add to Cursor"
 
+#: src/pages/dashboard/repositories/detail/page.tsx:289
+msgid "AI Assistant"
+msgstr "AI Assistant"
+
 #: src/pages/home/sections/Features.tsx:45
 msgid "AI-Powered Rule Generation"
 msgstr "AI-Powered Rule Generation"
@@ -44,17 +58,50 @@ msgstr "Already have an account?"
 msgid "and many more..."
 msgstr "and many more..."
 
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:161
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:85
+msgid "Apply Mode"
+msgstr "Apply Mode"
+
+#: src/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog.tsx:46
+msgid "Are you sure you want to delete this rule? This action cannot be undone."
+msgstr "Are you sure you want to delete this rule? This action cannot be undone."
+
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:83
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:77
+msgid "Are you sure you want to disconnect this repository?"
+msgstr "Are you sure you want to disconnect this repository?"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:40
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:42
+msgid "Are you sure you want to disconnect your GitHub account? This will remove all connected repositories."
+msgstr "Are you sure you want to disconnect your GitHub account? This will remove all connected repositories."
+
 #: src/pages/cursor/rules/page.tsx:171
 msgid "Automatic Application"
 msgstr "Automatic Application"
+
+#: src/pages/dashboard/repositories/detail/_components/RepositoryHeader.tsx:60
+msgid "Back"
+msgstr "Back"
+
+#: src/pages/dashboard/repositories/detail/page.tsx:220
+msgid "Back to Repositories"
+msgstr "Back to Repositories"
 
 #: src/pages/cursor/rules/page.tsx:60
 msgid "Back to Templates"
 msgstr "Back to Templates"
 
-#: src/pages/home/sections/Hero.tsx:115
+#: src/pages/home/sections/Hero.tsx:114
 msgid "Beta Version"
 msgstr "Beta Version"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:478
+#: src/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog.tsx:52
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:253
+msgid "Cancel"
+msgstr "Cancel"
 
 #: src/pages/cursor/rules/page.tsx:191
 msgid "Changes to .cursorrules take effect immediately"
@@ -64,19 +111,100 @@ msgstr "Changes to .cursorrules take effect immediately"
 msgid "Click the \"Add to Cursor\" button above"
 msgstr "Click the \"Add to Cursor\" button above"
 
+#: src/pages/dashboard/repositories/detail/_components/CursorRulesPanel.tsx:411
+msgid "Click the + button to create your first rule"
+msgstr "Click the + button to create your first rule"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:92
+msgid "Click to connect GitHub"
+msgstr "Click to connect GitHub"
+
+#: src/components/ChatInput.tsx:229
+msgid "Click to remove"
+msgstr "Click to remove"
+
+#: src/pages/auth/callback/github/page.tsx:83
+msgid "Closing in {countdown}..."
+msgstr "Closing in {countdown}..."
+
 #: src/pages/home/sections/Features.tsx:57
 msgid "Cloud Sync"
 msgstr "Cloud Sync"
 
-#: src/components/SocialAuth.tsx:59
-#: src/components/SocialAuth.tsx:78
+#: src/components/ChatInput.tsx:349
+msgid "Code Rules"
+msgstr "Code Rules"
+
+#: src/components/ChatInput.tsx:340
+msgid "Commands"
+msgstr "Commands"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CommandRulesForm.tsx:90
+msgid "Commands are reusable prompts that can be @-mentioned in Cursor"
+msgstr "Commands are reusable prompts that can be @-mentioned in Cursor"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:209
+msgid "Connect"
+msgstr "Connect"
+
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:67
+msgid "Connect a repository"
+msgstr "Connect a repository"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:84
+msgid "Connect GitHub Repository"
+msgstr "Connect GitHub Repository"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:73
+msgid "Connect Repository"
+msgstr "Connect Repository"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:76
+msgid "Connect your GitHub account"
+msgstr "Connect your GitHub account"
+
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:74
+msgid "Connect your GitHub account to get started"
+msgstr "Connect your GitHub account to get started"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:86
+msgid "Connected as"
+msgstr "Connected as"
+
+#: src/pages/auth/callback/github/page.tsx:92
+msgid "Connecting GitHub"
+msgstr "Connecting GitHub"
+
+#: src/components/SocialAuth.tsx:94
+#: src/components/SocialAuth.tsx:113
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:206
 msgid "Connecting..."
 msgstr "Connecting..."
+
+#: src/pages/auth/callback/github/page.tsx:77
+msgid "Connection Failed"
+msgstr "Connection Failed"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CommandRulesForm.tsx:68
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:237
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:196
+#: src/pages/dashboard/repositories/detail/_dialog/UserRulesForm.tsx:43
+msgid "Content"
+msgstr "Content"
+
+#: src/components/ChatInput.tsx:222
+msgid "Context:"
+msgstr "Context:"
+
+#: src/components/chat/GeneratedRuleCard.tsx:40
+msgid "Copied"
+msgstr "Copied"
 
 #: src/pages/cursor/rules/page.tsx:100
 msgid "Copied!"
 msgstr "Copied!"
 
+#: src/components/chat/GeneratedRuleCard.tsx:45
 #: src/pages/cursor/rules/page.tsx:105
 msgid "Copy Rule"
 msgstr "Copy Rule"
@@ -89,6 +217,10 @@ msgstr "Copy the rule content or download the .cursorrules file"
 msgid "Create a new file named"
 msgstr "Create a new file named"
 
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:335
+msgid "Create a new rule file in your .cursor directory. Rules help guide AI assistance for your project."
+msgstr "Create a new rule file in your .cursor directory. Rules help guide AI assistance for your project."
+
 #: src/pages/auth/register/page.tsx:224
 msgid "Create account"
 msgstr "Create account"
@@ -97,9 +229,22 @@ msgstr "Create account"
 msgid "Create Custom Rules"
 msgstr "Create Custom Rules"
 
-#: src/pages/auth/login/page.tsx:152
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:333
+msgid "Create New Cursor Rule"
+msgstr "Create New Cursor Rule"
+
+#: src/pages/auth/login/page.tsx:162
 msgid "Create one now"
 msgstr "Create one now"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:487
+msgid "Create Rule"
+msgstr "Create Rule"
+
+#. placeholder {0}: node.name
+#: src/pages/dashboard/repositories/detail/_components/CursorRulesPanel.tsx:150
+msgid "Create rule in {0}"
+msgstr "Create rule in {0}"
 
 #: src/pages/auth/register/page.tsx:75
 msgid "Create your account"
@@ -108,6 +253,18 @@ msgstr "Create your account"
 #: src/pages/auth/register/page.tsx:224
 msgid "Creating account..."
 msgstr "Creating account..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:406
+msgid "Creating Command"
+msgstr "Creating Command"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:393
+msgid "Creating Project Rule"
+msgstr "Creating Project Rule"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:484
+msgid "Creating..."
+msgstr "Creating..."
 
 #: src/pages/cursor/rules/page.tsx:134
 msgid "Cursor Rules are instructions that help AI understand your project's context, coding standards, and preferences. They ensure consistent and high-quality code generation."
@@ -121,11 +278,16 @@ msgstr "Cursor Rules Directory"
 msgid "Cursor will open with the rule content ready to use"
 msgstr "Cursor will open with the rule content ready to use"
 
+#: src/pages/dashboard/repositories/page.tsx:30
+#: src/pages/dashboard/repositories/page.tsx:57
+msgid "CursorRulesCraft"
+msgstr "CursorRulesCraft"
+
 #: src/pages/home/sections/Features.tsx:93
 msgid "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
 msgstr "CursorRulesCraft by Phong Lee - A powerful tool to create, manage, and share Cursor IDE rules. Built by a Software Engineer passionate about AI Engineering, this tool helps developers craft perfect AI prompts and coding rules for enhanced productivity."
 
-#: src/pages/home/sections/Hero.tsx:134
+#: src/pages/home/sections/Hero.tsx:133
 msgid "CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects."
 msgstr "CursorRulesCraft simplifies the process of creating, managing, and sharing custom cursor rules for your AI coding assistant. Craft the perfect context for your projects."
 
@@ -137,9 +299,60 @@ msgstr "Customizable Templates"
 msgid "Customization"
 msgstr "Customization"
 
-#: src/pages/auth/login/page.tsx:149
+#: src/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog.tsx:55
+msgid "Delete"
+msgstr "Delete"
+
+#: src/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog.tsx:41
+msgid "Delete Cursor Rule"
+msgstr "Delete Cursor Rule"
+
+#: src/pages/dashboard/repositories/detail/_components/CursorRulesPanel.tsx:169
+msgid "Delete rule"
+msgstr "Delete rule"
+
+#: src/pages/auth/verify-email/page.tsx:211
+msgid "Didn't receive the code? Resend"
+msgstr "Didn't receive the code? Resend"
+
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:136
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:113
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:184
+msgid "Disconnect"
+msgstr "Disconnect"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:123
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:96
+msgid "Disconnect GitHub"
+msgstr "Disconnect GitHub"
+
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:123
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:136
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:96
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:113
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:184
+msgid "Disconnecting..."
+msgstr "Disconnecting..."
+
+#: src/pages/auth/login/page.tsx:159
 msgid "Don't have an account?"
 msgstr "Don't have an account?"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CommandRulesForm.tsx:45
+msgid "e.g., generate-test"
+msgstr "e.g., generate-test"
+
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:173
+msgid "e.g., react-component-rules"
+msgstr "e.g., react-component-rules"
+
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:149
+msgid "Edit Cursor Rule"
+msgstr "Edit Cursor Rule"
+
+#: src/pages/dashboard/repositories/detail/_components/CursorRulesPanel.tsx:162
+msgid "Edit rule"
+msgstr "Edit rule"
 
 #: src/pages/auth/register/page.tsx:160
 msgid "Email"
@@ -149,13 +362,38 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "Email is required"
 
-#: src/pages/auth/login/page.tsx:82
+#: src/pages/auth/login/page.tsx:92
 msgid "Email or Username"
 msgstr "Email or Username"
 
-#: src/pages/auth/login/page.tsx:91
+#: src/pages/auth/login/page.tsx:101
 msgid "Email or username is required"
 msgstr "Email or username is required"
+
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:222
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:140
+msgid "Enter pattern and press Enter..."
+msgstr "Enter pattern and press Enter..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:244
+msgid "Enter rule content..."
+msgstr "Enter rule content..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/CommandRulesForm.tsx:79
+msgid "Enter your command or prompt template..."
+msgstr "Enter your command or prompt template..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/UserRulesForm.tsx:54
+msgid "Enter your global cursor rules..."
+msgstr "Enter your global cursor rules..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:207
+msgid "Enter your project rules and guidelines..."
+msgstr "Enter your project rules and guidelines..."
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:367
+msgid "Example:"
+msgstr "Example:"
 
 #: src/pages/home/sections/Template.tsx:129
 msgid "Explore these Cursor Rules examples to inspire your own custom AI rules. Remember, the most effective Cursor Rules are tailored to your specific project needs and coding requirements."
@@ -165,11 +403,15 @@ msgstr "Explore these Cursor Rules examples to inspire your own custom AI rules.
 msgid "Export & Import Rules"
 msgstr "Export & Import Rules"
 
+#: src/pages/auth/callback/github/page.tsx:79
+msgid "Failed to connect GitHub. Please try again."
+msgstr "Failed to connect GitHub. Please try again."
+
 #: src/pages/auth/register/page.tsx:58
 msgid "Failed to create account. Please try again or use a different email address."
 msgstr "Failed to create account. Please try again or use a different email address."
 
-#: src/pages/auth/verify-email/page.tsx:42
+#: src/pages/auth/verify-email/page.tsx:100
 msgid "Failed to send verification email. Please try again."
 msgstr "Failed to send verification email. Please try again."
 
@@ -177,7 +419,30 @@ msgstr "Failed to send verification email. Please try again."
 msgid "Feel free to modify the rules to match your specific needs"
 msgstr "Feel free to modify the rules to match your specific needs"
 
-#: src/pages/home/sections/Hero.tsx:127
+#: src/pages/dashboard/repositories/detail/_dialog/CommandRulesForm.tsx:38
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:166
+msgid "File Name"
+msgstr "File Name"
+
+#: src/pages/dashboard/repositories/detail/_dialog/UserRulesForm.tsx:30
+msgid "File Path"
+msgstr "File Path"
+
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:225
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:146
+msgid "File pattern input"
+msgstr "File pattern input"
+
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:212
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:130
+msgid "File Patterns"
+msgstr "File Patterns"
+
+#: src/pages/dashboard/repositories/detail/page.tsx:255
+msgid "Files"
+msgstr "Files"
+
+#: src/pages/home/sections/Hero.tsx:126
 msgid "Finally,"
 msgstr "Finally,"
 
@@ -197,8 +462,20 @@ msgstr "For more Cursor Rules examples and inspiration, visit the"
 msgid "Free, forever"
 msgstr "Free, forever"
 
-#: src/pages/home/components/Header.tsx:21
-#: src/pages/home/sections/Hero.tsx:37
+#: src/components/ChatInput.tsx:342
+msgid "Generate cursor command shortcuts and CLI usage"
+msgstr "Generate cursor command shortcuts and CLI usage"
+
+#: src/components/ChatInput.tsx:334
+msgid "Generate cursor rules for React components"
+msgstr "Generate cursor rules for React components"
+
+#: src/components/ChatInput.tsx:351
+msgid "Generate Tailwind CSS utility classes documentation"
+msgstr "Generate Tailwind CSS utility classes documentation"
+
+#: src/pages/home/components/Header.tsx:26
+#: src/pages/home/sections/Hero.tsx:36
 msgid "Get Started"
 msgstr "Get Started"
 
@@ -206,28 +483,47 @@ msgstr "Get Started"
 msgid "Get started with CursorRulesCraft today"
 msgstr "Get started with CursorRulesCraft today"
 
-#: src/components/SocialAuth.tsx:78
+#: src/components/SocialAuth.tsx:113
 msgid "GitHub"
 msgstr "GitHub"
+
+#: src/pages/auth/callback/github/page.tsx:67
+msgid "GitHub Connected!"
+msgstr "GitHub Connected!"
 
 #: src/pages/home/sections/Statistics.tsx:47
 msgid "GitHub Stars"
 msgstr "GitHub Stars"
 
-#: src/pages/auth/verify-email/page.tsx:98
-#: src/pages/home/sections/Hero.tsx:23
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:113
+msgid "GitHub Token Expired"
+msgstr "GitHub Token Expired"
+
+#: src/pages/home/sections/Hero.tsx:22
 msgid "Go to Dashboard"
 msgstr "Go to Dashboard"
 
-#: src/components/SocialAuth.tsx:59
+#: src/components/SocialAuth.tsx:94
 msgid "Google"
 msgstr "Google"
 
-#: src/pages/auth/verify-email/page.tsx:104
+#: src/pages/dashboard/repositories/page.tsx:80
+msgid "Grid"
+msgstr "Grid"
+
+#: src/pages/auth/verify-email/page.tsx:217
 msgid "Having trouble? Contact us at <0>support@cursorrulescraft.com</0>"
 msgstr "Having trouble? Contact us at <0>support@cursorrulescraft.com</0>"
 
-#: src/pages/auth/login/page.tsx:134
+#: src/pages/dashboard/repositories/detail/page.tsx:259
+msgid "Hide files"
+msgstr "Hide files"
+
+#: src/pages/dashboard/repositories/detail/page.tsx:301
+msgid "Hide rules"
+msgstr "Hide rules"
+
+#: src/pages/auth/login/page.tsx:144
 msgid "Hold <0>Ctrl</0> to display your password temporarily"
 msgstr "Hold <0>Ctrl</0> to display your password temporarily"
 
@@ -251,9 +547,13 @@ msgstr "Inspiring Cursor Rules Examples"
 msgid "Installation Methods"
 msgstr "Installation Methods"
 
-#: src/pages/auth/login/page.tsx:46
+#: src/pages/auth/login/page.tsx:56
 msgid "Invalid email or password. Please check your credentials and try again."
 msgstr "Invalid email or password. Please check your credentials and try again."
+
+#: src/pages/auth/verify-email/page.tsx:78
+msgid "Invalid verification code. Please check and try again."
+msgstr "Invalid verification code. Please check and try again."
 
 #: src/pages/auth/register/page.tsx:113
 msgid "Last Name"
@@ -263,7 +563,16 @@ msgstr "Last Name"
 msgid "Last name is required"
 msgstr "Last name is required"
 
-#: src/pages/home/sections/Hero.tsx:47
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:180
+#: src/pages/dashboard/repositories/detail/_components/RepositoryHeader.tsx:87
+msgid "Last synced:"
+msgstr "Last synced:"
+
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:155
+msgid "Last synced: {lastSynced}"
+msgstr "Last synced: {lastSynced}"
+
+#: src/pages/home/sections/Hero.tsx:46
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -271,11 +580,19 @@ msgstr "Learn more"
 msgid "Light or dark theme"
 msgstr "Light or dark theme"
 
-#: src/pages/auth/verify-email/page.tsx:28
+#: src/pages/dashboard/repositories/page.tsx:84
+msgid "List"
+msgstr "List"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:128
+msgid "Loading repositories..."
+msgstr "Loading repositories..."
+
+#: src/pages/auth/verify-email/page.tsx:113
 msgid "Loading..."
 msgstr "Loading..."
 
-#: src/pages/home/sections/Hero.tsx:28
+#: src/pages/home/sections/Hero.tsx:27
 msgid "Logout"
 msgstr "Logout"
 
@@ -291,6 +608,33 @@ msgstr "MIT License"
 msgid "Multiple Rule Formats"
 msgstr "Multiple Rule Formats"
 
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:63
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:57
+#: src/pages/dashboard/repositories/detail/page.tsx:63
+msgid "Never synced"
+msgstr "Never synced"
+
+#: src/pages/dashboard/repositories/detail/_components/CursorRulesPanel.tsx:410
+msgid "No cursor rules found"
+msgstr "No cursor rules found"
+
+#: src/pages/dashboard/repositories/detail/_components/FileTreePanel.tsx:277
+msgid "No files found"
+msgstr "No files found"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:135
+msgid "No repositories available."
+msgstr "No repositories available."
+
+#: src/pages/dashboard/repositories/_layouts/grid/index.tsx:42
+#: src/pages/dashboard/repositories/_layouts/list/index.tsx:42
+msgid "No repositories connected yet. Connect your first repository to get started."
+msgstr "No repositories connected yet. Connect your first repository to get started."
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:134
+msgid "No repositories found matching your search."
+msgstr "No repositories found matching your search."
+
 #: src/pages/home/sections/Template.tsx:166
 msgid "No templates found matching your search criteria."
 msgstr "No templates found matching your search criteria."
@@ -299,9 +643,19 @@ msgstr "No templates found matching your search criteria."
 msgid "No user tracking or advertising"
 msgstr "No user tracking or advertising"
 
+#: src/pages/dashboard/repositories/page.tsx:43
+msgid "No Workspace Available"
+msgstr "No Workspace Available"
+
 #: src/pages/cursor/rules/page.tsx:173
 msgid "Once saved, Cursor automatically applies these rules to all AI interactions in your project"
 msgstr "Once saved, Cursor automatically applies these rules to all AI interactions in your project"
+
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:120
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:96
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:167
+msgid "Open"
+msgstr "Open"
 
 #: src/pages/home/sections/Features.tsx:42
 msgid "Open Source"
@@ -320,17 +674,17 @@ msgstr "or continue with"
 msgid "Organize Rules by Categories"
 msgstr "Organize Rules by Categories"
 
-#: src/pages/auth/login/page.tsx:101
+#: src/pages/auth/login/page.tsx:111
 #: src/pages/auth/register/page.tsx:185
 msgid "Password"
 msgstr "Password"
 
-#: src/pages/auth/login/page.tsx:111
+#: src/pages/auth/login/page.tsx:121
 #: src/pages/auth/register/page.tsx:195
 msgid "Password is required"
 msgstr "Password is required"
 
-#: src/pages/auth/login/page.tsx:114
+#: src/pages/auth/login/page.tsx:124
 #: src/pages/auth/register/page.tsx:198
 msgid "Password must be at least 8 characters"
 msgstr "Password must be at least 8 characters"
@@ -344,12 +698,24 @@ msgid "Photograph by Nahrizul Kadri"
 msgstr "Photograph by Nahrizul Kadri"
 
 #: src/pages/auth/verify-email/page.tsx:77
-msgid "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
-msgstr "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
+#~ msgid "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
+#~ msgstr "Please check your email and click the verification link to activate your account. If you don't see the email, check your spam folder or request a new verification email."
 
 #: src/pages/auth/register/page.tsx:172
 msgid "Please enter a valid email address"
 msgstr "Please enter a valid email address"
+
+#: src/pages/auth/verify-email/page.tsx:155
+msgid "Please enter the 6-digit verification code from your email. If you don't see the email, check your spam folder."
+msgstr "Please enter the 6-digit verification code from your email. If you don't see the email, check your spam folder."
+
+#: src/pages/auth/verify-email/page.tsx:56
+msgid "Please enter the verification code"
+msgstr "Please enter the verification code"
+
+#: src/pages/auth/callback/github/page.tsx:93
+msgid "Please wait while we complete the connection..."
+msgstr "Please wait while we complete the connection..."
 
 #: src/pages/home/sections/Features.tsx:82
 msgid "Powered by"
@@ -363,6 +729,22 @@ msgstr "Powerful Cursor Rules Generation, Made Simple."
 msgid "Pre-built Rule Templates"
 msgstr "Pre-built Rule Templates"
 
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:229
+#: src/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm.tsx:157
+msgid "Press Enter to add patterns. Examples: *.tsx, src/**/*.ts, package.json"
+msgstr "Press Enter to add patterns. Examples: *.tsx, src/**/*.ts, package.json"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:158
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:148
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:130
+#: src/pages/dashboard/repositories/detail/_components/RepositoryHeader.tsx:77
+msgid "Private"
+msgstr "Private"
+
+#: src/components/ChatInput.tsx:333
+msgid "Project Rules"
+msgstr "Project Rules"
+
 #: src/pages/cursor/rules/page.tsx:142
 msgid "Quick Install (Recommended)"
 msgstr "Quick Install (Recommended)"
@@ -371,13 +753,33 @@ msgstr "Quick Install (Recommended)"
 msgid "Real-time Preview"
 msgstr "Real-time Preview"
 
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:121
+#: src/pages/dashboard/repositories/detail/_components/FileTreePanel.tsx:269
+msgid "Reconnect GitHub"
+msgstr "Reconnect GitHub"
+
+#: src/pages/auth/callback/github/page.tsx:69
+msgid "Redirecting..."
+msgstr "Redirecting..."
+
 #: src/pages/cursor/rules/page.tsx:204
 msgid "Related Templates"
 msgstr "Related Templates"
 
+#: src/pages/dashboard/_components/Sidebar.tsx:85
+#: src/pages/dashboard/repositories/page.tsx:30
+#: src/pages/dashboard/repositories/page.tsx:57
+#: src/pages/dashboard/repositories/page.tsx:74
+msgid "Repositories"
+msgstr "Repositories"
+
 #: src/pages/auth/verify-email/page.tsx:95
-msgid "Resend Verification Email"
-msgstr "Resend Verification Email"
+#~ msgid "Resend Verification Email"
+#~ msgstr "Resend Verification Email"
+
+#: src/pages/dashboard/repositories/detail/page.tsx:294
+msgid "Reset session"
+msgstr "Reset session"
 
 #: src/pages/cursor/rules/page.tsx:118
 msgid "Rule Content"
@@ -391,19 +793,60 @@ msgstr "Rules apply to the entire project directory where the .cursorrules file 
 msgid "Rules Generated"
 msgstr "Rules Generated"
 
+#: src/pages/dashboard/repositories/detail/_dialog/EditRuleDialog.tsx:256
+msgid "Save"
+msgstr "Save"
+
 #: src/pages/cursor/rules/page.tsx:146
 msgid "Save it as a .cursorrules file in your project"
 msgstr "Save it as a .cursorrules file in your project"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:99
+msgid "Search repositories..."
+msgstr "Search repositories..."
 
 #: src/pages/home/sections/Features.tsx:56
 msgid "Secure Authentication"
 msgstr "Secure Authentication"
 
+#: src/pages/dashboard/repositories/_layouts/grid/CreateCard.tsx:76
+msgid "Select a repository"
+msgstr "Select a repository"
+
+#. placeholder {0}: status?.username || 'your GitHub account'
+#: src/pages/dashboard/repositories/_layouts/list/CreateItem.tsx:73
+msgid "Select a repository from {0}"
+msgstr "Select a repository from {0}"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:87
+msgid "Select a repository from your GitHub account to connect to this workspace."
+msgstr "Select a repository from your GitHub account to connect to this workspace."
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:343
+msgid "Select Folder"
+msgstr "Select Folder"
+
+#: src/components/ChatInput.tsx:301
+msgid "Send message"
+msgstr "Send message"
+
+#: src/pages/dashboard/_components/Sidebar.tsx:91
+msgid "Settings"
+msgstr "Settings"
+
 #: src/pages/home/sections/Features.tsx:60
 msgid "Share Rules Publicly"
 msgstr "Share Rules Publicly"
 
-#: src/pages/auth/login/page.tsx:142
+#: src/pages/dashboard/repositories/detail/page.tsx:267
+msgid "Show files"
+msgstr "Show files"
+
+#: src/pages/dashboard/repositories/detail/page.tsx:301
+msgid "Show rules"
+msgstr "Show rules"
+
+#: src/pages/auth/login/page.tsx:152
 msgid "Sign in"
 msgstr "Sign in"
 
@@ -411,7 +854,7 @@ msgstr "Sign in"
 msgid "Sign in now"
 msgstr "Sign in now"
 
-#: src/pages/auth/login/page.tsx:65
+#: src/pages/auth/login/page.tsx:75
 msgid "Sign in to your account to continue"
 msgstr "Sign in to your account to continue"
 
@@ -419,22 +862,51 @@ msgstr "Sign in to your account to continue"
 msgid "Sign in with Email"
 msgstr "Sign in with Email"
 
-#: src/components/SocialAuth.tsx:70
+#: src/components/SocialAuth.tsx:105
 msgid "Sign in with GitHub"
 msgstr "Sign in with GitHub"
 
-#: src/components/SocialAuth.tsx:51
+#: src/components/SocialAuth.tsx:86
 #: src/pages/home/sections/Features.tsx:58
 msgid "Sign in with Google"
 msgstr "Sign in with Google"
 
-#: src/pages/auth/login/page.tsx:142
+#: src/pages/auth/login/page.tsx:152
 msgid "Signing in..."
 msgstr "Signing in..."
+
+#: src/pages/dashboard/repositories/detail/_components/RepositoryHeader.tsx:90
+msgid "Sync"
+msgstr "Sync"
+
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:128
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:104
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:175
+msgid "Sync Now"
+msgstr "Sync Now"
+
+#: src/pages/dashboard/repositories/_layouts/grid/RepositoryCard.tsx:128
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:104
+#: src/pages/dashboard/repositories/_layouts/list/RepositoryListItem.tsx:175
+msgid "Syncing..."
+msgstr "Syncing..."
 
 #: src/pages/home/sections/Features.tsx:51
 msgid "Syntax Highlighting"
 msgstr "Syntax Highlighting"
+
+#: src/pages/dashboard/repositories/detail/_dialog/UserRulesForm.tsx:65
+msgid "The .cursorrules file applies globally to all AI interactions in this repository"
+msgstr "The .cursorrules file applies globally to all AI interactions in this repository"
+
+#: src/pages/dashboard/repositories/detail/_dialog/UserRulesForm.tsx:36
+msgid "This file will be created at the root of your repository"
+msgstr "This file will be created at the root of your repository"
+
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:396
+#: src/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog.tsx:408
+msgid "This will be created in"
+msgstr "This will be created in"
 
 #: src/pages/auth/register/page.tsx:218
 msgid "Use at least 8 characters with a mix of letters, numbers, and symbols"
@@ -464,24 +936,45 @@ msgstr "Users Signed Up"
 msgid "Using the Rules"
 msgstr "Using the Rules"
 
-#: src/pages/auth/verify-email/page.tsx:88
+#: src/pages/auth/verify-email/page.tsx:182
+msgid "Verification Code"
+msgstr "Verification Code"
+
+#: src/pages/auth/verify-email/page.tsx:174
 msgid "Verification email sent! Please check your inbox."
 msgstr "Verification email sent! Please check your inbox."
 
-#: src/pages/auth/verify-email/page.tsx:65
+#: src/pages/auth/verify-email/page.tsx:199
+msgid "Verify Email"
+msgstr "Verify Email"
+
+#: src/pages/auth/verify-email/page.tsx:143
 msgid "Verify Your Email"
 msgstr "Verify Your Email"
+
+#: src/pages/auth/verify-email/page.tsx:199
+msgid "Verifying..."
+msgstr "Verifying..."
 
 #: src/pages/home/sections/Features.tsx:50
 msgid "Version Control Ready"
 msgstr "Version Control Ready"
 
-#. placeholder {0}: user?.primaryEmailAddress?.emailAddress
-#: src/pages/auth/verify-email/page.tsx:67
-msgid "We've sent a verification email to <0>{0}</0>"
-msgstr "We've sent a verification email to <0>{0}</0>"
+#. placeholder {0}: repository.provider
+#: src/pages/dashboard/repositories/detail/_components/RepositoryHeader.tsx:93
+msgid "View on {0}"
+msgstr "View on {0}"
 
-#: src/pages/auth/login/page.tsx:63
+#. placeholder {0}: signUp.emailAddress
+#: src/pages/auth/verify-email/page.tsx:145
+msgid "We've sent a verification code to <0>{0}</0>"
+msgstr "We've sent a verification code to <0>{0}</0>"
+
+#: src/pages/auth/verify-email/page.tsx:67
+#~ msgid "We've sent a verification email to <0>{0}</0>"
+#~ msgstr "We've sent a verification email to <0>{0}</0>"
+
+#: src/pages/auth/login/page.tsx:73
 msgid "Welcome back"
 msgstr "Welcome back"
 
@@ -489,10 +982,22 @@ msgstr "Welcome back"
 msgid "What are Cursor Rules?"
 msgstr "What are Cursor Rules?"
 
-#: src/pages/home/sections/Hero.tsx:121
+#: src/pages/home/sections/Hero.tsx:120
 msgid "What's new in the latest version"
 msgstr "What's new in the latest version"
+
+#: src/pages/auth/callback/github/page.tsx:69
+msgid "You can close this window"
+msgstr "You can close this window"
 
 #: src/pages/cursor/rules/page.tsx:190
 msgid "You can have multiple .cursorrules files in different directories for fine-grained control"
 msgstr "You can have multiple .cursorrules files in different directories for fine-grained control"
+
+#: src/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog.tsx:116
+msgid "Your GitHub access token has expired. Please reconnect your account to continue."
+msgstr "Your GitHub access token has expired. Please reconnect your account to continue."
+
+#: src/pages/dashboard/repositories/page.tsx:45
+msgid "Your workspace is being initialized. Please wait a moment..."
+msgstr "Your workspace is being initialized. Please wait a moment..."
