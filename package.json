@@ -68,7 +68,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/bun": "latest",
     "@types/express": "^5.0.3",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.23",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
     "@types/webpack": "^5.28.5",
@@ -93,7 +93,7 @@
     "ts-loader": "^9.5.4",
     "tsx": "^4.19.0",
     "typescript": "^5.9.3",
-    "vite": "^7.1.9",
+    "vite": "^7.1.12",
     "vitest": "^3.0.0",
     "webpack": "^5.102.1",
     "webpack-node-externals": "^3.0.0"
