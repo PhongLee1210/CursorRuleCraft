@@ -1,7 +1,7 @@
-import { SupabaseModule } from '@/supabase/supabase.module';
-import { WebhooksController } from '@/webhooks/webhooks.controller';
-import { WebhooksService } from '@/webhooks/webhooks.service';
 import { Module } from '@nestjs/common';
+import { SupabaseModule } from '../supabase/supabase.module';
+import { WebhooksController } from './webhooks.controller';
+import { WebhooksService } from './webhooks.service';
 
 /**
  * Webhooks Module

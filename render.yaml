@@ -96,6 +96,7 @@ services:
     buildFilter:
       paths:
         - apps/frontend/**
+        - packages/shared-types/**
         - apps/frontend/Dockerfile
         - apps/frontend/nginx.conf.template
         - package.json

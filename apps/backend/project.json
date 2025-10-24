@@ -8,25 +8,22 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "bun run dev",
-        "cwd": "apps/backend",
-        "color": true
+        "command": "NODE_ENV=development nest start --webpack --webpackPath webpack.config.js --watch",
+        "cwd": "apps/backend"
       }
     },
-
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
+        "command": "NODE_ENV=production nest build --webpack --webpackPath webpack.config.js",
         "cwd": "apps/backend"
-      },
-      "dependsOn": ["^build"]
+      }
     },
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "bun run start",
+        "command": "node dist/main.js",
         "cwd": "apps/backend"
       },
       "dependsOn": ["build"]
@@ -67,7 +64,7 @@
         "command": "docker build -f apps/backend/Dockerfile -t apps-backend .",
         "cwd": "{workspaceRoot}"
       },
-      "dependsOn": ["build", "prune"]
+      "dependsOn": ["build"]
     },
     "docker:run": {
       "executor": "nx:run-commands",

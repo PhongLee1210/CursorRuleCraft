@@ -1,7 +1,7 @@
-import { SupabaseService } from '@/supabase/supabase.service';
 import { GitProviderType } from '@cursorrulecraft/shared-types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { SupabaseService } from '../../supabase/supabase.service';
 import { GitHubAppService } from './github-app.service';
 import { CreateGitIntegrationDto, GitHubRepository, GitIntegration } from './integration.types';
 

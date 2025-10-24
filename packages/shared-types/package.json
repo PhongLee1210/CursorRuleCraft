@@ -14,11 +14,5 @@
   "scripts": {
     "type-check": "tsc --noEmit",
     "lint": "echo 'No linting configured for shared-types'"
-  },
-  "dependencies": {
-    "zod": "^3.24.2"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3"
   }
 }

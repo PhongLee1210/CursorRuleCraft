@@ -69,7 +69,7 @@
         "command": "docker build -f apps/frontend/Dockerfile -t apps-frontend .",
         "cwd": "{workspaceRoot}"
       },
-      "dependsOn": ["build", "prune"]
+      "dependsOn": ["build"]
     },
     "docker:run": {
       "executor": "nx:run-commands",

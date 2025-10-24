@@ -1,6 +1,6 @@
-import { SupabaseModule } from '@/supabase/supabase.module';
-import { WorkspacesModule } from '@/workspaces/workspaces.module';
 import { Module } from '@nestjs/common';
+import { SupabaseModule } from '../supabase/supabase.module';
+import { WorkspacesModule } from '../workspaces/workspaces.module';
 import { CursorRulesService } from './cursor-rules/cursor-rules.service';
 import { GitHubAppService } from './github/github-app.service';
 import { GitHubAuthController } from './github/github-auth.controller';

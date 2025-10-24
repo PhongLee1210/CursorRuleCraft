@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "CommonJS",
-    "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
@@ -21,10 +20,7 @@
     "noEmit": false,
     "allowImportingTsExtensions": false,
     "baseUrl": ".",
-    "paths": {
-      "@cursorrulecraft/shared-types": ["../../packages/shared-types/src/index.ts"],
-      "@/*": ["src/*"]
-    }
+    "moduleResolution": "node"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"]

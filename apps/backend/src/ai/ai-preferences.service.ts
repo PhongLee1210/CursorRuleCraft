@@ -1,6 +1,6 @@
-import { AIProvider } from '@/ai/types';
-import { SupabaseService } from '@/supabase/supabase.service';
 import { Injectable } from '@nestjs/common';
+import { SupabaseService } from '../supabase/supabase.service';
+import { AIProvider } from './types';
 
 /**
  * User AI Preferences from Database

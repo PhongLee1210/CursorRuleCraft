@@ -1,13 +1,13 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { generateText, streamText, type ModelMessage } from 'ai';
 import {
   createAIModel,
   getAvailableModels,
   getDefaultModel,
   isModelSupported,
-} from '@/ai/models.config';
-import { AIProvider, type ModelOptions } from '@/ai/types';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { generateText, streamText, type ModelMessage } from 'ai';
+} from './models.config';
+import { AIProvider, type ModelOptions } from './types';
 
 /**
  * AI Service

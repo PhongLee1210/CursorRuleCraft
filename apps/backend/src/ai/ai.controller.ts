@@ -1,13 +1,13 @@
-import { AIPreferencesService } from '@/ai/ai-preferences.service';
-import { AIService } from '@/ai/ai.service';
-import { PromptTemplateService } from '@/ai/prompt-template.service';
-import { AIProvider } from '@/ai/types';
-import { ClerkToken } from '@/auth/decorators/clerk-token.decorator';
-import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { Public } from '@/auth/decorators/public.decorator';
 import { Body, Controller, Get, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { convertToModelMessages } from 'ai';
 import { Response } from 'express';
+import { ClerkToken } from '../auth/decorators/clerk-token.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { Public } from '../auth/decorators/public.decorator';
+import { AIPreferencesService } from './ai-preferences.service';
+import { AIService } from './ai.service';
+import { PromptTemplateService } from './prompt-template.service';
+import { AIProvider } from './types';
 
 /**
  * AI Controller

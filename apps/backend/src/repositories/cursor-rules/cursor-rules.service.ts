@@ -1,11 +1,7 @@
-import type { CreateRuleDto, UpdateRuleDto } from '@/repositories/cursor-rules/cursor-rules.dto';
-import type {
-  CursorRule,
-  RulesTreeResponse,
-  RuleTreeNode,
-} from '@/repositories/cursor-rules/cursor-rules.types';
-import { SupabaseService } from '@/supabase/supabase.service';
 import { Injectable } from '@nestjs/common';
+import { SupabaseService } from '../../supabase/supabase.service';
+import type { CreateRuleDto, UpdateRuleDto } from './cursor-rules.dto';
+import type { CursorRule, RulesTreeResponse, RuleTreeNode } from './cursor-rules.types';
 import { RuleType } from './cursor-rules.types';
 
 /**

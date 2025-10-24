@@ -16,11 +16,10 @@ module.exports = function (options, webpack) {
       new webpack.WatchIgnorePlugin({
         paths: [/\.js$/, /\.d\.ts$/],
       }),
-      new RunScriptWebpackPlugin({ 
+      new RunScriptWebpackPlugin({
         name: options.output.filename,
-        autoRestart: false 
+        autoRestart: false,
       }),
     ],
   };
 };
-

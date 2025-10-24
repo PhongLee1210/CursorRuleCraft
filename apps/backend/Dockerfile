@@ -31,8 +31,8 @@ WORKDIR /app
 COPY apps/backend ./apps/backend
 COPY packages/shared-types ./packages/shared-types
 
-# Build backend using TypeScript
-RUN cd apps/backend && bunx tsc
+# Build backend using NX
+RUN bun nx build backend
 
 # ============================================
 # Stage 3: Production Runtime
@@ -40,7 +40,7 @@ RUN cd apps/backend && bunx tsc
 FROM docker.io/node:lts-alpine
 
 # Install curl for health checks
-RUN apk add --no-cache curl jq
+RUN apk add --no-cache curl
 
 # Environment variables
 ENV NODE_ENV=production
@@ -52,19 +52,17 @@ WORKDIR /app
 # Copy built backend from builder
 COPY --from=builder /app/apps/backend/dist ./
 
-# Copy shared-types source (needed for module-alias at runtime)
+# Copy shared-types source (needed for runtime)
 COPY --from=builder /app/packages/shared-types ./packages/shared-types
 
-# Copy package.json and clean workspace dependencies
+# Copy package.json and install only production dependencies
 COPY --from=builder /app/apps/backend/package.json ./package.json
-RUN jq 'del(.dependencies["@cursorrulecraft/shared-types"])' package.json > package.json.tmp && \
-    mv package.json.tmp package.json && \
-    npm install --omit=dev
+RUN npm install --omit=dev
 
 EXPOSE 4000
 
 # Health check - pings the /api/health endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD curl -f http://localhost:4000/api/health || exit 1
 
-CMD [ "node", "apps/backend/src/main.js" ]
+CMD [ "node", "main.js" ]

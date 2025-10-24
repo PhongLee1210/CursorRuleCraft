@@ -1,4 +1,4 @@
-import { SupabaseService } from '@/supabase/supabase.service';
+import { SupabaseService } from '../supabase/supabase.service';
 import { verifyWebhook } from '@clerk/backend/webhooks';
 import { Injectable } from '@nestjs/common';
 import type { Request } from 'express';

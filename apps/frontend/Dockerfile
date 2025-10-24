@@ -39,8 +39,8 @@ ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 COPY apps/frontend ./apps/frontend
 COPY packages/shared-types ./packages/shared-types
 
-# Build frontend
-RUN cd apps/frontend && bun run build
+# Build frontend using NX
+RUN bun nx build frontend
 
 # ============================================
 # Stage 3: Production Runtime (Nginx)
@@ -61,7 +61,7 @@ RUN apk add --no-cache gettext && \
     envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
     rm /etc/nginx/conf.d/default.conf.template
 
-# Copy built frontend from builder (Vite outputs to ../../dist/apps/frontend)
+# Copy built frontend from builder (NX outputs to dist/apps/frontend)
 COPY --from=builder /app/dist/apps/frontend /usr/share/nginx/html
 
 # Expose port from environment variable

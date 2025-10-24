@@ -3,6 +3,7 @@
   "compilerOptions": {
     // Path aliases
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["./src/*"],
       "@cursorrulecraft/shared-types": ["../../packages/shared-types/src/index.ts"]
