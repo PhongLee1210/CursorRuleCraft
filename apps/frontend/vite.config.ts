@@ -28,11 +28,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
-      react({
-        babel: {
-          plugins: ['macros'],
-        },
-      }),
+      react(),
       lingui({
         configPath: path.resolve(__dirname, 'lingui.config.ts'),
       }),
