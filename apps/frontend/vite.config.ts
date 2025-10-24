@@ -34,7 +34,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     plugins: [
       react({
         babel: {
-          plugins: ['babel-plugin-macros'],
+          plugins: ['babel-plugin-lingui-macro'],
         },
       }),
       lingui({
