@@ -1,25 +1,8 @@
-const nodeExternals = require('webpack-node-externals');
-const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const { composePlugins, withNx } = require('@nx/webpack');
 
-module.exports = function (options, webpack) {
-  return {
-    ...options,
-    entry: ['webpack/hot/poll?100', options.entry],
-    externals: [
-      nodeExternals({
-        allowlist: ['webpack/hot/poll?100'],
-      }),
-    ],
-    plugins: [
-      ...options.plugins,
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.WatchIgnorePlugin({
-        paths: [/\.js$/, /\.d\.ts$/],
-      }),
-      new RunScriptWebpackPlugin({
-        name: options.output.filename,
-        autoRestart: false,
-      }),
-    ],
-  };
-};
+// Nx plugins for webpack.
+module.exports = composePlugins(withNx(), (config) => {
+  // Update the webpack config as needed here.
+  // e.g. `config.plugins.push(new MyPlugin())`
+  return config;
+});

@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudAccessToken": "68faf5a6d1f181185667bedf",
   "defaultBase": "main",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
@@ -52,16 +53,28 @@
         "buildTarget": "docker:build",
         "runTarget": "docker:run"
       }
-    }
-  ],
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "type-check", "docker:build"]
+        "targetName": "eslint:lint"
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "vite:dev",
+        "previewTargetName": "vite:preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
       }
     }
-  },
+  ],
   "generators": {
     "@nx/react": {
       "application": {

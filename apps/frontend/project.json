@@ -3,28 +3,20 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/frontend/src",
+  "tags": ["type:app", "scope:frontend"],
   "targets": {
     "dev": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "vite",
-        "cwd": "apps/frontend"
-      }
+      "executor": "@nx/vite:dev",
+      "options": {}
     },
     "build": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/vite:build",
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
-      "options": {
-        "command": "tsc && vite build",
-        "cwd": "apps/frontend"
-      }
+      "options": {}
     },
     "preview": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "vite preview",
-        "cwd": "apps/frontend"
-      }
+      "executor": "@nx/vite:preview",
+      "options": {}
     },
     "lint": {
       "executor": "@nx/eslint:lint",
@@ -78,6 +70,5 @@
       },
       "dependsOn": ["docker:build"]
     }
-  },
-  "tags": ["type:app", "scope:frontend"]
+  }
 }

@@ -7,7 +7,14 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist/**', '.cursor/**', '**/*.cjs', '**/node_modules/**'],
+    ignores: [
+      'dist/**',
+      '.cursor/**',
+      '**/*.cjs',
+      '**/node_modules/**',
+      '**/vite.config.*.timestamp*',
+      '**/vitest.config.*.timestamp*',
+    ],
   },
   js.configs.recommended,
   {

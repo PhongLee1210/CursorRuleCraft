@@ -1,15 +1,13 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // Path aliases
-    "baseUrl": ".",
-    "moduleResolution": "bundler",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@cursorrulecraft/shared-types": ["../../packages/shared-types/src/index.ts"]
-    }
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "types": ["vite/client", "vitest"]
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist", "public", "**/*.spec.ts", "**/*.test.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "files": [],
+  "include": [],
+  "extends": "../../tsconfig.base.json"
 }
