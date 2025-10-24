@@ -6,17 +6,23 @@
   "tags": ["type:app", "scope:frontend"],
   "targets": {
     "dev": {
-      "executor": "@nx/vite:dev",
-      "options": {}
+      "executor": "@nx/vite:dev-server",
+      "options": {
+        "buildTarget": "frontend:build"
+      }
     },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
-      "options": {}
+      "options": {
+        "outputPath": "dist/apps/frontend"
+      }
     },
     "preview": {
-      "executor": "@nx/vite:preview",
-      "options": {}
+      "executor": "@nx/vite:preview-server",
+      "options": {
+        "buildTarget": "frontend:build"
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
