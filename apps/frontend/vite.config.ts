@@ -32,9 +32,16 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       },
     },
     plugins: [
-      react(),
+      react({
+        babel: {
+          plugins: [
+            ['macros', { 'lingui.macro': '@lingui/babel-plugin-lingui-macro' }]
+          ],
+        },
+      }),
       lingui({
         configPath: path.resolve(__dirname, 'lingui.config.ts'),
+        runtime: false,
       }),
       nxViteTsPaths(),
     ],
