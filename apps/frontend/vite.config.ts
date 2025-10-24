@@ -38,7 +38,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         },
       }),
       lingui({
-        configPath: 'lingui.config.js',
+        configPath: path.resolve(__dirname, 'lingui.config.ts'),
       }),
       nxViteTsPaths(),
     ],
