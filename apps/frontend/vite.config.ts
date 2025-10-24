@@ -23,9 +23,9 @@ export default defineConfig(({ mode }) => {
       outDir: '../../dist/apps/frontend',
       rollupOptions: {
         input: {
-          main: './index.html'
-        }
-      }
+          main: path.resolve(__dirname, 'index.html'),
+        },
+      },
     },
     plugins: [
       react({
