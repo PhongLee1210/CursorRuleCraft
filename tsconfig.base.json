@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["apps/frontend/src/*"],
       "@frontend/*": ["apps/frontend/src/*"],
       "@backend/*": ["apps/backend/src/*"],
       "@cursorrulecraft/shared-types": ["packages/shared-types/src/index.ts"]
