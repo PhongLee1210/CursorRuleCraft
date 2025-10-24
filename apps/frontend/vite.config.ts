@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
+    root: '.',
     envDir: '../../',
     cacheDir: '../../node_modules/.vite/frontend',
     build: {
