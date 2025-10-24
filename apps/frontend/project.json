@@ -9,7 +9,8 @@
       "executor": "@nx/vite:dev-server",
       "options": {
         "buildTarget": "frontend:build",
-        "configFile": "apps/frontend/vite.config.ts"
+        "configFile": "apps/frontend/vite.config.ts",
+        "projectRoot": "apps/frontend"
       }
     },
     "build": {
@@ -17,14 +18,16 @@
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
       "options": {
         "outputPath": "dist/apps/frontend",
-        "configFile": "apps/frontend/vite.config.ts"
+        "configFile": "apps/frontend/vite.config.ts",
+        "projectRoot": "apps/frontend"
       }
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
       "options": {
         "buildTarget": "frontend:build",
-        "configFile": "apps/frontend/vite.config.ts"
+        "configFile": "apps/frontend/vite.config.ts",
+        "projectRoot": "apps/frontend"
       }
     },
     "lint": {
