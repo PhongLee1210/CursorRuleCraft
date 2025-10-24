@@ -1,8 +1,8 @@
-import { MessageBubble } from '@/components/chat';
-import { ChatInput, type MentionedFile } from '@/components/ChatInput';
-import { cn } from '@/lib/utils';
-import type { RuleType } from '@/types/cursor-rules';
-import type { Repository } from '@/types/repository';
+import { MessageBubble } from "@frontend/components/chat";
+import { ChatInput, type MentionedFile } from "@frontend/components/ChatInput";
+import { cn } from "@frontend/lib/utils";
+import type { RuleType } from "@frontend/types/cursor-rules";
+import type { Repository } from "@frontend/types/repository";
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 

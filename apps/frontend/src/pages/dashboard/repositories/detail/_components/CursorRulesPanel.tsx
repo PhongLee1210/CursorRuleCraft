@@ -1,11 +1,11 @@
-import { Button } from '@/components/Button';
-import { useCursorRules } from '@/hooks/useCursorRules';
-import { cn } from '@/lib/utils';
-import { CreateRuleDialog } from '@/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog';
-import { DeleteConfirmDialog } from '@/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog';
-import { EditRuleDialog } from '@/pages/dashboard/repositories/detail/_dialog/EditRuleDialog';
-import type { RuleTreeNode } from '@/types/cursor-rules';
-import type { Repository } from '@/types/repository';
+import { Button } from "@frontend/components/Button";
+import { useCursorRules } from "@frontend/hooks/useCursorRules";
+import { cn } from "@frontend/lib/utils";
+import { CreateRuleDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog";
+import { DeleteConfirmDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog";
+import { EditRuleDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/EditRuleDialog";
+import type { RuleTreeNode } from "@frontend/types/cursor-rules";
+import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import {
   CaretDownIcon,

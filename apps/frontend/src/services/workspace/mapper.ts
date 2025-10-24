@@ -1,4 +1,4 @@
-import type { Workspace, WorkspaceDetail, WorkspaceMember } from '@/types/workspace';
+import type { Workspace, WorkspaceDetail, WorkspaceMember } from '@frontend/types/workspace';
 
 /**
  * Maps raw workspace data from API to Workspace type

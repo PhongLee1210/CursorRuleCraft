@@ -1,7 +1,7 @@
 import { useLingui } from '@lingui/react';
 import { Helmet } from 'react-helmet-async';
 
-import { SEO } from '@/components/SEO';
+import { SEO } from "@frontend/components/SEO";
 
 import { FAQSection } from './sections/FAQ';
 import { FeaturesSection } from './sections/Features';

@@ -8,7 +8,7 @@ import type {
   AIGenerateResponse,
   AIMessage,
   AIStreamChunk,
-} from '@/types/ai-messages';
+} from '@frontend/types/ai-messages';
 import { useCallback, useState } from 'react';
 
 interface UseAIGeneratorReturn {

@@ -1,13 +1,13 @@
-import { Button } from '@/components/Button';
+import { Button } from "@frontend/components/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/DropdownMenu';
-import { useGitHubAuth } from '@/hooks/useGitHubAuth';
-import { cn } from '@/lib/utils';
-import { GitHubRepositorySelectorDialog } from '@/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog';
+} from "@frontend/components/DropdownMenu";
+import { useGitHubAuth } from "@frontend/hooks/useGitHubAuth";
+import { cn } from "@frontend/lib/utils";
+import { GitHubRepositorySelectorDialog } from "@frontend/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog";
 import { t } from '@lingui/macro';
 import {
   CheckCircleIcon,

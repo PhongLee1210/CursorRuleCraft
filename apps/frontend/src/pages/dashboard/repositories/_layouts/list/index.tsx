@@ -1,5 +1,5 @@
-import { sortByDate } from '@/lib/utils';
-import type { Repository } from '@/types/repository';
+import { sortByDate } from "@frontend/lib/utils";
+import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import { AnimatePresence, motion } from 'framer-motion';
 

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { memo } from 'react';
 
 interface MessageBubbleProps {

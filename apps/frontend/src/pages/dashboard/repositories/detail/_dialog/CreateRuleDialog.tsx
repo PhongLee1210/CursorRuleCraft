@@ -1,4 +1,4 @@
-import { Button } from '@/components/Button';
+import { Button } from "@frontend/components/Button";
 import {
   Dialog,
   DialogContent,
@@ -6,17 +6,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/Dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
+} from "@frontend/components/Dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@frontend/components/Tabs";
 import {
   validateContent,
   validateCreateRuleForm,
   validateFileName,
   validateGlobPatterns,
-} from '@/lib/validations/cursor-rules';
-import { CommandRulesForm } from '@/pages/dashboard/repositories/detail/_dialog/CommandRulesForm';
-import { ProjectRulesForm } from '@/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm';
-import { UserRulesForm } from '@/pages/dashboard/repositories/detail/_dialog/UserRulesForm';
+} from "@frontend/lib/validations/cursor-rules";
+import { CommandRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/CommandRulesForm";
+import { ProjectRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm";
+import { UserRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/UserRulesForm";
 import { t } from '@lingui/macro';
 import { FileCodeIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';

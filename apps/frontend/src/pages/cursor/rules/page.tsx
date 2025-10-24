@@ -1,6 +1,6 @@
-import { Badge } from '@/components/Badge';
-import { Button } from '@/components/Button';
-import { cursorRuleTemplates } from '@/lib/utils';
+import { Badge } from "@frontend/components/Badge";
+import { Button } from "@frontend/components/Button";
+import { cursorRuleTemplates } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { ArrowLeft, Check, Copy, Download } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';

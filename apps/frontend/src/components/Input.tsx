@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { forwardRef, type InputHTMLAttributes } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

@@ -1,4 +1,4 @@
-import type { Workspace } from '@/types/workspace';
+import type { Workspace } from '@frontend/types/workspace';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

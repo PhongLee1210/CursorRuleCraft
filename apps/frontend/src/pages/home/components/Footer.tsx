@@ -1,9 +1,9 @@
-import { Separator } from '@/components/Separator';
+import { Separator } from "@frontend/components/Separator";
 import { Link } from 'react-router';
 
-import { Copyright } from '@/components/Copyright';
-import { Logo } from '@/components/Logo';
-import { ThemeSwitch } from '@/components/ThemeSwitch';
+import { Copyright } from "@frontend/components/Copyright";
+import { Logo } from "@frontend/components/Logo";
+import { ThemeSwitch } from "@frontend/components/ThemeSwitch";
 
 export const Footer = () => (
   <footer>

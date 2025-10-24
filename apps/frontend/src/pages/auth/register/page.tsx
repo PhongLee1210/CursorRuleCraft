@@ -1,7 +1,7 @@
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { SEO } from '@/components/SEO';
-import { useRegister } from '@/services/auth';
+import { Button } from "@frontend/components/Button";
+import { Input } from "@frontend/components/Input";
+import { SEO } from "@frontend/components/SEO";
+import { useRegister } from "@frontend/services/auth";
 import { t, Trans } from '@lingui/macro';
 import { ArrowRightIcon, EyeIcon, EyeSlashIcon, WarningIcon } from '@phosphor-icons/react';
 import { useState } from 'react';

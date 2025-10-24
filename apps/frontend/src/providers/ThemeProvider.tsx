@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from "@frontend/hooks/useTheme";
 import { useEffect } from 'react';
 
 type Props = { children: React.ReactNode };

@@ -1,4 +1,4 @@
-import { useWorkspaceStore } from '@/stores/workspace';
+import { useWorkspaceStore } from '@frontend/stores/workspace';
 import { useClerk } from '@clerk/clerk-react';
 import { useCallback, useState } from 'react';
 

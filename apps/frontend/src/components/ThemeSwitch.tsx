@@ -1,5 +1,5 @@
-import { Button } from '@/components/Button';
-import { useTheme } from '@/hooks/useTheme';
+import { Button } from "@frontend/components/Button";
+import { useTheme } from "@frontend/hooks/useTheme";
 import { CloudSunIcon, MoonIcon, SunIcon } from '@phosphor-icons/react';
 import type { Variants } from 'framer-motion';
 import { motion } from 'framer-motion';

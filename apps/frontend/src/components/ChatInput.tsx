@@ -1,6 +1,6 @@
-import { MentionedFileBadge, QuickActionButton, SuggestionDropdown } from '@/components/chat';
-import { RepoBanner } from '@/components/RepoBanner';
-import { cn } from '@/lib/utils';
+import { MentionedFileBadge, QuickActionButton, SuggestionDropdown } from "@frontend/components/chat";
+import { RepoBanner } from "@frontend/components/RepoBanner";
+import { cn } from "@frontend/lib/utils";
 import { useDroppable } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
 import {

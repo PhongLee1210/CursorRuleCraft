@@ -1,5 +1,5 @@
-import { useApiClient } from '@/lib/api-client';
-import { createRepositoryService } from '@/services/repository';
+import { useApiClient } from '@frontend/lib/api-client';
+import { createRepositoryService } from '@frontend/services/repository';
 import { useMemo } from 'react';
 
 /**

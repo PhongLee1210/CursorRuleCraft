@@ -1,11 +1,11 @@
-import type { ApiClient } from '@/lib/api-client';
+import type { ApiClient } from '@frontend/lib/api-client';
 import type {
   CreateCursorRuleOptions,
   CursorRule,
   CursorRuleServiceResult,
   RulesTreeResponse,
   UpdateCursorRuleOptions,
-} from '@/types/cursor-rules';
+} from '@frontend/types/cursor-rules';
 
 /**
  * Get cursor rules tree for a repository

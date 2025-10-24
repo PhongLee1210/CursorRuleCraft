@@ -1,11 +1,11 @@
-import { Button } from '@/components/Button';
+import { Button } from "@frontend/components/Button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/Dialog';
+} from "@frontend/components/Dialog";
 import { t } from '@lingui/macro';
 import { SpinnerGapIcon } from '@phosphor-icons/react';
 import { useCallback, useState } from 'react';

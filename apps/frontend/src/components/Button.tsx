@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { Slot } from '@radix-ui/react-slot';
 import { type ButtonHTMLAttributes, forwardRef } from 'react';
 

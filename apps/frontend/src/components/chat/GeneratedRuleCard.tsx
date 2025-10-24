@@ -1,5 +1,5 @@
-import { Button } from '@/components/Button';
-import { cn } from '@/lib/utils';
+import { Button } from "@frontend/components/Button";
+import { cn } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { CheckIcon, CopyIcon, MagicWandIcon } from '@phosphor-icons/react';
 import { memo, useCallback, useState } from 'react';

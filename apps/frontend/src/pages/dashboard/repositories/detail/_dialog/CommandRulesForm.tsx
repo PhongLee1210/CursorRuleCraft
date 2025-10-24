@@ -1,5 +1,5 @@
-import { Input } from '@/components/Input';
-import { cn } from '@/lib/utils';
+import { Input } from "@frontend/components/Input";
+import { cn } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { FolderIcon } from '@phosphor-icons/react';
 import { memo } from 'react';

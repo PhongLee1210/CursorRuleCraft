@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { CaretDownIcon } from '@phosphor-icons/react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { forwardRef } from 'react';

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/constants';
+import { API_BASE_URL } from '@frontend/lib/constants';
 import { useAuth } from '@clerk/clerk-react';
 import { useEffect, useMemo, useRef } from 'react';
 

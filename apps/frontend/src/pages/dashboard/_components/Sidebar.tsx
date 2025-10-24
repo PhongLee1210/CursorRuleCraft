@@ -1,7 +1,7 @@
-import { Button } from '@/components/Button';
-import { KeyboardShortcut } from '@/components/KeyboardShortcut';
-import { Separator } from '@/components/Separator';
-import { cn } from '@/lib/utils';
+import { Button } from "@frontend/components/Button";
+import { KeyboardShortcut } from "@frontend/components/KeyboardShortcut";
+import { Separator } from "@frontend/components/Separator";
+import { cn } from "@frontend/lib/utils";
 import { SignedIn, UserButton } from '@clerk/clerk-react';
 import { t } from '@lingui/macro';
 import { FadersHorizontalIcon, ReadCvLogoIcon } from '@phosphor-icons/react';
@@ -9,8 +9,8 @@ import { motion } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useKeyboardShortcut from 'use-keyboard-shortcut';
 
-import { Copyright } from '@/components/Copyright';
-import { Logo } from '@/components/Logo';
+import { Copyright } from "@frontend/components/Copyright";
+import { Logo } from "@frontend/components/Logo";
 
 type Props = {
   className?: string;

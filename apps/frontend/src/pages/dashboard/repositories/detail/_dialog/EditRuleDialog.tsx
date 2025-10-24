@@ -1,21 +1,21 @@
-import { BadgeInput } from '@/components/BadgeInput';
-import { Button } from '@/components/Button';
+import { BadgeInput } from "@frontend/components/BadgeInput";
+import { Button } from "@frontend/components/Button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/Dialog';
+} from "@frontend/components/Dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from '@/components/DropdownMenu';
-import { useCursorRules } from '@/hooks/useCursorRules';
-import type { ApplyMode } from '@/types/cursor-rules';
+} from "@frontend/components/DropdownMenu";
+import { useCursorRules } from "@frontend/hooks/useCursorRules";
+import type { ApplyMode } from "@frontend/types/cursor-rules";
 import { t } from '@lingui/macro';
 import { CaretDownIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';

@@ -4,9 +4,9 @@
  * Custom hooks for fetching and managing workspace data with React Query
  */
 
-import { useWorkspaceService } from '@/hooks/useWorkspaceService';
-import { useWorkspaceStore } from '@/stores/workspace';
-import type { UpdateWorkspaceOptions, Workspace, WorkspaceRole } from '@/types/workspace';
+import { useWorkspaceService } from '@frontend/hooks/useWorkspaceService';
+import { useWorkspaceStore } from '@frontend/stores/workspace';
+import type { UpdateWorkspaceOptions, Workspace, WorkspaceRole } from '@frontend/types/workspace';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 /**

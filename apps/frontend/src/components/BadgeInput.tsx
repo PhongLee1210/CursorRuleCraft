@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { XIcon } from '@phosphor-icons/react';
 import { useCallback, useRef } from 'react';
 import { Badge } from './Badge';

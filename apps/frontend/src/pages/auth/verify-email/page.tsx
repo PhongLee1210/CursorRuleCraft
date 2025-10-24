@@ -1,6 +1,6 @@
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { SEO } from '@/components/SEO';
+import { Button } from "@frontend/components/Button";
+import { Input } from "@frontend/components/Input";
+import { SEO } from "@frontend/components/SEO";
 import { useSignUp } from '@clerk/clerk-react';
 import { t, Trans } from '@lingui/macro';
 import { CheckCircleIcon, EnvelopeIcon, WarningIcon } from '@phosphor-icons/react';

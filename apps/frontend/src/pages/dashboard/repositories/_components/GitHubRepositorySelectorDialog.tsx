@@ -1,18 +1,18 @@
-import { Badge } from '@/components/Badge';
-import { Button } from '@/components/Button';
+import { Badge } from "@frontend/components/Badge";
+import { Button } from "@frontend/components/Button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/Dialog';
-import { Input } from '@/components/Input';
-import { ScrollArea } from '@/components/ScrollArea';
-import { useGitHubAuth } from '@/hooks/useGitHubAuth';
-import { useGitHubRepositories, useRepositories } from '@/hooks/useRepositories';
-import { cn } from '@/lib/utils';
-import type { GitHubRepository } from '@/types/repository';
+} from "@frontend/components/Dialog";
+import { Input } from "@frontend/components/Input";
+import { ScrollArea } from "@frontend/components/ScrollArea";
+import { useGitHubAuth } from "@frontend/hooks/useGitHubAuth";
+import { useGitHubRepositories, useRepositories } from "@frontend/hooks/useRepositories";
+import { cn } from "@frontend/lib/utils";
+import type { GitHubRepository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import {
   GithubLogoIcon,

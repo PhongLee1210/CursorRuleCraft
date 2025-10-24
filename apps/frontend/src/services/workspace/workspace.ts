@@ -1,10 +1,10 @@
-import { ApiClient } from '@/lib/api-client';
-import { normalizeServiceError } from '@/lib/utils';
+import { ApiClient } from '@frontend/lib/api-client';
+import { normalizeServiceError } from '@frontend/lib/utils';
 import {
   mapToWorkspaceDetailDto,
   mapToWorkspaceDto,
   mapToWorkspaceMemberDto,
-} from '@/services/workspace/mapper';
+} from '@frontend/services/workspace/mapper';
 import type {
   UpdateWorkspaceOptions,
   Workspace,
@@ -12,7 +12,7 @@ import type {
   WorkspaceMember,
   WorkspaceRole,
   WorkspaceServiceResult,
-} from '@/types/workspace';
+} from '@frontend/types/workspace';
 
 /**
  * Get all workspaces for the current user

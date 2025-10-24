@@ -1,6 +1,6 @@
-import type { ApiClient } from '@/lib/api-client';
-import { normalizeServiceError } from '@/lib/utils';
-import type { RepositoryServiceResult } from '@/types/repository';
+import type { ApiClient } from '@frontend/lib/api-client';
+import { normalizeServiceError } from '@frontend/lib/utils';
+import type { RepositoryServiceResult } from '@frontend/types/repository';
 
 /**
  * GitHub integration status

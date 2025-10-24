@@ -1,10 +1,10 @@
-import { Button } from '@/components/Button';
-import { IconButton } from '@/components/IconButton';
-import { useRepositoryService } from '@/hooks/useRepositoryService';
-import { cn } from '@/lib/utils';
-import type { IFileTreeNode } from '@/services/repository/repository';
-import { KindState, type State } from '@/types';
-import type { Repository } from '@/types/repository';
+import { Button } from "@frontend/components/Button";
+import { IconButton } from "@frontend/components/IconButton";
+import { useRepositoryService } from "@frontend/hooks/useRepositoryService";
+import { cn } from "@frontend/lib/utils";
+import type { IFileTreeNode } from "@frontend/services/repository/repository";
+import { KindState, type State } from "@frontend/types";
+import type { Repository } from "@frontend/types/repository";
 import { experimental_useObject as useObject } from '@ai-sdk/react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';

@@ -1,4 +1,4 @@
-import { useApiClient } from '@/lib/api-client';
+import { useApiClient } from '@frontend/lib/api-client';
 import {
   createCursorRule,
   deleteCursorRule,
@@ -6,14 +6,14 @@ import {
   getCursorRules,
   getCursorRulesTree,
   updateCursorRule,
-} from '@/services/cursor-rules/cursor-rules';
+} from '@frontend/services/cursor-rules/cursor-rules';
 import type {
   CreateCursorRuleOptions,
   CursorRule,
   CursorRuleServiceResult,
   RuleTreeNode,
   UpdateCursorRuleOptions,
-} from '@/types/cursor-rules';
+} from '@frontend/types/cursor-rules';
 import { useCallback, useMemo } from 'react';
 
 /**

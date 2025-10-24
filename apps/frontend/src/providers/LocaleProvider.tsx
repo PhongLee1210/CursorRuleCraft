@@ -4,7 +4,7 @@ import { detect, fromStorage, fromUrl } from '@lingui/detect-locale';
 import { I18nProvider } from '@lingui/react';
 import { useEffect } from 'react';
 
-import { defaultLocale, dynamicActivate } from '@/lib/lingui';
+import { defaultLocale, dynamicActivate } from "@frontend/lib/lingui";
 
 // Languages
 export type LanguageType = {

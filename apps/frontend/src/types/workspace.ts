@@ -1,4 +1,4 @@
-import type { ApiError } from '@/lib/api-client';
+import type { ApiError } from '@frontend/lib/api-client';
 
 /**
  * Workspace types and interfaces

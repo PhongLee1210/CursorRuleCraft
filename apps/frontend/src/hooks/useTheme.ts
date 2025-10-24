@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@/lib/useLocalStorage';
+import { useLocalStorage } from '@frontend/lib/useLocalStorage';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 

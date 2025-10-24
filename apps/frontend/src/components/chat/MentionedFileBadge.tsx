@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { FileCodeIcon, FolderIcon, XIcon } from '@phosphor-icons/react';
 import { memo, useCallback } from 'react';
 

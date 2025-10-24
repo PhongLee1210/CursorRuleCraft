@@ -1,9 +1,9 @@
-import type { ApiClient } from '@/lib/api-client';
+import type { ApiClient } from '@frontend/lib/api-client';
 import {
   disconnectGitHub,
   getGitHubStatus,
   initiateGitHubAuth,
-} from '@/services/repository/github';
+} from '@frontend/services/repository/github';
 import {
   addRepository,
   connectGitHubRepository,
@@ -15,7 +15,7 @@ import {
   getWorkspaceRepositories,
   syncRepository,
   updateRepository,
-} from '@/services/repository/repository';
+} from '@frontend/services/repository/repository';
 
 export function createRepositoryService(apiClient: ApiClient) {
   return {
@@ -38,6 +38,6 @@ export function createRepositoryService(apiClient: ApiClient) {
 export type RepositoryService = ReturnType<typeof createRepositoryService>;
 
 // Re-export types
-export * from '@/services/repository/github';
-export * from '@/types/repository';
+export * from '@frontend/services/repository/github';
+export * from '@frontend/types/repository';
 export { mapToRepositoryDto } from './mapper';

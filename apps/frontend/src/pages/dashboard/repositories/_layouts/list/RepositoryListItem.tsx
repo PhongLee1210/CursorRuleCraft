@@ -1,20 +1,20 @@
-import { Badge } from '@/components/Badge';
-import { Button } from '@/components/Button';
+import { Badge } from "@frontend/components/Badge";
+import { Button } from "@frontend/components/Button";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from '@/components/ContextMenu';
+} from "@frontend/components/ContextMenu";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/DropdownMenu';
-import { useRepositories } from '@/hooks/useRepositories';
-import type { Repository } from '@/types/repository';
+} from "@frontend/components/DropdownMenu";
+import { useRepositories } from "@frontend/hooks/useRepositories";
+import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import {
   ArrowsClockwiseIcon,

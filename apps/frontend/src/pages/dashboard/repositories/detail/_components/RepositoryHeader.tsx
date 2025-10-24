@@ -1,8 +1,8 @@
-import { Badge } from '@/components/Badge';
-import { Button } from '@/components/Button';
-import { IconButton } from '@/components/IconButton';
-import { cn } from '@/lib/utils';
-import type { Repository } from '@/types/repository';
+import { Badge } from "@frontend/components/Badge";
+import { Button } from "@frontend/components/Button";
+import { IconButton } from "@frontend/components/IconButton";
+import { cn } from "@frontend/lib/utils";
+import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import {
   ArrowLeftIcon,

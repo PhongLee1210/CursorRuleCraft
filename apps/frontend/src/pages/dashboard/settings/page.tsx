@@ -1,6 +1,6 @@
-import { Badge } from '@/components/Badge';
-import { Button } from '@/components/Button';
-import { Separator } from '@/components/Separator';
+import { Badge } from "@frontend/components/Badge";
+import { Button } from "@frontend/components/Button";
+import { Separator } from "@frontend/components/Separator";
 import {
   BellIcon,
   GearIcon,

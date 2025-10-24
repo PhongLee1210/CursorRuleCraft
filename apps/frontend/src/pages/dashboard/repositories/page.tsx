@@ -1,9 +1,9 @@
-import { ScrollArea } from '@/components/ScrollArea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
-import { useRepositories } from '@/hooks/useRepositories';
-import { useWorkspaceStore } from '@/stores/workspace';
+import { ScrollArea } from "@frontend/components/ScrollArea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@frontend/components/Tabs";
+import { useRepositories } from "@frontend/hooks/useRepositories";
+import { useWorkspaceStore } from "@frontend/stores/workspace";
 
-import { useLocalStorage } from '@/lib/useLocalStorage';
+import { useLocalStorage } from "@frontend/lib/useLocalStorage";
 import { t } from '@lingui/macro';
 import { ListIcon, SquaresFourIcon, WarningCircleIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';

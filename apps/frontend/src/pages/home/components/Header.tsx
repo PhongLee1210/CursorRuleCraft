@@ -2,8 +2,8 @@ import { t } from '@lingui/macro';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/Button';
-import { Logo } from '@/components/Logo';
+import { Button } from "@frontend/components/Button";
+import { Logo } from "@frontend/components/Logo";
 import { useAuth } from '@clerk/clerk-react';
 
 export const Header = () => {

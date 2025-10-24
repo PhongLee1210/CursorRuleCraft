@@ -1,6 +1,6 @@
-import { useRepositoryService } from '@/hooks/useRepositoryService';
-import { useWorkspaceStore } from '@/stores/workspace';
-import type { Repository } from '@/types/repository';
+import { useRepositoryService } from '@frontend/hooks/useRepositoryService';
+import { useWorkspaceStore } from '@frontend/stores/workspace';
+import type { Repository } from '@frontend/types/repository';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 /**

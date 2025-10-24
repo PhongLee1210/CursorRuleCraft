@@ -1,4 +1,4 @@
-import { Button } from '@/components/Button';
+import { Button } from "@frontend/components/Button";
 import { Link, useRouteError } from 'react-router';
 
 type RouterError = {

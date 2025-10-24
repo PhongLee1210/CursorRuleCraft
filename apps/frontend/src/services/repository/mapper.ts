@@ -1,4 +1,4 @@
-import type { Repository } from '@/types/repository';
+import type { Repository } from '@frontend/types/repository';
 
 /**
  * Maps backend repository response to frontend Repository type

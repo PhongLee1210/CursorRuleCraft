@@ -1,4 +1,4 @@
-import { ScrollArea } from '@/components/ScrollArea';
+import { ScrollArea } from "@frontend/components/ScrollArea";
 import { Outlet } from 'react-router';
 
 import { Footer } from './components/Footer';

@@ -1,4 +1,4 @@
-import type { ApiClient } from '@/lib/api-client';
+import type { ApiClient } from '@frontend/lib/api-client';
 import {
   addWorkspaceMember,
   deleteWorkspace,
@@ -10,7 +10,7 @@ import {
   removeWorkspaceMember,
   updateWorkspace,
   updateWorkspaceMemberRole,
-} from '@/services/workspace/workspace';
+} from '@frontend/services/workspace/workspace';
 
 export function createWorkspaceService(apiClient: ApiClient) {
   return {
@@ -30,5 +30,5 @@ export function createWorkspaceService(apiClient: ApiClient) {
 export type WorkspaceService = ReturnType<typeof createWorkspaceService>;
 
 // Re-export types and utilities
-export * from '@/types/workspace';
+export * from '@frontend/types/workspace';
 export { mapToWorkspaceDetailDto, mapToWorkspaceDto, mapToWorkspaceMemberDto } from './mapper';

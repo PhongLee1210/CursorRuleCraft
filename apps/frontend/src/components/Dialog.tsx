@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { type ComponentPropsWithoutRef, type ElementRef, forwardRef } from 'react';
 

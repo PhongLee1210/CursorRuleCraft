@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { useEffect } from 'react';
 import { useBoolean } from 'usehooks-ts';
 

@@ -1,5 +1,5 @@
-import { useApiClient } from '@/lib/api-client';
-import { createWorkspaceService } from '@/services/workspace';
+import { useApiClient } from '@frontend/lib/api-client';
+import { createWorkspaceService } from '@frontend/services/workspace';
 import { useMemo } from 'react';
 
 /**

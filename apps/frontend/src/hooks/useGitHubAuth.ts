@@ -1,4 +1,4 @@
-import { useRepositoryService } from '@/hooks/useRepositoryService';
+import { useRepositoryService } from '@frontend/hooks/useRepositoryService';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 

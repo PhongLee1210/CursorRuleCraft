@@ -1,5 +1,5 @@
-import { Button } from '@/components/Button';
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/Sheet';
+import { Button } from "@frontend/components/Button";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@frontend/components/Sheet";
 import { SidebarSimpleIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';

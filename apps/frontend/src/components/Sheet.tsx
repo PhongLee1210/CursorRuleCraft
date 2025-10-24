@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { XIcon } from '@phosphor-icons/react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { type VariantProps } from 'class-variance-authority';

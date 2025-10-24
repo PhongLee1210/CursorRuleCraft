@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { useMemo, type ReactNode } from 'react';
 

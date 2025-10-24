@@ -1,16 +1,16 @@
-import { type ApiClient } from '@/lib/api-client';
-import { normalizeServiceError } from '@/lib/utils';
+import { type ApiClient } from '@frontend/lib/api-client';
+import { normalizeServiceError } from '@frontend/lib/utils';
 import {
   mapToAddRepositoryPayload,
   mapToRepositoryDto,
   mapToUpdateRepositoryPayload,
-} from '@/services/repository/mapper';
+} from '@frontend/services/repository/mapper';
 import type {
   AddRepositoryOptions,
   Repository,
   RepositoryServiceResult,
   UpdateRepositoryOptions,
-} from '@/types/repository';
+} from '@frontend/types/repository';
 
 /**
  * Get all repositories for a workspace

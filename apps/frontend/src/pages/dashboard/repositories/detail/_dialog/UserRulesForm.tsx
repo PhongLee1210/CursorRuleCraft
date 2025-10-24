@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { FolderIcon } from '@phosphor-icons/react';
 import { memo } from 'react';

@@ -1,12 +1,12 @@
-import { Badge } from '@/components/Badge';
-import { Button, buttonVariants } from '@/components/Button';
-import { cn } from '@/lib/utils';
+import { Badge } from "@frontend/components/Badge";
+import { Button, buttonVariants } from "@frontend/components/Button";
+import { cn } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 
-import { useLogout } from '@/hooks/useLogout';
+import { useLogout } from "@frontend/hooks/useLogout";
 import { useAuth } from '@clerk/clerk-react';
 import { BookIcon, SignOutIcon } from '@phosphor-icons/react';
 import { Link } from 'react-router';
