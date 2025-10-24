@@ -49,3 +49,8 @@ env.docker
 docker-compose.override.yml
 backup_*.sql
 *.tsbuildinfo
+
+
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
