@@ -21,6 +21,11 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       emptyOutDir: true,
       outDir: '../../dist/apps/frontend',
+      rollupOptions: {
+        input: {
+          main: './index.html'
+        }
+      }
     },
     plugins: [
       react({
