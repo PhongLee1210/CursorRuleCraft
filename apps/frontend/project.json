@@ -8,20 +8,23 @@
     "dev": {
       "executor": "@nx/vite:dev-server",
       "options": {
-        "buildTarget": "frontend:build"
+        "buildTarget": "frontend:build",
+        "configFile": "apps/frontend/vite.config.ts"
       }
     },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
       "options": {
-        "outputPath": "dist/apps/frontend"
+        "outputPath": "dist/apps/frontend",
+        "configFile": "apps/frontend/vite.config.ts"
       }
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
       "options": {
-        "buildTarget": "frontend:build"
+        "buildTarget": "frontend:build",
+        "configFile": "apps/frontend/vite.config.ts"
       }
     },
     "lint": {
