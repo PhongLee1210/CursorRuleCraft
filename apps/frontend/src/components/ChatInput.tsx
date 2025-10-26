@@ -1,6 +1,5 @@
-import { MentionedFileBadge, QuickActionButton, SuggestionDropdown } from "@frontend/components/chat";
-import { RepoBanner } from "@frontend/components/RepoBanner";
-import { cn } from "@frontend/lib/utils";
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { useDroppable } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
 import {
@@ -11,7 +10,15 @@ import {
   TerminalIcon,
   XIcon,
 } from '@phosphor-icons/react';
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import {
+  MentionedFileBadge,
+  QuickActionButton,
+  SuggestionDropdown,
+} from '@frontend/components/chat';
+import { RepoBanner } from '@frontend/components/RepoBanner';
+import { cn } from '@frontend/lib/utils';
+
 
 // Constants
 const SUGGESTED_PROMPTS = [

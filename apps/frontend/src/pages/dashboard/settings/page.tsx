@@ -1,6 +1,3 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import { Separator } from "@frontend/components/Separator";
 import {
   BellIcon,
   GearIcon,
@@ -10,6 +7,10 @@ import {
   WarningCircleIcon,
 } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import { Separator } from '@frontend/components/Separator';
 
 export const SettingsPage = () => {
   const navigate = useNavigate();

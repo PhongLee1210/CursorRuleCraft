@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
+import { Injectable } from '@nestjs/common';
 
 /**
  * Simple template engine service for handling {{variable}} replacements

@@ -1,7 +1,8 @@
-import { sortByDate } from "@frontend/lib/utils";
-import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { sortByDate } from '@frontend/lib/utils';
+import type { Repository } from '@frontend/types/repository';
 
 import { BaseListItem } from './BaseItem';
 import { CreateRepositoryListItem } from './CreateItem';

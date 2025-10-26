@@ -1,5 +1,6 @@
-import { cn } from "@frontend/lib/utils";
 import { forwardRef } from 'react';
+
+import { cn } from '@frontend/lib/utils';
 
 interface QuickActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;

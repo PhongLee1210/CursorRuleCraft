@@ -1,5 +1,5 @@
+import { SupabaseService } from '@backend/supabase/supabase.service';
 import { Injectable } from '@nestjs/common';
-import { SupabaseService } from '../supabase/supabase.service';
 
 /**
  * Workspaces Service with Clerk Integration

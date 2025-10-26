@@ -2,11 +2,14 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "composite": true,
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "strictNullChecks": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
@@ -18,7 +21,7 @@
     "paths": {
       "@frontend/*": ["apps/frontend/src/*"],
       "@backend/*": ["apps/backend/src/*"],
-      "@cursorrulecraft/shared-types": ["packages/shared-types/src/index.ts"]
+      "@cursorrulecraft/shared-types": ["libs/shared-types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist", "tmp", ".nx"]

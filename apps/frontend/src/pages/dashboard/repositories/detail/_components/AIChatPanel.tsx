@@ -1,11 +1,3 @@
-import { MessageBubble } from "@frontend/components/chat";
-import { ChatInput, type MentionedFile } from "@frontend/components/ChatInput";
-import { cn } from "@frontend/lib/utils";
-import type { RuleType } from "@frontend/types/cursor-rules";
-import type { Repository } from "@frontend/types/repository";
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
-
 import {
   forwardRef,
   useCallback,
@@ -15,6 +7,15 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
+
+import type { RuleType } from '@cursorrulecraft/shared-types';
+import { MessageBubble } from '@frontend/components/chat';
+import { ChatInput, type MentionedFile } from '@frontend/components/ChatInput';
+import { cn } from '@frontend/lib/utils';
+import type { Repository } from '@frontend/types/repository';
 
 interface GeneratedRuleDraft {
   type: RuleType;
@@ -76,9 +77,9 @@ export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
     //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     // }, [messages]);
 
+    // Focus input when file is selected but don't auto-populate text
     useEffect(() => {
       if (selectedFile) {
-        setInput(`Can you explain the file: ${selectedFile}`);
         inputRef.current?.focus();
       }
     }, [selectedFile]);
@@ -92,7 +93,7 @@ export const AIChatPanel = forwardRef<AIChatPanelRef, AIChatPanelProps>(
         setInput('');
         // useChat handles streaming automatically
       },
-      [input]
+      [input, sendMessage]
     );
 
     const handleRemoveMention = useCallback((path: string) => {

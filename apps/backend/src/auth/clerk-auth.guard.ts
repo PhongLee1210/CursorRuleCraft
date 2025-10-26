@@ -1,9 +1,9 @@
+import { IS_PUBLIC_KEY } from '@backend/auth/decorators/public.decorator';
 import { verifyToken } from '@clerk/backend';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
-import { IS_PUBLIC_KEY } from './decorators/public.decorator';
 
 /**
  * Clerk Authentication Guard

@@ -1,5 +1,6 @@
-import { useClerk } from '@clerk/clerk-react';
 import { useCallback } from 'react';
+
+import { useClerk } from '@clerk/clerk-react';
 
 /**
  * Hook for handling user logout.

@@ -1,11 +1,13 @@
-import { Button } from "@frontend/components/Button";
-import { Input } from "@frontend/components/Input";
-import { SEO } from "@frontend/components/SEO";
+import { useCallback, useEffect, useState } from 'react';
+
 import { useSignUp } from '@clerk/clerk-react';
 import { t, Trans } from '@lingui/macro';
 import { CheckCircleIcon, EnvelopeIcon, WarningIcon } from '@phosphor-icons/react';
-import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+
+import { Button } from '@frontend/components/Button';
+import { Input } from '@frontend/components/Input';
+import { SEO } from '@frontend/components/SEO';
 
 // Constants
 const VERIFICATION_CODE_LENGTH = 6;

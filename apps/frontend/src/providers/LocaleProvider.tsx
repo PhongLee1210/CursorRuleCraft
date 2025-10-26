@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
+
 import { useUser } from '@clerk/clerk-react';
 import { i18n } from '@lingui/core';
 import { detect, fromStorage, fromUrl } from '@lingui/detect-locale';
 import { I18nProvider } from '@lingui/react';
-import { useEffect } from 'react';
 
-import { defaultLocale, dynamicActivate } from "@frontend/lib/lingui";
+import { defaultLocale, dynamicActivate } from '@frontend/lib/lingui';
 
 // Languages
 export type LanguageType = {

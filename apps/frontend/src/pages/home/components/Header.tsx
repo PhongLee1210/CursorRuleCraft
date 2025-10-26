@@ -1,10 +1,10 @@
+import { useAuth } from '@clerk/clerk-react';
 import { t } from '@lingui/macro';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 
-import { Button } from "@frontend/components/Button";
-import { Logo } from "@frontend/components/Logo";
-import { useAuth } from '@clerk/clerk-react';
+import { Button } from '@frontend/components/Button';
+import { Logo } from '@frontend/components/Logo';
 
 export const Header = () => {
   const { isSignedIn } = useAuth();

@@ -4,13 +4,11 @@ const config: LinguiConfig = {
   format: 'po',
   sourceLocale: 'en-US',
   fallbackLocales: { default: 'en-US' },
-  locales: ['en-US'],
-  rootDir: '.',
+  locales: ['en-US', 'vi-VN'],
   catalogs: [
     {
-      include: ['src'],
-      path: 'src/locales/{locale}/messages',
-      exclude: ['**/node_modules/**'],
+      include: ['<rootDir>/apps/frontend/src'],
+      path: '<rootDir>/apps/frontend/src/locales/{locale}/messages',
     },
   ],
 };

@@ -1,8 +1,8 @@
+import { Public } from '@backend/auth/decorators/public.decorator';
+import { WebhooksService } from '@backend/webhooks/webhooks.service';
 import { BadRequestException, Controller, Post, Req } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
-import { Public } from '../auth/decorators/public.decorator';
-import { WebhooksService } from './webhooks.service';
 
 /**
  * Webhooks Controller

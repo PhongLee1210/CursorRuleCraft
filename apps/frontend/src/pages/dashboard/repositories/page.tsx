@@ -1,13 +1,14 @@
-import { ScrollArea } from "@frontend/components/ScrollArea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@frontend/components/Tabs";
-import { useRepositories } from "@frontend/hooks/useRepositories";
-import { useWorkspaceStore } from "@frontend/stores/workspace";
-
-import { useLocalStorage } from "@frontend/lib/useLocalStorage";
 import { t } from '@lingui/macro';
 import { ListIcon, SquaresFourIcon, WarningCircleIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+
+import { ScrollArea } from '@frontend/components/ScrollArea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@frontend/components/Tabs';
+import { useRepositories } from '@frontend/hooks/useRepositories';
+import { useLocalStorage } from '@frontend/lib/useLocalStorage';
+import { useWorkspaceStore } from '@frontend/stores/workspace';
+
 
 import { GridView } from './_layouts/grid';
 import { ListView } from './_layouts/list';

@@ -1,13 +1,13 @@
-import { cn } from "@frontend/lib/utils";
-import { t } from '@lingui/macro';
 import { useMemo } from 'react';
+
+import { t } from '@lingui/macro';
 import { Link, matchRoutes, Outlet, useLocation } from 'react-router';
 
-import { Logo } from "@frontend/components/Logo";
-import { useAuthProviders } from "@frontend/hooks/useAuthProviders";
-
-import { SocialAuth } from "@frontend/components/SocialAuth";
-import { ThemeSwitch } from "@frontend/components/ThemeSwitch";
+import { Logo } from '@frontend/components/Logo';
+import { SocialAuth } from '@frontend/components/SocialAuth';
+import { ThemeSwitch } from '@frontend/components/ThemeSwitch';
+import { useAuthProviders } from '@frontend/hooks/useAuthProviders';
+import { cn } from '@frontend/lib/utils';
 
 const authRoutes = [{ path: '/auth/login' }, { path: '/auth/register' }];
 

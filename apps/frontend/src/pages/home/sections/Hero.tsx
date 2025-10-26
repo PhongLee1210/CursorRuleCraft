@@ -1,15 +1,14 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button, buttonVariants } from "@frontend/components/Button";
-import { cn } from "@frontend/lib/utils";
+import { useAuth } from '@clerk/clerk-react';
 import { t } from '@lingui/macro';
-import { ArrowRightIcon } from '@phosphor-icons/react';
+import { ArrowRightIcon , BookIcon, SignOutIcon } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
-
-import { useLogout } from "@frontend/hooks/useLogout";
-import { useAuth } from '@clerk/clerk-react';
-import { BookIcon, SignOutIcon } from '@phosphor-icons/react';
 import { Link } from 'react-router';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button, buttonVariants } from '@frontend/components/Button';
+import { useLogout } from '@frontend/hooks/useLogout';
+import { cn } from '@frontend/lib/utils';
 
 export const HeroCTA = () => {
   const { logout } = useLogout();

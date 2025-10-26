@@ -1,11 +1,11 @@
+import { ClerkToken } from '@backend/auth/decorators/clerk-token.decorator';
+import { CurrentUser } from '@backend/auth/decorators/current-user.decorator';
+import { Public } from '@backend/auth/decorators/public.decorator';
+import { IntegrationService } from '@backend/repositories/github/integration.service';
 import { GitProvider } from '@cursorrulecraft/shared-types';
 import { Controller, Get, HttpException, HttpStatus, Query, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { ClerkToken } from '../../auth/decorators/clerk-token.decorator';
-import { CurrentUser } from '../../auth/decorators/current-user.decorator';
-import { Public } from '../../auth/decorators/public.decorator';
-import { IntegrationService } from './integration.service';
 
 /**
  * GitHub OAuth Controller

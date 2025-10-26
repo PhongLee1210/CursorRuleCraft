@@ -1,7 +1,10 @@
-import { cn } from "@frontend/lib/utils";
+import { forwardRef } from 'react';
+
 import { CaretDownIcon } from '@phosphor-icons/react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import { forwardRef } from 'react';
+
+import { cn } from '@frontend/lib/utils';
+
 
 export const Accordion = AccordionPrimitive.Root;
 

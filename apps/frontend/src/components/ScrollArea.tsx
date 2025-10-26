@@ -1,6 +1,8 @@
-import { cn } from "@frontend/lib/utils";
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { forwardRef } from 'react';
+
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+
+import { cn } from '@frontend/lib/utils';
 
 export const ScrollArea = forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,

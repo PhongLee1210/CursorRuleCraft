@@ -8,7 +8,7 @@
     "dev": {
       "executor": "@nx/vite:dev-server",
       "options": {
-        "buildTarget": "frontend:build",
+        "buildTarget": "frontend:build:development",
         "configFile": "apps/frontend/vite.config.ts",
         "projectRoot": "apps/frontend"
       }
@@ -20,6 +20,15 @@
         "outputPath": "dist/apps/frontend",
         "configFile": "apps/frontend/vite.config.ts",
         "projectRoot": "apps/frontend"
+      },
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
       }
     },
     "preview": {
@@ -27,14 +36,15 @@
       "options": {
         "buildTarget": "frontend:build",
         "configFile": "apps/frontend/vite.config.ts",
-        "projectRoot": "apps/frontend"
+        "projectRoot": "apps/frontend",
+        "proxyConfig": "apps/frontend/proxy.conf.json"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/frontend/src/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "type-check": {

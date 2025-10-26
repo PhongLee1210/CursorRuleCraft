@@ -90,8 +90,9 @@ export default [
       'no-undef': 'off', // TypeScript handles this
     },
   },
+
   {
-    files: ['packages/**/*.ts'],
+    files: ['libs/**/*.ts'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -112,7 +113,7 @@ export default [
     },
   },
   {
-    files: ['**/*.config.{js,ts}', '**/vite.config.ts', '**/tailwind.config.js'],
+    files: ['**/*.config.{js,ts}', '**/vite.config.ts', '**/tailwind.config.ts', '**/lingui.config.ts'],
     languageOptions: {
       globals: {
         ...globals.node,

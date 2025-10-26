@@ -1,5 +1,6 @@
-import { cn } from "@frontend/lib/utils";
 import type { ReactNode } from 'react';
+
+import { cn } from '@frontend/lib/utils';
 
 type Props = {
   start?: ReactNode;

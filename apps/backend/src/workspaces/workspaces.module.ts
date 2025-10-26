@@ -1,7 +1,7 @@
+import { SupabaseModule } from '@backend/supabase/supabase.module';
+import { WorkspacesController } from '@backend/workspaces/workspaces.controller';
+import { WorkspacesService } from '@backend/workspaces/workspaces.service';
 import { Module } from '@nestjs/common';
-import { SupabaseModule } from '../supabase/supabase.module';
-import { WorkspacesController } from './workspaces.controller';
-import { WorkspacesService } from './workspaces.service';
 
 /**
  * Workspaces Module

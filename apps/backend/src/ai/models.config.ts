@@ -1,5 +1,5 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { AIProvider, PROVIDER_CONFIGS, type ModelOptions } from './types';
+import { AIProvider, PROVIDER_CONFIGS, type ModelOptions } from '@backend/ai/types';
 
 /**
  * Create an AI model instance based on provider configuration

@@ -1,5 +1,6 @@
-import { cn } from "@frontend/lib/utils";
 import { useCallback, type ReactNode } from 'react';
+
+import { cn } from '@frontend/lib/utils';
 
 // Constants
 const VARIANT_STYLES = {

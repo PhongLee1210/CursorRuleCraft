@@ -1,5 +1,6 @@
-import { useAuth, useUser } from '@clerk/clerk-react';
 import { useCallback, useState } from 'react';
+
+import { useAuth, useUser } from '@clerk/clerk-react';
 
 /**
  * Hook to refresh the user and session data from Clerk.

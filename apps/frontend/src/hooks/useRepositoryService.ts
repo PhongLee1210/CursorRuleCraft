@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
+
 import { useApiClient } from '@frontend/lib/api-client';
 import { createRepositoryService } from '@frontend/services/repository';
-import { useMemo } from 'react';
 
 /**
  * Hook that provides a RepositoryService instance

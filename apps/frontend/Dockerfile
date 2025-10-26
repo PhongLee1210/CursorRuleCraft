@@ -11,8 +11,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json bun.lock* ./
-COPY apps/frontend/package.json ./apps/frontend/
-COPY packages/shared-types/package.json ./packages/shared-types/
+# No app-specific package.json needed - using root package.json
+COPY libs/shared-types/package.json ./libs/shared-types/
 
 # Copy NX configuration
 COPY nx.json tsconfig.base.json tsconfig.json ./
@@ -37,7 +37,7 @@ ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 
 # Copy source code
 COPY apps/frontend ./apps/frontend
-COPY packages/shared-types ./packages/shared-types
+COPY libs/shared-types ./libs/shared-types
 
 # Build frontend using NX
 RUN bun nx build frontend

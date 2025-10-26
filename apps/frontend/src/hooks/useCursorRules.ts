@@ -1,3 +1,5 @@
+import { useCallback, useMemo } from 'react';
+
 import { useApiClient } from '@frontend/lib/api-client';
 import {
   createCursorRule,
@@ -14,7 +16,6 @@ import type {
   RuleTreeNode,
   UpdateCursorRuleOptions,
 } from '@frontend/types/cursor-rules';
-import { useCallback, useMemo } from 'react';
 
 /**
  * Hook for managing cursor rules

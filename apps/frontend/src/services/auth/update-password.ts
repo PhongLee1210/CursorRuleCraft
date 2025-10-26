@@ -1,5 +1,6 @@
-import { useUser } from '@clerk/clerk-react';
 import { useState } from 'react';
+
+import { useUser } from '@clerk/clerk-react';
 
 /**
  * Options for updating a user's password.

@@ -1,5 +1,5 @@
-import { useTheme } from "@frontend/hooks/useTheme";
-import { cn } from "@frontend/lib/utils";
+import { useTheme } from '@frontend/hooks/useTheme';
+import { cn } from '@frontend/lib/utils';
 
 type Props = {
   size?: number;

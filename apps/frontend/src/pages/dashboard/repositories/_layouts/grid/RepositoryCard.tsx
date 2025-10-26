@@ -1,14 +1,3 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@frontend/components/DropdownMenu";
-import { useRepositories } from "@frontend/hooks/useRepositories";
-import { cn } from "@frontend/lib/utils";
-import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import {
   ArrowsClockwiseIcon,
@@ -25,6 +14,18 @@ import {
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useNavigate } from 'react-router';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@frontend/components/DropdownMenu';
+import { useRepositories } from '@frontend/hooks/useRepositories';
+import { cn } from '@frontend/lib/utils';
+import type { Repository } from '@frontend/types/repository';
 
 dayjs.extend(relativeTime);
 

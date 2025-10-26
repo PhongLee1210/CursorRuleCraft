@@ -1,6 +1,7 @@
+import { useState } from 'react';
+
 import { useSignUp } from '@clerk/clerk-react';
 import type { SignUpResource } from '@clerk/types';
-import { useState } from 'react';
 
 /**
  * Options for registering a new user.

@@ -1,5 +1,6 @@
-import { AuthenticateWithRedirectCallback, useAuth, useClerk } from '@clerk/clerk-react';
 import { useEffect } from 'react';
+
+import { AuthenticateWithRedirectCallback, useAuth, useClerk } from '@clerk/clerk-react';
 
 export function SSOCallbackPage() {
   const { isLoaded, isSignedIn, userId } = useAuth();

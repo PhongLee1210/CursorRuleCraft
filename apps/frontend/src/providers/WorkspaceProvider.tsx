@@ -1,14 +1,14 @@
-import { useAuth, useClerk, useUser } from '@clerk/clerk-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useAuth, useClerk, useUser } from '@clerk/clerk-react';
 import { useLocation, useNavigate } from 'react-router';
 
-import { Alert } from "@frontend/components/Alert";
-import { LoadingBanner } from "@frontend/components/LoadingBanner";
-
-import { useWorkspaceService } from "@frontend/hooks/useWorkspaceService";
-import { useLocalStorage } from "@frontend/lib/useLocalStorage";
-import { useWorkspaceStore } from "@frontend/stores/workspace";
-import type { Workspace } from "@frontend/types/workspace";
+import { Alert } from '@frontend/components/Alert';
+import { LoadingBanner } from '@frontend/components/LoadingBanner';
+import { useWorkspaceService } from '@frontend/hooks/useWorkspaceService';
+import { useLocalStorage } from '@frontend/lib/useLocalStorage';
+import { useWorkspaceStore } from '@frontend/stores/workspace';
+import type { Workspace } from '@frontend/types/workspace';
 
 // Constants
 const TOKEN_READY_DELAY = 300;

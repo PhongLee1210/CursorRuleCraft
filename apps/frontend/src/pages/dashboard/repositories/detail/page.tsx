@@ -1,10 +1,5 @@
-import { Button } from "@frontend/components/Button";
-import { IconButton } from "@frontend/components/IconButton";
-import { useRepositoryService } from "@frontend/hooks/useRepositoryService";
-import { cn } from "@frontend/lib/utils";
-import type { IFileTreeNode } from "@frontend/services/repository/repository";
-import { KindState, type State } from "@frontend/types";
-import type { Repository } from "@frontend/types/repository";
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { experimental_useObject as useObject } from '@ai-sdk/react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
@@ -21,9 +16,17 @@ import {
 } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import z from 'zod';
+
+import { Button } from '@frontend/components/Button';
+import { IconButton } from '@frontend/components/IconButton';
+import { useRepositoryService } from '@frontend/hooks/useRepositoryService';
+import { cn } from '@frontend/lib/utils';
+import type { IFileTreeNode } from '@frontend/services/repository/repository';
+import { KindState, type State } from '@frontend/types';
+import type { Repository } from '@frontend/types/repository';
+
 import { AIChatPanel, type AIChatPanelRef } from './_components/AIChatPanel';
 import { FileTreePanel } from './_components/FileTreePanel';
 import { RepositoryHeader } from './_components/RepositoryHeader';

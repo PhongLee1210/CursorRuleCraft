@@ -1,4 +1,4 @@
-import { cn } from "@frontend/lib/utils";
+import { cn } from '@frontend/lib/utils';
 
 export const RepositoryCardSkeleton = () => {
   return (

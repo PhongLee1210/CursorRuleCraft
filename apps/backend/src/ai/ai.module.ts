@@ -1,10 +1,10 @@
+import { AIPreferencesService } from '@backend/ai/ai-preferences.service';
+import { AIController } from '@backend/ai/ai.controller';
+import { AIService } from '@backend/ai/ai.service';
+import { PromptTemplateService } from '@backend/ai/prompt-template.service';
+import { SupabaseModule } from '@backend/supabase/supabase.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SupabaseModule } from '../supabase/supabase.module';
-import { AIPreferencesService } from './ai-preferences.service';
-import { AIController } from './ai.controller';
-import { AIService } from './ai.service';
-import { PromptTemplateService } from './prompt-template.service';
 
 /**
  * AI Module

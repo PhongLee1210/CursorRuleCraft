@@ -1,6 +1,6 @@
+import { Public } from '@backend/auth/decorators/public.decorator';
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
-import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('health')
 export class HealthController {

@@ -1,17 +1,4 @@
-/**
- * Cursor Rules types and interfaces
- * Schema follows AI_AGENT_ARCHITECTURE.md specification
- */
-
-/**
- * Rule type enum matching the backend
- */
-export type RuleType = 'PROJECT_RULE' | 'USER_RULE' | 'COMMAND';
-
-/**
- * Apply mode for project rules
- */
-export type ApplyMode = 'always' | 'intelligent' | 'specific' | 'manual';
+import type { ApplyMode, RuleType } from '@cursorrulecraft/shared-types';
 
 /**
  * Cursor Rule entity

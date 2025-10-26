@@ -1,13 +1,5 @@
-import { Button } from "@frontend/components/Button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@frontend/components/DropdownMenu";
-import { KeyboardShortcut } from "@frontend/components/KeyboardShortcut";
-import { useGitHubAuth } from "@frontend/hooks/useGitHubAuth";
-import { GitHubRepositorySelectorDialog } from "@frontend/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog";
+import { useCallback, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import {
   CheckCircleIcon,
@@ -16,7 +8,18 @@ import {
   LinkBreakIcon,
   SpinnerGapIcon,
 } from '@phosphor-icons/react';
-import { useCallback, useState } from 'react';
+
+import { Button } from '@frontend/components/Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@frontend/components/DropdownMenu';
+import { KeyboardShortcut } from '@frontend/components/KeyboardShortcut';
+import { useGitHubAuth } from '@frontend/hooks/useGitHubAuth';
+import { GitHubRepositorySelectorDialog } from '@frontend/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog';
+
 
 import { BaseListItem } from './BaseItem';
 

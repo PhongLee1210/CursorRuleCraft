@@ -1,22 +1,22 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router';
 
-import { GitHubCallbackPage } from "@frontend/pages/auth/callback/github/page";
-import { AuthLayout } from "@frontend/pages/auth/layout";
-import { LoginPage } from "@frontend/pages/auth/login/page";
-import { RegisterPage } from "@frontend/pages/auth/register/page";
-import { SSOCallbackPage } from "@frontend/pages/auth/sso/page";
-import { VerifyEmailPage } from "@frontend/pages/auth/verify-email/page";
-import { CursorRuleDetailPage } from "@frontend/pages/cursor/rules/page";
-import { DashboardLayout } from "@frontend/pages/dashboard/layout";
-import { RepositoryDetailPage } from "@frontend/pages/dashboard/repositories/detail/page";
-import { RepositoriesPage } from "@frontend/pages/dashboard/repositories/page";
-import { SettingsPage } from "@frontend/pages/dashboard/settings/page";
-import { ErrorPage } from "@frontend/pages/error/page";
-import { HomeLayout } from "@frontend/pages/home/layout";
-import { HomePage } from "@frontend/pages/home/page";
-import { Providers } from "@frontend/providers";
-import { AuthGuard } from "@frontend/router/guards/AuthGuard";
-import { GuestGuard } from "@frontend/router/guards/GuestGuard";
+import { GitHubCallbackPage } from '@frontend/pages/auth/callback/github/page';
+import { AuthLayout } from '@frontend/pages/auth/layout';
+import { LoginPage } from '@frontend/pages/auth/login/page';
+import { RegisterPage } from '@frontend/pages/auth/register/page';
+import { SSOCallbackPage } from '@frontend/pages/auth/sso/page';
+import { VerifyEmailPage } from '@frontend/pages/auth/verify-email/page';
+import { CursorRuleDetailPage } from '@frontend/pages/cursor/rules/page';
+import { DashboardLayout } from '@frontend/pages/dashboard/layout';
+import { RepositoryDetailPage } from '@frontend/pages/dashboard/repositories/detail/page';
+import { RepositoriesPage } from '@frontend/pages/dashboard/repositories/page';
+import { SettingsPage } from '@frontend/pages/dashboard/settings/page';
+import { ErrorPage } from '@frontend/pages/error/page';
+import { HomeLayout } from '@frontend/pages/home/layout';
+import { HomePage } from '@frontend/pages/home/page';
+import { Providers } from '@frontend/providers';
+import { AuthGuard } from '@frontend/router/guards/AuthGuard';
+import { GuestGuard } from '@frontend/router/guards/GuestGuard';
 
 export const routes = createRoutesFromElements(
   <Route element={<Providers />}>

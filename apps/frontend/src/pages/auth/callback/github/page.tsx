@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import { CheckCircleIcon, SpinnerGapIcon, XCircleIcon } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 export const GitHubCallbackPage = () => {

@@ -3,13 +3,14 @@
  * Provides an interface for using the mock AI generator service
  */
 
+import { useCallback, useState } from 'react';
+
 import type {
   AIGenerateRequest,
   AIGenerateResponse,
   AIMessage,
   AIStreamChunk,
 } from '@frontend/types/ai-messages';
-import { useCallback, useState } from 'react';
 
 interface UseAIGeneratorReturn {
   isGenerating: boolean;

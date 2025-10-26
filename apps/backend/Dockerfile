@@ -11,8 +11,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json bun.lock* ./
-COPY apps/backend/package.json ./apps/backend/
-COPY packages/shared-types/package.json ./packages/shared-types/
+# No app-specific package.json needed - using root package.json
+COPY libs/shared-types/package.json ./libs/shared-types/
 
 # Copy NX configuration
 COPY nx.json tsconfig.base.json tsconfig.json ./
@@ -29,7 +29,7 @@ WORKDIR /app
 
 # Copy source code
 COPY apps/backend ./apps/backend
-COPY packages/shared-types ./packages/shared-types
+COPY libs/shared-types ./libs/shared-types
 
 # Build backend using NX
 RUN bun nx build backend
@@ -50,13 +50,13 @@ ENV PORT=4000
 WORKDIR /app
 
 # Copy built backend from builder
-COPY --from=builder /app/apps/backend/dist ./
+COPY --from=builder /app/dist/apps/backend ./
 
 # Copy shared-types source (needed for runtime)
-COPY --from=builder /app/packages/shared-types ./packages/shared-types
+COPY --from=builder /app/libs/shared-types ./libs/shared-types
 
 # Copy package.json and install only production dependencies
-COPY --from=builder /app/apps/backend/package.json ./package.json
+COPY --from=builder /app/package.json ./package.json
 RUN npm install --omit=dev
 
 EXPOSE 4000

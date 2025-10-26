@@ -1,8 +1,15 @@
+import type {
+  CreateRuleDto,
+  UpdateRuleDto,
+} from '@backend/repositories/cursor-rules/cursor-rules.dto';
+import {
+  type CursorRule,
+  type RulesTreeResponse,
+  type RuleTreeNode,
+} from '@backend/repositories/cursor-rules/cursor-rules.types';
+import { SupabaseService } from '@backend/supabase/supabase.service';
+import { RULE_TYPES, type RuleType } from '@cursorrulecraft/shared-types';
 import { Injectable } from '@nestjs/common';
-import { SupabaseService } from '../../supabase/supabase.service';
-import type { CreateRuleDto, UpdateRuleDto } from './cursor-rules.dto';
-import type { CursorRule, RulesTreeResponse, RuleTreeNode } from './cursor-rules.types';
-import { RuleType } from './cursor-rules.types';
 
 /**
  * Cursor Rules Service
@@ -195,9 +202,9 @@ export class CursorRulesService {
     const rules = await this.getRules(clerkToken, repositoryId);
 
     // Separate rules by type (ONLY 3 TYPES)
-    const projectRules = rules.filter((r) => r.type === RuleType.PROJECT_RULE);
-    const commands = rules.filter((r) => r.type === RuleType.COMMAND);
-    const userRules = rules.filter((r) => r.type === RuleType.USER_RULE);
+    const projectRules = rules.filter((r) => r.type === RULE_TYPES.PROJECT_RULE);
+    const commands = rules.filter((r) => r.type === RULE_TYPES.COMMAND);
+    const userRules = rules.filter((r) => r.type === RULE_TYPES.USER_RULE);
 
     const children: RuleTreeNode[] = [];
 
@@ -277,9 +284,9 @@ export class CursorRulesService {
     // file_name is already normalized (lowercase, hyphens, no special chars)
     // Just add the appropriate extension based on type (ONLY 3 TYPES)
     let filename: string;
-    if (rule.type === RuleType.PROJECT_RULE) {
+    if (rule.type === RULE_TYPES.PROJECT_RULE) {
       filename = `${rule.file_name}.rules.mdc`;
-    } else if (rule.type === RuleType.COMMAND) {
+    } else if (rule.type === RULE_TYPES.COMMAND) {
       filename = `${rule.file_name}.md`;
     } else {
       // Fallback (shouldn't happen with proper type validation)

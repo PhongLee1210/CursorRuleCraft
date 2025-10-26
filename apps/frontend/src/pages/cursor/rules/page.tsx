@@ -1,11 +1,13 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import { cursorRuleTemplates } from "@frontend/lib/utils";
+import { useState } from 'react';
+
 import { t } from '@lingui/macro';
 import { ArrowLeft, Check, Copy, Download } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import { cursorRuleTemplates } from '@frontend/lib/utils';
 
 export const CursorRuleDetailPage = () => {
   const { id } = useParams<{ id: string }>();

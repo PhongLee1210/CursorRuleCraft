@@ -1,11 +1,12 @@
-import { Button } from "@frontend/components/Button";
+import { useState } from 'react';
+
 import { useSignIn, useSignUp } from '@clerk/clerk-react';
 import type { OAuthStrategy } from '@clerk/types';
 import { t } from '@lingui/macro';
 import { CircleNotch } from '@phosphor-icons/react';
-import { useState } from 'react';
 
-import { useAuthProviders, type OAuthProvider } from "@frontend/hooks/useAuthProviders";
+import { Button } from '@frontend/components/Button';
+import { useAuthProviders, type OAuthProvider } from '@frontend/hooks/useAuthProviders';
 
 export const SocialAuth = () => {
   const { providers, hasOAuthProviders } = useAuthProviders();

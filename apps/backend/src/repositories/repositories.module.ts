@@ -1,12 +1,12 @@
+import { CursorRulesService } from '@backend/repositories/cursor-rules/cursor-rules.service';
+import { GitHubAppService } from '@backend/repositories/github/github-app.service';
+import { GitHubAuthController } from '@backend/repositories/github/github-auth.controller';
+import { IntegrationService } from '@backend/repositories/github/integration.service';
+import { RepositoriesController } from '@backend/repositories/repositories.controller';
+import { RepositoriesService } from '@backend/repositories/repositories.service';
+import { SupabaseModule } from '@backend/supabase/supabase.module';
+import { WorkspacesModule } from '@backend/workspaces/workspaces.module';
 import { Module } from '@nestjs/common';
-import { SupabaseModule } from '../supabase/supabase.module';
-import { WorkspacesModule } from '../workspaces/workspaces.module';
-import { CursorRulesService } from './cursor-rules/cursor-rules.service';
-import { GitHubAppService } from './github/github-app.service';
-import { GitHubAuthController } from './github/github-auth.controller';
-import { IntegrationService } from './github/integration.service';
-import { RepositoriesController } from './repositories.controller';
-import { RepositoriesService } from './repositories.service';
 
 /**
  * Repositories Module

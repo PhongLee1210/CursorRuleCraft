@@ -1,3 +1,5 @@
+import type { RuleType, ApplyMode } from '@cursorrulecraft/shared-types';
+import { RULE_TYPES } from '@cursorrulecraft/shared-types';
 import {
   IsBoolean,
   IsEnum,
@@ -8,11 +10,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ApplyMode, RuleType } from './cursor-rules.types';
 
-/**
- * DTO for creating a cursor rule
- */
 export class CreateRuleDto {
   @IsNotEmpty({ message: 'File name is required' })
   @IsString()
@@ -31,7 +29,7 @@ export class CreateRuleDto {
   content!: string;
 
   @IsNotEmpty({ message: 'Rule type is required' })
-  @IsEnum(RuleType, { message: 'Invalid rule type' })
+  @IsEnum(RULE_TYPES, { message: 'Invalid rule type' })
   type!: RuleType;
 
   @IsOptional()

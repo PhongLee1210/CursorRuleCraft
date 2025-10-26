@@ -1,7 +1,7 @@
-import { t } from '@lingui/macro';
-
-import { animate, motion, useInView } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+
+import { t } from '@lingui/macro';
+import { animate, motion, useInView } from 'framer-motion';
 
 type CounterProps = { from: number; to: number };
 

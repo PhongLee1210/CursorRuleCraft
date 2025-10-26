@@ -1,4 +1,9 @@
-import { Button } from "@frontend/components/Button";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { t } from '@lingui/macro';
+import { FileCodeIcon, SpinnerGapIcon } from '@phosphor-icons/react';
+
+import { Button } from '@frontend/components/Button';
 import {
   Dialog,
   DialogContent,
@@ -6,20 +11,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@frontend/components/Dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@frontend/components/Tabs";
+} from '@frontend/components/Dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@frontend/components/Tabs';
 import {
   validateContent,
   validateCreateRuleForm,
   validateFileName,
   validateGlobPatterns,
-} from "@frontend/lib/validations/cursor-rules";
-import { CommandRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/CommandRulesForm";
-import { ProjectRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm";
-import { UserRulesForm } from "@frontend/pages/dashboard/repositories/detail/_dialog/UserRulesForm";
-import { t } from '@lingui/macro';
-import { FileCodeIcon, SpinnerGapIcon } from '@phosphor-icons/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+} from '@frontend/lib/validations/cursor-rules';
+import { CommandRulesForm } from '@frontend/pages/dashboard/repositories/detail/_dialog/CommandRulesForm';
+import { ProjectRulesForm } from '@frontend/pages/dashboard/repositories/detail/_dialog/ProjectRulesForm';
+import { UserRulesForm } from '@frontend/pages/dashboard/repositories/detail/_dialog/UserRulesForm';
+
 
 interface CreateRuleDialogProps {
   open: boolean;

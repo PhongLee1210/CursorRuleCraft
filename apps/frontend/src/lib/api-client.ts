@@ -1,6 +1,8 @@
-import { API_BASE_URL } from '@frontend/lib/constants';
-import { useAuth } from '@clerk/clerk-react';
 import { useEffect, useMemo, useRef } from 'react';
+
+import { useAuth } from '@clerk/clerk-react';
+
+import { API_BASE_URL } from '@frontend/lib/constants';
 
 /**
  * API Error with additional context

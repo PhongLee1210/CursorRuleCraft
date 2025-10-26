@@ -1,6 +1,7 @@
+import { useState } from 'react';
+
 import { useSignIn } from '@clerk/clerk-react';
 import type { SignInResource } from '@clerk/types';
-import { useState } from 'react';
 
 /**
  * Options for logging in a user.

@@ -1,14 +1,17 @@
-import { Button } from "@frontend/components/Button";
+import { useCallback, useState } from 'react';
+
+import { t } from '@lingui/macro';
+import { SpinnerGapIcon } from '@phosphor-icons/react';
+
+import { Button } from '@frontend/components/Button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@frontend/components/Dialog";
-import { t } from '@lingui/macro';
-import { SpinnerGapIcon } from '@phosphor-icons/react';
-import { useCallback, useState } from 'react';
+} from '@frontend/components/Dialog';
+
 
 interface DeleteConfirmDialogProps {
   open: boolean;

@@ -1,6 +1,21 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+import { createGlobPatternsForDependencies } from "@nx/react/tailwind";
+import { join } from "node:path";
+import type { Config } from "tailwindcss";
+
+// Import Tailwind plugins
+import tailwindContainerQueries from "@tailwindcss/container-queries";
+import tailwindForms from "@tailwindcss/forms";
+import tailwindTypography from "@tailwindcss/typography";
+import tailwindAnimate from "tailwindcss-animate";
+
+
+const config: Config = {
+  content: [
+    join(__dirname, "index.html"),
+    join(__dirname, "{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}"),
+    ...createGlobPatternsForDependencies(__dirname),
+
+  ],
   theme: {
     container: {
       center: true,
@@ -108,9 +123,11 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    require('tailwindcss-animate'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/container-queries'),
+    tailwindForms,
+    tailwindAnimate,
+    tailwindTypography,
+    tailwindContainerQueries,
   ],
 };
+
+export default config;

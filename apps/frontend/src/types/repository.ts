@@ -1,5 +1,6 @@
-import type { ApiError } from '@frontend/lib/api-client';
 import { GitProvider, type GitProviderType } from '@cursorrulecraft/shared-types';
+
+import type { ApiError } from '@frontend/lib/api-client';
 
 /**
  * Repository types and interfaces for Git integrations

@@ -1,8 +1,5 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import { IconButton } from "@frontend/components/IconButton";
-import { cn } from "@frontend/lib/utils";
-import type { Repository } from "@frontend/types/repository";
+import { memo } from 'react';
+
 import { t } from '@lingui/macro';
 import {
   ArrowLeftIcon,
@@ -11,7 +8,13 @@ import {
   GitlabLogoIcon,
   LinkSimpleIcon,
 } from '@phosphor-icons/react';
-import { memo } from 'react';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import { IconButton } from '@frontend/components/IconButton';
+import { cn } from '@frontend/lib/utils';
+import type { Repository } from '@frontend/types/repository';
+
 
 // Helper Functions
 const getProviderIcon = (provider: string) => {

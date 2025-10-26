@@ -1,6 +1,10 @@
+import {
+  type AddRepositoryDto,
+  Repository,
+  type UpdateRepositoryDto,
+} from '@backend/repositories/types/repository';
+import { SupabaseService } from '@backend/supabase/supabase.service';
 import { Injectable } from '@nestjs/common';
-import { SupabaseService } from '../supabase/supabase.service';
-import { AddRepositoryDto, Repository, UpdateRepositoryDto } from './types/repository';
 /**
  * Repositories Service
  *

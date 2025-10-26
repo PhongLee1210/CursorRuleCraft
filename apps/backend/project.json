@@ -6,33 +6,97 @@
   "tags": ["type:app", "scope:backend"],
   "targets": {
     "dev": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/webpack:webpack",
       "options": {
-        "command": "NODE_ENV=development nest start --webpack --webpackPath webpack.config.js --watch",
-        "cwd": "apps/backend"
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend",
+        "main": "apps/backend/src/main.ts",
+        "tsConfig": "apps/backend/tsconfig.json",
+        "webpackConfig": "apps/backend/webpack.config.cjs",
+        "deleteOutputPath": true,
+        "externalDependencies": "all",
+        "watch": true,
+        "serve": true
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "outputHashing": "none",
+          "sourceMap": true,
+          "namedChunks": true,
+          "aot": false,
+          "extractLicenses": false,
+          "vendorChunk": false,
+          "buildOptimizer": false,
+          "deleteOutputPath": true
+        },
+        "production": {
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": false,
+          "deleteOutputPath": true
+        }
       }
     },
     "build": {
-      "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist"],
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{workspaceRoot}/dist/apps/backend"],
       "options": {
-        "command": "NODE_ENV=production nest build --webpack --webpackPath webpack.config.js",
-        "cwd": "apps/backend"
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend",
+        "main": "apps/backend/src/main.ts",
+        "tsConfig": "apps/backend/tsconfig.json",
+        "webpackConfig": "apps/backend/webpack.config.cjs",
+        "deleteOutputPath": true,
+        "externalDependencies": "all"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "outputHashing": "none",
+          "sourceMap": true,
+          "namedChunks": true,
+          "aot": false,
+          "extractLicenses": false,
+          "vendorChunk": false,
+          "buildOptimizer": false
+        },
+        "production": {
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": false
+        }
       }
     },
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node dist/main.js",
-        "cwd": "apps/backend"
+        "command": "node dist/apps/backend/main.js"
       },
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "configurations": {
+        "production": {
+          "dependsOn": ["build:production"]
+        }
+      }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/backend/**/*.ts"]
+        "lintFilePatterns": ["apps/backend/src/**/*"]
       }
     },
     "type-check": {
@@ -44,15 +108,14 @@
     },
     "prune": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist"],
+      "outputs": ["{workspaceRoot}/dist/apps/backend", "{workspaceRoot}/dist/libs/shared-types"],
       "options": {
         "commands": [
           "rm -rf dist",
-          "mkdir -p dist/apps/backend/dist",
-          "mkdir -p dist/packages/shared-types",
-          "cp -r apps/backend/dist/* dist/apps/backend/dist/",
-          "cp -r packages/shared-types dist/packages/",
-          "cp apps/backend/package.json dist/apps/backend/"
+          "mkdir -p dist/apps/backend",
+          "mkdir -p dist/libs/shared-types",
+          "cp -r dist/apps/backend/* dist/apps/backend/",
+          "cp -r libs/shared-types dist/libs/"
         ],
         "parallel": false
       },

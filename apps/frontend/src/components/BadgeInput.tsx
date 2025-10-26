@@ -1,6 +1,9 @@
-import { cn } from "@frontend/lib/utils";
-import { XIcon } from '@phosphor-icons/react';
 import { useCallback, useRef } from 'react';
+
+import { XIcon } from '@phosphor-icons/react';
+
+import { cn } from '@frontend/lib/utils';
+
 import { Badge } from './Badge';
 
 interface BadgeInputProps {

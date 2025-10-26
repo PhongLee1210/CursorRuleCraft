@@ -1,18 +1,5 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@frontend/components/Dialog";
-import { Input } from "@frontend/components/Input";
-import { ScrollArea } from "@frontend/components/ScrollArea";
-import { useGitHubAuth } from "@frontend/hooks/useGitHubAuth";
-import { useGitHubRepositories, useRepositories } from "@frontend/hooks/useRepositories";
-import { cn } from "@frontend/lib/utils";
-import type { GitHubRepository } from "@frontend/types/repository";
+import { useCallback, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import {
   GithubLogoIcon,
@@ -23,8 +10,23 @@ import {
   WarningCircleIcon,
 } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
-import { useCallback, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@frontend/components/Dialog';
+import { Input } from '@frontend/components/Input';
+import { ScrollArea } from '@frontend/components/ScrollArea';
+import { useGitHubAuth } from '@frontend/hooks/useGitHubAuth';
+import { useGitHubRepositories, useRepositories } from '@frontend/hooks/useRepositories';
+import { cn } from '@frontend/lib/utils';
+import type { GitHubRepository } from '@frontend/types/repository';
 
 interface GitHubRepositorySelectorDialogProps {
   open: boolean;

@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@frontend/components/Accordion";
+} from '@frontend/components/Accordion';
 
 const Question1 = () => (
   <AccordionItem value="1">

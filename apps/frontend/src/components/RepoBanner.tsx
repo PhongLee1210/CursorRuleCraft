@@ -1,7 +1,8 @@
-import { Separator } from "@frontend/components/Separator";
-import { cn } from "@frontend/lib/utils";
 import { GithubLogoIcon } from '@phosphor-icons/react';
 import { StarFilledIcon } from '@radix-ui/react-icons';
+
+import { Separator } from '@frontend/components/Separator';
+import { cn } from '@frontend/lib/utils';
 
 const REPO_URL = 'https://github.com/PhongLee1210/CursorRuleCraft';
 

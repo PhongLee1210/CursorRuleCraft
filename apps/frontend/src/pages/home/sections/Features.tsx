@@ -1,4 +1,3 @@
-import { cn } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import {
   BrainIcon,
@@ -25,6 +24,8 @@ import {
   TextAaIcon,
 } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
+
+import { cn } from '@frontend/lib/utils';
 
 type Feature = {
   icon: React.ReactNode;

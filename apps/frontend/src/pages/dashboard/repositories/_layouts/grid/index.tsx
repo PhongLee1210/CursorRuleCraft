@@ -1,11 +1,11 @@
-import { sortByDate } from "@frontend/lib/utils";
-import type { Repository } from "@frontend/types/repository";
 import { t } from '@lingui/macro';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { CreateRepositoryCard } from "@frontend/pages/dashboard/repositories/_layouts/grid/CreateCard";
-import { RepositoryCard } from "@frontend/pages/dashboard/repositories/_layouts/grid/RepositoryCard";
-import { RepositoryCardSkeleton } from "@frontend/pages/dashboard/repositories/_layouts/grid/RepositoryCardSkeleton";
+import { sortByDate } from '@frontend/lib/utils';
+import { CreateRepositoryCard } from '@frontend/pages/dashboard/repositories/_layouts/grid/CreateCard';
+import { RepositoryCard } from '@frontend/pages/dashboard/repositories/_layouts/grid/RepositoryCard';
+import { RepositoryCardSkeleton } from '@frontend/pages/dashboard/repositories/_layouts/grid/RepositoryCardSkeleton';
+import type { Repository } from '@frontend/types/repository';
 
 interface GridViewProps {
   repositories: Repository[];

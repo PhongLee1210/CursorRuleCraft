@@ -1,13 +1,5 @@
-import { Button } from "@frontend/components/Button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@frontend/components/DropdownMenu";
-import { useGitHubAuth } from "@frontend/hooks/useGitHubAuth";
-import { cn } from "@frontend/lib/utils";
-import { GitHubRepositorySelectorDialog } from "@frontend/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog";
+import { useCallback, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import {
   CheckCircleIcon,
@@ -18,7 +10,18 @@ import {
   PlusIcon,
   SpinnerGapIcon,
 } from '@phosphor-icons/react';
-import { useCallback, useState } from 'react';
+
+import { Button } from '@frontend/components/Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@frontend/components/DropdownMenu';
+import { useGitHubAuth } from '@frontend/hooks/useGitHubAuth';
+import { cn } from '@frontend/lib/utils';
+import { GitHubRepositorySelectorDialog } from '@frontend/pages/dashboard/repositories/_components/GitHubRepositorySelectorDialog';
+
 
 export const CreateRepositoryCard = () => {
   const [showSelector, setShowSelector] = useState(false);

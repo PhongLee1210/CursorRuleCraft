@@ -2,14 +2,19 @@ export {
   AIPreferencesService,
   type AIUsageStatistics,
   type UserAIPreferences,
-} from './ai-preferences.service';
-export { AIController } from './ai.controller';
-export { AIModule } from './ai.module';
-export { AIService } from './ai.service';
+} from '@backend/ai/ai-preferences.service';
+export { AIController } from '@backend/ai/ai.controller';
+export { AIModule } from '@backend/ai/ai.module';
+export { AIService } from '@backend/ai/ai.service';
 export {
   createAIModel,
   getAvailableModels,
   getDefaultModel,
   isModelSupported,
-} from './models.config';
-export { AIProvider, PROVIDER_CONFIGS, type ModelOptions, type ProviderConfig } from './types';
+} from '@backend/ai/models.config';
+export {
+  AIProvider,
+  PROVIDER_CONFIGS,
+  type ModelOptions,
+  type ProviderConfig,
+} from '@backend/ai/types';

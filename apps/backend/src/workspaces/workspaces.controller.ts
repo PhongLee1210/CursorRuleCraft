@@ -1,3 +1,5 @@
+import { ClerkToken } from '@backend/auth/decorators/clerk-token.decorator';
+import { WorkspacesService } from '@backend/workspaces/workspaces.service';
 import {
   Body,
   Controller,
@@ -9,8 +11,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ClerkToken } from '../auth/decorators/clerk-token.decorator';
-import { WorkspacesService } from './workspaces.service';
 
 /**
  * Workspaces Controller

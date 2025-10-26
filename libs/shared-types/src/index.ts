@@ -17,6 +17,16 @@ export const GitProvider = {
 } as const;
 export type GitProviderType = (typeof GitProvider)[keyof typeof GitProvider];
 
+export const RULE_TYPES = {
+  PROJECT_RULE: 'PROJECT_RULE',
+  USER_RULE: 'USER_RULE',
+  COMMAND: 'COMMAND',
+} as const;
+
+export type RuleType = (typeof RULE_TYPES)[keyof typeof RULE_TYPES];
+
+export type ApplyMode = 'always' | 'intelligent' | 'specific' | 'manual';
+
 // ============================================================================
 // API Response Wrappers
 // ============================================================================

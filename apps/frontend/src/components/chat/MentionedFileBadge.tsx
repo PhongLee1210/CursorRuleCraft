@@ -1,6 +1,8 @@
-import { cn } from "@frontend/lib/utils";
-import { FileCodeIcon, FolderIcon, XIcon } from '@phosphor-icons/react';
 import { memo, useCallback } from 'react';
+
+import { FileCodeIcon, FolderIcon, XIcon } from '@phosphor-icons/react';
+
+import { cn } from '@frontend/lib/utils';
 
 interface MentionedFileBadgeProps {
   name: string;

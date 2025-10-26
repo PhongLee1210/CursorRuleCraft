@@ -1,11 +1,5 @@
-import { Button } from "@frontend/components/Button";
-import { useCursorRules } from "@frontend/hooks/useCursorRules";
-import { cn } from "@frontend/lib/utils";
-import { CreateRuleDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog";
-import { DeleteConfirmDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog";
-import { EditRuleDialog } from "@frontend/pages/dashboard/repositories/detail/_dialog/EditRuleDialog";
-import type { RuleTreeNode } from "@frontend/types/cursor-rules";
-import type { Repository } from "@frontend/types/repository";
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import {
   CaretDownIcon,
@@ -18,7 +12,16 @@ import {
   SpinnerGapIcon,
   TrashIcon,
 } from '@phosphor-icons/react';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+
+import { Button } from '@frontend/components/Button';
+import { useCursorRules } from '@frontend/hooks/useCursorRules';
+import { cn } from '@frontend/lib/utils';
+import { CreateRuleDialog } from '@frontend/pages/dashboard/repositories/detail/_dialog/CreateRuleDialog';
+import { DeleteConfirmDialog } from '@frontend/pages/dashboard/repositories/detail/_dialog/DeleteConfirmDialog';
+import { EditRuleDialog } from '@frontend/pages/dashboard/repositories/detail/_dialog/EditRuleDialog';
+import type { RuleTreeNode } from '@frontend/types/cursor-rules';
+import type { Repository } from '@frontend/types/repository';
+
 
 interface CursorRulesPanelProps {
   repository: Repository;

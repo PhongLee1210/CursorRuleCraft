@@ -13,18 +13,23 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     ...loadEnv(mode, process.cwd(), ''),
   };
 
+  const isDev = mode === 'development';
+
   return {
-    root: '.',
-    envDir: '../../',
+    root: __dirname,
     cacheDir: '../../node_modules/.vite/frontend',
     build: {
-      sourcemap: true,
-      emptyOutDir: true,
+      sourcemap: !isDev,
+      emptyOutDir: !isDev,
+      reportCompressedSize: isDev,
       outDir: '../../dist/apps/frontend',
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
       rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'index.html'),
-        },
+        // input: {
+        //   main: path.resolve(__dirname, 'index.html'),
+        // },
         external: (id) => {
           // Externalize Node.js modules that shouldn't be bundled for browser
           return id.includes('node:') || id.includes('__vite-browser-external');
@@ -37,9 +42,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           plugins: ['@lingui/babel-plugin-lingui-macro'],
         },
       }),
-      lingui({
-        configPath: 'lingui.config.js',
-      }),
+      lingui(),
       nxViteTsPaths(),
     ],
     resolve: {
@@ -82,6 +85,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           };
         }
       })(),
+      fs: { allow: [searchForWorkspaceRoot(process.cwd())] },
     },
     optimizeDeps: {
       include: ['react', 'react-dom', 'react-router'],

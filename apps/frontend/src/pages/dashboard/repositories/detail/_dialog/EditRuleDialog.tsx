@@ -1,24 +1,26 @@
-import { BadgeInput } from "@frontend/components/BadgeInput";
-import { Button } from "@frontend/components/Button";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { t } from '@lingui/macro';
+import { CaretDownIcon, SpinnerGapIcon } from '@phosphor-icons/react';
+
+import type { ApplyMode } from '@cursorrulecraft/shared-types';
+import { BadgeInput } from '@frontend/components/BadgeInput';
+import { Button } from '@frontend/components/Button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@frontend/components/Dialog";
+} from '@frontend/components/Dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@frontend/components/DropdownMenu";
-import { useCursorRules } from "@frontend/hooks/useCursorRules";
-import type { ApplyMode } from "@frontend/types/cursor-rules";
-import { t } from '@lingui/macro';
-import { CaretDownIcon, SpinnerGapIcon } from '@phosphor-icons/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+} from '@frontend/components/DropdownMenu';
+import { useCursorRules } from '@frontend/hooks/useCursorRules';
 
 interface EditRuleDialogProps {
   open: boolean;

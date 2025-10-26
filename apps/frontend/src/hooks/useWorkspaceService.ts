@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
+
 import { useApiClient } from '@frontend/lib/api-client';
 import { createWorkspaceService } from '@frontend/services/workspace';
-import { useMemo } from 'react';
 
 /**
  * Hook that provides a WorkspaceService instance

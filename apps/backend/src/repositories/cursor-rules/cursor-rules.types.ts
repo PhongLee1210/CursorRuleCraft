@@ -5,13 +5,7 @@
  * Schema follows AI_AGENT_ARCHITECTURE.md specification
  */
 
-export enum RuleType {
-  PROJECT_RULE = 'PROJECT_RULE',
-  USER_RULE = 'USER_RULE',
-  COMMAND = 'COMMAND',
-}
-
-export type ApplyMode = 'always' | 'intelligent' | 'specific' | 'manual';
+import type { ApplyMode, RuleType } from '@cursorrulecraft/shared-types';
 
 export interface CursorRule {
   id: string;

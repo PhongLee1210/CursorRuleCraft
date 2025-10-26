@@ -1,17 +1,20 @@
-import { BadgeInput } from "@frontend/components/BadgeInput";
-import { Button } from "@frontend/components/Button";
+import { memo } from 'react';
+
+import { t } from '@lingui/macro';
+import { CaretDownIcon, FolderIcon } from '@phosphor-icons/react';
+
+import { BadgeInput } from '@frontend/components/BadgeInput';
+import { Button } from '@frontend/components/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@frontend/components/DropdownMenu";
-import { Input } from "@frontend/components/Input";
-import { cn } from "@frontend/lib/utils";
-import { t } from '@lingui/macro';
-import { CaretDownIcon, FolderIcon } from '@phosphor-icons/react';
-import { memo } from 'react';
+} from '@frontend/components/DropdownMenu';
+import { Input } from '@frontend/components/Input';
+import { cn } from '@frontend/lib/utils';
+
 
 type ApplyMode = 'always' | 'intelligent' | 'specific' | 'manual';
 

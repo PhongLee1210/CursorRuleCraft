@@ -1,6 +1,7 @@
-import type { Workspace } from '@frontend/types/workspace';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+import type { Workspace } from '@frontend/types/workspace';
 
 // Types
 export type WorkspaceInitError = {

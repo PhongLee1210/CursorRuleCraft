@@ -1,5 +1,6 @@
-import { Button } from "@frontend/components/Button";
 import { Link, useRouteError } from 'react-router';
+
+import { Button } from '@frontend/components/Button';
 
 type RouterError = {
   statusText?: string;

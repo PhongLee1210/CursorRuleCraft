@@ -1,7 +1,10 @@
-import { cn } from "@frontend/lib/utils";
+import { memo } from 'react';
+
 import { t } from '@lingui/macro';
 import { FolderIcon } from '@phosphor-icons/react';
-import { memo } from 'react';
+
+import { cn } from '@frontend/lib/utils';
+
 
 interface UserRulesFormProps {
   content: string;

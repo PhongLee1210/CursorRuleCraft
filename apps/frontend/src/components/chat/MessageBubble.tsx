@@ -1,5 +1,6 @@
-import { cn } from "@frontend/lib/utils";
 import { memo } from 'react';
+
+import { cn } from '@frontend/lib/utils';
 
 interface MessageBubbleProps {
   role: 'user' | 'assistant';

@@ -1,6 +1,8 @@
-import { useWorkspaceStore } from '@frontend/stores/workspace';
-import { useClerk } from '@clerk/clerk-react';
 import { useCallback, useState } from 'react';
+
+import { useClerk } from '@clerk/clerk-react';
+
+import { useWorkspaceStore } from '@frontend/stores/workspace';
 
 type UseLogoutOutput = {
   logout: () => Promise<void>;

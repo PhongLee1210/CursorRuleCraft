@@ -1,8 +1,11 @@
-import { Button } from "@frontend/components/Button";
-import { cn } from "@frontend/lib/utils";
+import { memo, useCallback, useState } from 'react';
+
 import { t } from '@lingui/macro';
 import { CheckIcon, CopyIcon, MagicWandIcon } from '@phosphor-icons/react';
-import { memo, useCallback, useState } from 'react';
+
+import { Button } from '@frontend/components/Button';
+import { cn } from '@frontend/lib/utils';
+
 
 interface GeneratedRuleCardProps {
   title: string;

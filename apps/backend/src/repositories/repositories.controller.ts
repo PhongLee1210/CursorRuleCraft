@@ -1,3 +1,15 @@
+import { ClerkToken } from '@backend/auth/decorators/clerk-token.decorator';
+import { CurrentUser } from '@backend/auth/decorators/current-user.decorator';
+import { CreateRuleDto, UpdateRuleDto } from '@backend/repositories/cursor-rules/cursor-rules.dto';
+import { CursorRulesService } from '@backend/repositories/cursor-rules/cursor-rules.service';
+import { IntegrationService } from '@backend/repositories/github/integration.service';
+import { RepositoriesService } from '@backend/repositories/repositories.service';
+import {
+  type AddRepositoryDto,
+  GitProvider,
+  type UpdateRepositoryDto,
+} from '@backend/repositories/types/repository';
+import { WorkspacesService } from '@backend/workspaces/workspaces.service';
 import {
   Body,
   Controller,
@@ -10,14 +22,6 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ClerkToken } from '../auth/decorators/clerk-token.decorator';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { WorkspacesService } from '../workspaces/workspaces.service';
-import { CreateRuleDto, UpdateRuleDto } from './cursor-rules/cursor-rules.dto';
-import { CursorRulesService } from './cursor-rules/cursor-rules.service';
-import { IntegrationService } from './github/integration.service';
-import { RepositoriesService } from './repositories.service';
-import { AddRepositoryDto, GitProvider, UpdateRepositoryDto } from './types/repository';
 
 /**
  * Repositories Controller

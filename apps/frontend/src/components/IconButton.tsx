@@ -1,8 +1,10 @@
 'use client';
 
-import { cn } from "@frontend/lib/utils";
-import * as Tooltip from '@radix-ui/react-tooltip';
 import { useMemo, type ReactNode } from 'react';
+
+import * as Tooltip from '@radix-ui/react-tooltip';
+
+import { cn } from '@frontend/lib/utils';
 
 export const IconButton = ({
   label,

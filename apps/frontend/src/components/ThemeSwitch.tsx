@@ -1,9 +1,12 @@
-import { Button } from "@frontend/components/Button";
-import { useTheme } from "@frontend/hooks/useTheme";
+import { useMemo } from 'react';
+
 import { CloudSunIcon, MoonIcon, SunIcon } from '@phosphor-icons/react';
 import type { Variants } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { useMemo } from 'react';
+
+import { Button } from '@frontend/components/Button';
+import { useTheme } from '@frontend/hooks/useTheme';
+
 
 type Props = {
   size?: number;

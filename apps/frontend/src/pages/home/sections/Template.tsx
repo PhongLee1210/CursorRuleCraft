@@ -1,14 +1,15 @@
-import { Badge } from "@frontend/components/Badge";
-import { Button } from "@frontend/components/Button";
-import { IconButton } from "@frontend/components/IconButton";
-import { Input } from "@frontend/components/Input";
+import { useMemo, useState } from 'react';
 
-import { cursorRuleTemplates } from "@frontend/lib/utils";
 import { t } from '@lingui/macro';
 import { Check, Copy, Download } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
+
+import { Badge } from '@frontend/components/Badge';
+import { Button } from '@frontend/components/Button';
+import { IconButton } from '@frontend/components/IconButton';
+import { Input } from '@frontend/components/Input';
+import { cursorRuleTemplates } from '@frontend/lib/utils';
 
 const TemplateCard = ({
   template,
