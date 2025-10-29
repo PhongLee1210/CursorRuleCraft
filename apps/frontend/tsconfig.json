@@ -1,26 +1,30 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-      "jsx": "react-jsx",
-      "allowJs": false,
-      "esModuleInterop": false,
-      "allowSyntheticDefaultImports": true,
-      "strict": true,
-      "types": [
-        "node",
-        "vite/client",
-        "vitest"]
-    },
-    "files": [],
-    "exclude": [
-      "src/**/*.spec.ts",
-      "src/**/*.test.ts",
-      "src/**/*.spec.tsx",
-      "src/**/*.test.tsx",
-      "src/**/*.spec.js",
-      "src/**/*.test.js",
-      "src/**/*.spec.jsx",
-      "src/**/*.test.jsx"
-    ],
-    "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "../../libs/shared-types/src/**/*.ts"],
-  }
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+
+    "types": ["node", "vite/client", "vitest"]
+  },
+  "files": [],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.js",
+    "src/**/*.test.js",
+    "src/**/*.spec.jsx",
+    "src/**/*.test.jsx"
+  ],
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../libs/shared-types/src/**/*.ts"
+  ]
+}

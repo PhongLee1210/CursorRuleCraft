@@ -11,10 +11,9 @@ export class PromptTemplateService {
   private promptsPath: string;
 
   constructor() {
-    // Use a simple, reliable approach for NX monorepo
-    // In webpack dev mode, __dirname points to the compiled location (dist/)
-    // Navigate from dist/ to src/ai/prompts
-    this.promptsPath = join(__dirname, '..', 'src', 'ai', 'prompts');
+    // Use process.cwd() to get project root, then navigate to prompts directory
+    // This works reliably in both development and production builds
+    this.promptsPath = join(process.cwd(), 'apps', 'backend', 'src', 'ai', 'prompts');
   }
 
   /**

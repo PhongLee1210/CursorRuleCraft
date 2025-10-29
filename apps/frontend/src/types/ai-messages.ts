@@ -119,3 +119,61 @@ export interface AIStreamChunk {
   content?: string;
   error?: string;
 }
+
+/**
+ * Enhanced stream chunk for phased rule generation
+ */
+export interface RuleGenerationStreamChunk {
+  id: string;
+  type: 'phase-start' | 'rule-content' | 'phase-end' | 'follow-up-content' | 'error';
+  phase?: 'rule-generation' | 'follow-up-message';
+  content?: string;
+  accumulatedContent?: string;
+  finalContent?: string;
+  metadata?: {
+    ruleType: 'PROJECT_RULE' | 'COMMAND' | 'USER_RULE';
+    fileName?: string;
+  };
+  errorText?: string;
+}
+
+/**
+ * Rule generation intent detection
+ */
+export interface RuleGenerationIntent {
+  hasIntent: boolean;
+  confidence: number;
+  techStack: string[];
+  ruleType: 'PROJECT_RULE' | 'COMMAND' | 'USER_RULE' | null;
+  specificity: 'HIGH' | 'MEDIUM' | 'LOW';
+  description: string;
+}
+
+/**
+ * Rule generation request
+ */
+export interface RuleGenerationRequest {
+  messages: any[];
+  ruleType: 'PROJECT_RULE' | 'COMMAND' | 'USER_RULE';
+  fileName?: string;
+  techStack?: string[];
+  model?: string;
+  provider?: string;
+  temperature?: number;
+  maxTokens?: number;
+}
+
+/**
+ * Rule generation response with phased content
+ */
+export interface RuleGenerationResponse {
+  ruleContent: string;
+  followUpMessage: string;
+  ruleType: 'PROJECT_RULE' | 'COMMAND' | 'USER_RULE';
+  fileName: string;
+  metadata: {
+    generatedAt: number;
+    model: string;
+    provider: string;
+  };
+}

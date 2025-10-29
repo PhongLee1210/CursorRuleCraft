@@ -38,38 +38,6 @@ export class AIController {
   }
 
   /**
-   * Generate text using AI
-   *
-   * @example
-   * POST /ai/generate
-   * {
-   *   "prompt": "Write a haiku about TypeScript",
-   *   "model": "llama-3.3-70b-versatile",
-   *   "temperature": 0.7
-   * }
-   */
-  @Post('generate')
-  @Public()
-  async generate(
-    @Body()
-    body: {
-      prompt: string;
-      model?: string;
-      provider?: AIProvider;
-      temperature?: number;
-      maxTokens?: number;
-    }
-  ) {
-    const result = await this.aiService.generate(body);
-
-    return {
-      text: result.text,
-      usage: result.usage,
-      finishReason: result.finishReason,
-    };
-  }
-
-  /**
    * Stream AI chat responses
    *
    * @example
@@ -165,6 +133,180 @@ export class AIController {
   }
 
   /**
+   * Generate cursor rules with phased streaming (rule generation + follow-up message)
+   *
+   * @example
+   * POST /ai/generate-rules
+   * {
+   *   "messages": [
+   *     { "role": "user", "content": "Create a rule for React components" }
+   *   ],
+   *   "ruleType": "PROJECT_RULE",
+   *   "fileName": "react-components"
+   * }
+   */
+  @Post('generate-rules')
+  @Public()
+  async generateRules(
+    @Body()
+    body: {
+      messages: any[];
+      ruleType: 'PROJECT_RULE' | 'COMMAND' | 'USER_RULE';
+      fileName?: string;
+      techStack?: string[];
+      model?: string;
+      provider?: AIProvider;
+      temperature?: number;
+      maxTokens?: number;
+    },
+    @Res() res: Response
+  ) {
+    const { messages, ruleType, fileName, model, provider, temperature, maxTokens } = body;
+
+    // Set headers for streaming response
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    try {
+      // Validate input
+      const lastMessage = messages[messages.length - 1];
+      if (!lastMessage || lastMessage.role !== 'user') {
+        res.status(400).send('Last message must be from user');
+        return;
+      }
+
+      // Convert messages for AI SDK
+      const modelMessages = convertToModelMessages(messages);
+
+      // Load enhanced rule generation prompt template
+      const ruleGenerationPrompt = this.promptTemplate.renderTemplate('enhanced-rule-generation', {
+        techStack: (body.techStack || []).join(', ') || 'general',
+        ruleType: ruleType.toLowerCase().replace('_', ' '),
+        userRequest: lastMessage.content || '',
+        fileName: fileName || 'generated-rule',
+      });
+
+      // Set up custom streaming response
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      // Helper function to send JSON data as SSE
+      const sendData = (data: any) => {
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+      };
+
+      try {
+        // Phase 1: Generate the cursor rule
+        sendData({
+          type: 'phase-start',
+          phase: 'rule-generation',
+          metadata: { ruleType, fileName },
+        });
+
+        const ruleStream = await this.aiService.generateStream({
+          messages: [
+            ...modelMessages.slice(0, -1), // All messages except last
+            {
+              role: 'system',
+              content: ruleGenerationPrompt,
+            },
+            modelMessages[modelMessages.length - 1], // Last user message
+          ],
+          model,
+          provider,
+          temperature: temperature || 0.3, // Lower temperature for code generation
+          maxTokens,
+        });
+
+        // Stream rule generation with metadata
+        let ruleContent = '';
+        for await (const chunk of ruleStream.textStream) {
+          ruleContent += chunk;
+          sendData({
+            type: 'rule-content',
+            content: chunk,
+            accumulatedContent: ruleContent,
+            phase: 'rule-generation',
+          });
+        }
+
+        // Phase transition: Rule generation complete
+        sendData({
+          type: 'phase-end',
+          phase: 'rule-generation',
+          finalContent: ruleContent,
+        });
+
+        // Phase 2: Generate follow-up explanation message
+        sendData({
+          type: 'phase-start',
+          phase: 'follow-up-message',
+        });
+
+        const followUpPrompt = this.promptTemplate.renderTemplate('rule-followup', {
+          generatedRule: ruleContent.substring(0, 1000), // Truncate for context
+          ruleType: ruleType.toLowerCase().replace('_', ' '),
+        });
+
+        const followUpStream = await this.aiService.generateStream({
+          messages: [
+            ...modelMessages,
+            {
+              role: 'assistant',
+              content: `I've generated a cursor rule:\n\n${ruleContent}`,
+            },
+            {
+              role: 'system',
+              content: followUpPrompt,
+            },
+            {
+              role: 'user',
+              content: 'Please explain what this rule does and how to use it.',
+            },
+          ],
+          model,
+          provider,
+          temperature: temperature || 0.7, // Higher temperature for explanation
+          maxTokens: maxTokens || 500,
+        });
+
+        // Stream follow-up message
+        let followUpContent = '';
+        for await (const chunk of followUpStream.textStream) {
+          followUpContent += chunk;
+          sendData({
+            type: 'follow-up-content',
+            content: chunk,
+            accumulatedContent: followUpContent,
+            phase: 'follow-up-message',
+          });
+        }
+
+        // Complete the streaming
+        sendData({
+          type: 'phase-end',
+          phase: 'follow-up-message',
+          finalContent: followUpContent,
+        });
+
+        res.end();
+      } catch (error) {
+        console.error('Rule generation streaming error:', error);
+        sendData({
+          type: 'error',
+          errorText: error instanceof Error ? error.message : 'Unknown error',
+        });
+        res.end();
+      }
+    } catch (error) {
+      console.error('Rule generation error:', error);
+      res.status(500).send('Internal server error');
+    }
+  }
+
+  /**
    * Get current user's AI preferences
    *
    * @example GET /ai/preferences
@@ -221,28 +363,6 @@ export class AIController {
       startDate,
       workspaceId,
       repositoryId,
-    });
-  }
-
-  /**
-   * Get aggregated usage statistics
-   *
-   * @example GET /ai/usage/aggregate?groupBy=model&days=7
-   */
-  @Get('usage/aggregate')
-  async getAggregatedUsage(
-    @CurrentUser('id') userId: string,
-    @ClerkToken() clerkToken: string,
-    @Query('groupBy') groupBy?: 'provider' | 'model' | 'day',
-    @Query('days') days?: string
-  ) {
-    const daysNum = days ? parseInt(days, 10) : 30;
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - daysNum);
-
-    return this.preferencesService.getAggregatedUsageStats(userId, clerkToken, {
-      startDate,
-      groupBy,
     });
   }
 

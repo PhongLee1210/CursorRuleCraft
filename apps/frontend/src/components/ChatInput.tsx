@@ -1,5 +1,6 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type { RuleType } from '@cursorrulecraft/shared-types';
 import { useDroppable } from '@dnd-kit/core';
 import { t } from '@lingui/macro';
 import {
@@ -18,7 +19,6 @@ import {
 } from '@frontend/components/chat';
 import { RepoBanner } from '@frontend/components/RepoBanner';
 import { cn } from '@frontend/lib/utils';
-
 
 // Constants
 const SUGGESTED_PROMPTS = [
@@ -67,6 +67,11 @@ interface ChatInputProps {
   mentionedFiles?: MentionedFile[];
   onRemoveMention?: (path: string) => void;
   className?: string;
+  // Rule generation props
+  isRuleGenerationMode?: boolean;
+  pendingRuleType?: RuleType | null;
+  onRuleGenerationRequest?: (ruleType: RuleType) => void;
+  isGenerating?: boolean;
 }
 
 const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
@@ -84,6 +89,10 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
       mentionedFiles = [],
       onRemoveMention,
       className,
+      isRuleGenerationMode = false,
+      pendingRuleType,
+      onRuleGenerationRequest,
+      isGenerating = false,
     },
     ref
   ) => {
@@ -271,6 +280,29 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
                   </div>
                 )}
 
+                {/* Rule Generation Mode Indicator */}
+                {isRuleGenerationMode && (
+                  <div className="mx-4 mb-2 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 dark:bg-blue-950/20">
+                    <CodeIcon size={14} className="text-blue-600" />
+                    <span className="text-xs font-medium text-blue-900 dark:text-blue-100">
+                      {t`Generating rule`}
+                    </span>
+                    <button
+                      onClick={() => {
+                        // Reset rule generation mode
+                        if (onRuleGenerationRequest) {
+                          // This is a bit hacky, but we can use a special value to reset
+                          (onRuleGenerationRequest as any)(null);
+                        }
+                      }}
+                      className="ml-auto text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                      aria-label={t`Cancel rule generation`}
+                    >
+                      <XIcon size={12} />
+                    </button>
+                  </div>
+                )}
+
                 {/* Textarea */}
                 <div
                   className={cn(
@@ -338,26 +370,43 @@ const ChatInputComponent = forwardRef<HTMLTextAreaElement, ChatInputProps>(
             <QuickActionButton
               icon={<CodeIcon size={14} />}
               label={t`Project Rules`}
-              onClick={() => handleQuickActionClick(t`Generate cursor rules for React components`)}
-              disabled={isLoading}
+              onClick={() => {
+                if (onRuleGenerationRequest) {
+                  onRuleGenerationRequest('PROJECT_RULE');
+                  onChange(t`Create a project rule for React components and best practices`);
+                } else {
+                  handleQuickActionClick(t`Generate cursor rules for React components`);
+                }
+              }}
+              disabled={isLoading || isGenerating}
             />
 
             <QuickActionButton
               icon={<TerminalIcon size={14} />}
               label={t`Commands`}
-              onClick={() =>
-                handleQuickActionClick(t`Generate cursor command shortcuts and CLI usage`)
-              }
-              disabled={isLoading}
+              onClick={() => {
+                if (onRuleGenerationRequest) {
+                  onRuleGenerationRequest('COMMAND');
+                  onChange(t`Create command shortcuts for development workflow`);
+                } else {
+                  handleQuickActionClick(t`Generate cursor command shortcuts and CLI usage`);
+                }
+              }}
+              disabled={isLoading || isGenerating}
             />
 
             <QuickActionButton
               icon={<CommandIcon size={14} />}
-              label={t`Code Rules`}
-              onClick={() =>
-                handleQuickActionClick(t`Generate Tailwind CSS utility classes documentation`)
-              }
-              disabled={isLoading}
+              label={t`User Rules`}
+              onClick={() => {
+                if (onRuleGenerationRequest) {
+                  onRuleGenerationRequest('USER_RULE');
+                  onChange(t`Create user-specific rules for development environment`);
+                } else {
+                  handleQuickActionClick(t`Generate Tailwind CSS utility classes documentation`);
+                }
+              }}
+              disabled={isLoading || isGenerating}
             />
 
             {/* {onGenerateRule && (

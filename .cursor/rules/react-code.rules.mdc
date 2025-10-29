@@ -1,6 +1,6 @@
 ---
 description: React code structure and best practices for organizing components with proper ordering and performance optimization
-globs: apps/frontend/src/**/*.tsx
+globs: apps/frontend/src/**/*.tsx,apps/frontend/src/**/*.ts
 alwaysApply: false
 ---
 ## Performance Best Practices
@@ -36,7 +36,7 @@ const timerRef = useRef<NodeJS.Timeout | null>(null);
 const handleAction = useCallback(async () => {
   setIsLoading(true);
   setError(null); // Clear previous errors
-  
+
   try {
     const result = await apiCall();
     setData(result);
@@ -103,11 +103,11 @@ Here's a complete example following all the rules:
 ```tsx
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { useAuth } from '@/hooks/useAuth';
-import { apiClient } from '@/lib/api-client';
-import type { User } from '@/types';
+import { Button } from '@frontend/components/Button';
+import { Input } from '@frontend/components/Input';
+import { useAuth } from '@frontend/hooks/useAuth';
+import { apiClient } from '@frontend/lib/api-client';
+import type { User } from '@frontend/types';
 
 // Constants
 const MAX_LENGTH = 100;
@@ -127,37 +127,37 @@ interface MyComponentProps {
 export const MyComponent = ({ userId, onSuccess }: MyComponentProps) => {
   // Refs
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   // State
   const [formData, setFormData] = useState<FormData>({ name: '', email: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // External Hooks
   const navigate = useNavigate();
   const { user, isLoaded } = useAuth();
-  
+
   // Computed Values
   const isValid = useMemo(() => {
     return formData.name.length > 0 && formData.email.includes('@');
   }, [formData]);
-  
+
   // Effects
   useEffect(() => {
     if (isLoaded && !user) {
       navigate('/login');
     }
   }, [isLoaded, user, navigate]);
-  
+
   // Event Handlers
   const handleInputChange = useCallback((field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   }, []);
-  
+
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       await apiClient.post('/submit', formData);
       onSuccess?.();
@@ -168,16 +168,16 @@ export const MyComponent = ({ userId, onSuccess }: MyComponentProps) => {
       setIsLoading(false);
     }
   }, [formData, onSuccess]);
-  
+
   // Early Returns
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
-  
+
   if (!user) {
     return null;
   }
-  
+
   // Render
   return (
     <div className="container">
@@ -187,14 +187,14 @@ export const MyComponent = ({ userId, onSuccess }: MyComponentProps) => {
         onChange={(e) => handleInputChange('name', e.target.value)}
         maxLength={MAX_LENGTH}
       />
-      
+
       <Button
         onClick={handleSubmit}
         disabled={!isValid || isLoading}
       >
         Submit
       </Button>
-      
+
       {error && <div className="error">{error}</div>}
     </div>
   );
@@ -204,15 +204,15 @@ export const MyComponent = ({ userId, onSuccess }: MyComponentProps) => {
 ## Tailwind CSS Best Practices
 
 ### Use the `cn()` Utility
-Import and use `cn()` from `@/lib/utils` for class merging and conditional classes:
+Import and use `cn()` from `@frontend/lib/utils` for class merging and conditional classes:
 ```tsx
-import { cn } from '@/lib/utils';
+import { cn } from '@frontend/lib/utils';
 
 <div className={cn('base-class', isActive && 'active-class', className)} />
 ```
 
-### Theme Colors with Tailwind Config and @/styles
-1. **CSS Variables** (`@/styles/_theme.css`): Define theme colors as CSS custom properties
+### Theme Colors with Tailwind Config and @frontend/styles
+1. **CSS Variables** (`@frontend/styles/_theme.css`): Define theme colors as CSS custom properties
 2. **Tailwind Config** (`tailwind.config.js`): Reference CSS variables with HSL alpha support
 3. **Component Usage**: Use semantic class names that automatically adapt to theme
 

@@ -192,7 +192,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 GITHUB_REDIRECT_URI=http://localhost:4000/api/auth/github/callback
 
 # Frontend (VITE_* prefix required)
-VITE_API_URL=/api
+VITE_API_URL=http://localhost:4000
 VITE_SUPABASE_URL=http://127.0.0.1:54321
 ```
 
@@ -340,7 +340,7 @@ This project supports **single-service Docker deployment** that combines both fr
 
 1. Create a Web Service on Render
 2. Select Docker environment
-3. Docker command: `--target combined --build-arg VITE_API_URL=/api --build-arg VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY`
+3. Docker command: `--target combined --build-arg VITE_API_URL=http://localhost:4000 --build-arg VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY`
 4. Port: `80`
 5. Add required environment variables
 
@@ -348,7 +348,7 @@ This project supports **single-service Docker deployment** that combines both fr
 
 ```bash
 NODE_ENV=production
-VITE_API_URL=/api
+VITE_API_URL=http://localhost:4000
 VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_key
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your_anon_key
@@ -365,7 +365,7 @@ FRONTEND_URL=https://your-app.onrender.com
 
 # Or build and run manually
 docker build --target combined \
-  --build-arg VITE_API_URL=/api \
+  --build-arg VITE_API_URL=http://localhost:4000 \
   --build-arg VITE_CLERK_PUBLISHABLE_KEY=your_key \
   -t cursorrulecraft:combined .
 docker run -d -p 8080:80 --env-file .env cursorrulecraft:combined
@@ -400,7 +400,7 @@ open http://localhost:8080
 ### Button Component
 
 ```tsx
-import { Button } from '@/components/Button';
+import { Button } from '@frontend/components/Button';
 
 function Example() {
   return (
@@ -431,8 +431,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/Dialog';
-import { Button } from '@/components/Button';
+} from '@frontend/components/Dialog';
+import { Button } from '@frontend/components/Button';
 
 function Example() {
   return (
@@ -456,7 +456,7 @@ function Example() {
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@frontend/lib/supabase';
 
 function Example() {
   const { data, isLoading, error } = useQuery({
@@ -474,41 +474,6 @@ function Example() {
   return <div>{/* Render data */}</div>;
 }
 ```
-
-### Creating Custom Hooks
-
-```tsx
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
-
-export function useInstruments() {
-  return useQuery({
-    queryKey: ['instruments'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('instruments').select('*');
-      if (error) throw error;
-      return data;
-    },
-  });
-}
-
-export function useCreateInstrument() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (name: string) => {
-      const { data, error } = await supabase.from('instruments').insert({ name }).select().single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['instruments'] });
-    },
-  });
-}
-```
-
----
 
 ## 🎯 Best Practices
 

@@ -21,7 +21,9 @@ import z from 'zod';
 
 import { Button } from '@frontend/components/Button';
 import { IconButton } from '@frontend/components/IconButton';
+import { RuleGenerationPanel } from '@frontend/components/chat';
 import { useRepositoryService } from '@frontend/hooks/useRepositoryService';
+import { useRuleGeneration } from '@frontend/hooks/useRuleGeneration';
 import { cn } from '@frontend/lib/utils';
 import type { IFileTreeNode } from '@frontend/services/repository/repository';
 import { KindState, type State } from '@frontend/types';
@@ -50,6 +52,7 @@ export const RepositoryDetailPage = () => {
   const { id: repositoryId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const repositoryService = useRepositoryService();
+  const ruleGeneration = useRuleGeneration();
 
   // Setup drag and drop sensors with activation constraints
   const sensors = useSensors(
@@ -158,7 +161,7 @@ export const RepositoryDetailPage = () => {
 
   useEffect(() => {
     if (error) stop();
-  }, [error]);
+  }, [error, stop]);
 
   // Event Handlers
   const handleBack = useCallback(() => {
@@ -309,32 +312,27 @@ export const RepositoryDetailPage = () => {
             </div>
 
             <div className="flex-1 overflow-hidden">
-              <AIChatPanel ref={aiChatPanelRef} repository={repository} />
+              <AIChatPanel
+                ref={aiChatPanelRef}
+                repository={repository}
+                ruleGeneration={ruleGeneration}
+              />
             </div>
           </main>
 
           {/* Right Panel - Cursor Rules */}
-          {/* <Preview
-            accessToken={session?.access_token}
-            selectedTab={currentTab}
-            onSelectedTabChange={setCurrentTab}
-            isChatLoading={isLoading}
-            fragment={fragment}
-            result={result as ExecutionResult}
-            onClose={() => setFragment(undefined)}
-          /> */}
-          {/* <aside
+          <aside
             className={cn(
               'border-border flex flex-col border-l transition-all',
-              showRightPanel ? 'min-w-64' : 'w-fit'
+              showRightPanel ? 'min-w-80' : 'w-fit'
             )}
           >
             {showRightPanel && (
               <div className="scrollbar-macos flex-1 overflow-y-auto">
-                <CursorRulesPanel repository={repository} />
+                <RuleGenerationPanel state={ruleGeneration} />
               </div>
             )}
-          </aside> */}
+          </aside>
         </div>
       </div>
 

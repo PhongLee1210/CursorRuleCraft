@@ -1,5 +1,6 @@
 import { memo } from 'react';
 
+import { Response } from '@frontend/components/ai-elements/response';
 import { cn } from '@frontend/lib/utils';
 
 interface MessageBubbleProps {
@@ -17,7 +18,11 @@ export const MessageBubble = memo<MessageBubbleProps>(({ role, content, children
           role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-secondary'
         )}
       >
-        <div className="whitespace-pre-wrap text-sm">{content}</div>
+        {role === 'assistant' ? (
+          <Response className="prose prose-sm max-w-none text-sm">{content}</Response>
+        ) : (
+          <div className="whitespace-pre-wrap text-sm">{content}</div>
+        )}
         {children}
       </div>
     </div>

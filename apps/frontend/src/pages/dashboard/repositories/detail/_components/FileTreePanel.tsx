@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
@@ -13,14 +13,13 @@ import {
   GithubLogoIcon,
   SpinnerGapIcon,
 } from '@phosphor-icons/react';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@frontend/components/Button';
 import { useGitHubAuth } from '@frontend/hooks';
 import { useRepositoryService } from '@frontend/hooks/useRepositoryService';
 import { cn } from '@frontend/lib/utils';
-import { KindState, type State } from '@frontend/types';
 import type { Repository } from '@frontend/types/repository';
-
 
 interface FileNode {
   name: string;
@@ -28,6 +27,10 @@ interface FileNode {
   type: 'file' | 'directory';
   children?: FileNode[];
   isExpanded?: boolean;
+}
+
+interface ApiError extends Error {
+  statusCode?: number;
 }
 
 interface FileTreePanelProps {
@@ -112,7 +115,7 @@ const FileTreeNode = memo<{
   );
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (_e: React.MouseEvent) => {
       // Only toggle folder if not dragging
       if (isDirectory && !isDragging) {
         onToggle(node.path);
@@ -195,66 +198,129 @@ const FileTreeNode = memo<{
 FileTreeNode.displayName = 'FileTreeNode';
 
 export const FileTreePanel = ({ repository }: FileTreePanelProps) => {
-  // State
-  const [fileTree, setFileTree] = useState<FileNode[]>([]);
-  const [isShowReconnectGithub, setIsShowReconnectGithub] = useState<boolean>(false);
-  const [state, setState] = useState<State | null>();
-
   // External Hooks
   const repositoryService = useRepositoryService();
-  const { isConnected, connectGitHub } = useGitHubAuth();
+  const { status, connectGitHub } = useGitHubAuth();
+  const queryClient = useQueryClient();
 
-  // Effects
-  useEffect(() => {
-    const fetchFileTree = async () => {
-      setState({ kind: KindState.LOADING });
-      try {
-        const { data, error } = await repositoryService.getRepositoryFileTree(repository.id);
+  // React Query for file tree data with aggressive caching to prevent refetches
+  const {
+    data: fileTree = [],
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useQuery({
+    queryKey: ['repository', 'file-tree', repository.id],
+    queryFn: async () => {
+      const { data, error } = await repositoryService.getRepositoryFileTree(repository.id);
 
-        if (error) {
-          if (error.statusCode === 401) {
-            setIsShowReconnectGithub(true);
-          }
-          throw error;
-        }
-        const sortedTree = sortFileTree(data || []);
-        setFileTree(sortedTree);
-        setState({ kind: KindState.SUCCESSFUL, data: sortedTree });
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to load file tree';
-        setState({ kind: KindState.ERROR, message });
+      if (error) {
+        throw error;
       }
-    };
 
-    void fetchFileTree();
-  }, [repository.id, isConnected]);
+      return sortFileTree(data || []);
+    },
+    enabled: status?.connected ?? false,
+    staleTime: 30 * 60 * 1000, // 30 minutes - data stays fresh much longer
+    gcTime: 60 * 60 * 1000, // 1 hour - cache retention extended
+    retry: (failureCount, error: ApiError) => {
+      // Don't retry on 401 errors (authentication issues)
+      if (error?.statusCode === 401) {
+        return false;
+      }
+      // Retry up to 3 times for other errors
+      return failureCount < 3;
+    },
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    refetchOnWindowFocus: false, // Don't refetch on window focus for file tree
+    refetchOnReconnect: false, // Don't auto-refetch on reconnect (we have manual refetch)
+    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    refetchInterval: false, // No polling for file tree data
+    // Use placeholder data from cache immediately (prevents loading flash)
+    placeholderData: keepPreviousData,
+  });
 
-  const handleReconnect = useCallback(() => {
-    connectGitHub();
-  }, [connectGitHub]);
+  // Aggressive cache prefetching - prefetch when repository changes
+  useEffect(() => {
+    if (status?.connected && repository.id) {
+      // Check if we have cached data
+      const cachedData = queryClient.getQueryData(['repository', 'file-tree', repository.id]);
 
-  const handleToggle = useCallback((path: string) => {
-    setFileTree((prev) => {
-      const toggleNode = (nodes: FileNode[]): FileNode[] => {
-        return nodes.map((node) => {
-          if (node.path === path) {
-            return { ...node, isExpanded: !node.isExpanded };
-          }
-          if (node.children) {
-            return { ...node, children: toggleNode(node.children) };
-          }
-          return node;
+      // If no cached data and not currently fetching, prefetch silently
+      if (!cachedData && !isFetching) {
+        queryClient.prefetchQuery({
+          queryKey: ['repository', 'file-tree', repository.id],
+          queryFn: async () => {
+            const { data, error } = await repositoryService.getRepositoryFileTree(repository.id);
+            if (error) throw error;
+            return sortFileTree(data || []);
+          },
+          staleTime: 30 * 60 * 1000,
         });
-      };
-      return toggleNode(prev);
+      }
+    }
+  }, [repository.id, status?.connected, queryClient, repositoryService, isFetching]);
+
+  // Cache management utilities (available for future use)
+  const _clearFileTreeCache = useCallback(() => {
+    queryClient.removeQueries({
+      queryKey: ['repository', 'file-tree', repository.id],
     });
-  }, []);
+  }, [queryClient, repository.id]);
 
-  const loading = state?.kind === KindState.LOADING;
-  const error = state?.kind === KindState.ERROR;
+  const _prefetchFileTree = useCallback(
+    async (repoId: string) => {
+      await queryClient.prefetchQuery({
+        queryKey: ['repository', 'file-tree', repoId],
+        queryFn: async () => {
+          const { data, error } = await repositoryService.getRepositoryFileTree(repoId);
+          if (error) throw error;
+          return sortFileTree(data || []);
+        },
+        staleTime: 30 * 60 * 1000,
+      });
+    },
+    [queryClient, repositoryService]
+  );
 
-  // Early Returns
-  if (loading) {
+  const handleReconnect = useCallback(async () => {
+    await connectGitHub();
+    // Invalidate and refetch after successful reconnection
+    await queryClient.invalidateQueries({
+      queryKey: ['repository', 'file-tree', repository.id],
+    });
+    await refetch();
+  }, [connectGitHub, queryClient, repository.id, refetch]);
+
+  const handleToggle = useCallback(
+    (path: string) => {
+      // Update local state optimistically for better UX
+      queryClient.setQueryData(
+        ['repository', 'file-tree', repository.id],
+        (oldData: FileNode[] | undefined) => {
+          if (!oldData) return oldData;
+
+          const toggleNode = (nodes: FileNode[]): FileNode[] => {
+            return nodes.map((node) => {
+              if (node.path === path) {
+                return { ...node, isExpanded: !node.isExpanded };
+              }
+              if (node.children) {
+                return { ...node, children: toggleNode(node.children) };
+              }
+              return node;
+            });
+          };
+          return toggleNode(oldData);
+        }
+      );
+    },
+    [queryClient, repository.id]
+  );
+
+  // Early Returns - Only show loading on first load, not on refetches (due to keepPreviousData)
+  if (isLoading && !fileTree.length) {
     return (
       <div className="flex items-center justify-center p-8">
         <SpinnerGapIcon size={32} className="text-primary animate-spin" />
@@ -263,10 +329,13 @@ export const FileTreePanel = ({ repository }: FileTreePanelProps) => {
   }
 
   if (error) {
+    const apiError = error as ApiError;
+    const isAuthError = apiError?.statusCode === 401;
+
     return (
       <div className="p-4">
-        <p className="text-error text-sm">{state.message}</p>
-        {isShowReconnectGithub && (
+        <p className="text-error text-sm">{apiError?.message || 'Failed to load file tree'}</p>
+        {isAuthError && (
           <Button onClick={handleReconnect} className="mt-2">
             <GithubLogoIcon size={18} className="mr-2" />
             {t`Reconnect GitHub`}

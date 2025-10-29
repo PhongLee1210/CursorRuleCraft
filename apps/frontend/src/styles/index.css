@@ -70,3 +70,48 @@
     display: none;
   }
 }
+
+/* Custom Prose Styles - Using @tailwindcss/typography plugin */
+@layer components {
+  /* Override typography plugin defaults to match our theme */
+  .prose {
+    @apply text-foreground max-w-none;
+  }
+
+  .prose-headings {
+    @apply text-foreground;
+  }
+
+  .prose-p {
+    @apply text-foreground;
+  }
+
+  .prose-strong {
+    @apply text-foreground;
+  }
+
+  .prose-code {
+    @apply text-foreground;
+  }
+
+  .prose-pre-bg {
+    @apply bg-muted;
+  }
+
+  .prose-pre-code {
+    @apply text-foreground;
+  }
+
+  .prose-blockquote {
+    @apply text-muted-foreground;
+  }
+
+  .prose-hr {
+    @apply border-border;
+  }
+
+  .prose-th-borders,
+  .prose-td-borders {
+    @apply border-border;
+  }
+}
